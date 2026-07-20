@@ -1,0 +1,1332 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T12:22:17.167Z",
+  "repo": "",
+  "branch": "chore/rafa-init",
+  "codeSha": "edea8f8440c9b1f24d5a934b8aff557bf925a36f",
+  "health": {
+    "verdict": "PASS",
+    "score": 91,
+    "gates": {
+      "fidelity": "pass",
+      "coverage": "pass"
+    },
+    "counts": {
+      "blockers": 0,
+      "majors": 2,
+      "minors": 3
+    }
+  },
+  "ledger": {
+    "open": 9,
+    "debtScore": 16,
+    "byPriority": {
+      "P0": 0,
+      "P1": 1,
+      "P2": 4,
+      "P3": 4
+    }
+  },
+  "coverage": {
+    "domains": [
+      {
+        "domain": "routing-app-shell",
+        "status": "mapped"
+      },
+      {
+        "domain": "components",
+        "status": "mapped"
+      },
+      {
+        "domain": "agent-bridge",
+        "status": "mapped"
+      },
+      {
+        "domain": "state",
+        "status": "mapped"
+      },
+      {
+        "domain": "agent-python",
+        "status": "mapped"
+      },
+      {
+        "domain": "agent-typescript",
+        "status": "mapped"
+      },
+      {
+        "domain": "external-integrations",
+        "status": "mapped"
+      },
+      {
+        "domain": "build-tooling",
+        "status": "mapped"
+      },
+      {
+        "domain": "toolbox",
+        "status": "mapped"
+      },
+      {
+        "domain": "data-persistence",
+        "status": "stubbed"
+      },
+      {
+        "domain": "auth",
+        "status": "stubbed"
+      }
+    ]
+  },
+  "citations": {
+    "checkerVersion": 2,
+    "pass": true,
+    "at": "2026-07-20T12:10:15.801Z"
+  },
+  "notes": [
+    {
+      "id": "agent-name-contract",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "agent-bridge",
+      "title": "The agent-name strings wire the frontend to a LangGraph graph across 5 files",
+      "summary": "\"research_agent\" / \"research_agent_google_genai\" must match across the frontend agent prop, the runtime registry, and each agent's langgraph.json + endpoint path, or the coagent silently never connects",
+      "links": [
+        "agent-state-shape-contract",
+        "research-chat-flow",
+        "copilotkit-runtime-route-convention",
+        "model-selection-flow"
+      ],
+      "failure": "silent",
+      "bodyTokens": 492,
+      "cites": [
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "42",
+          "token": "research_agent",
+          "targetTokens": 422
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "44",
+          "token": "research_agent",
+          "targetTokens": 422
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "73",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "74",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "76",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "77",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "85",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "88",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "90",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "93",
+          "token": "research_agent",
+          "targetTokens": 814
+        },
+        {
+          "file": "agents/python/langgraph.json",
+          "line": "6",
+          "token": "research_agent",
+          "targetTokens": 56
+        },
+        {
+          "file": "agents/python/langgraph.json",
+          "line": "7",
+          "token": "research_agent",
+          "targetTokens": 56
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "20",
+          "token": "research_agent",
+          "targetTokens": 326
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "22",
+          "token": "research_agent",
+          "targetTokens": 326
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "27",
+          "token": "research_agent",
+          "targetTokens": 326
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "29",
+          "token": "research_agent",
+          "targetTokens": 326
+        },
+        {
+          "file": "agents/typescript/langgraph.json",
+          "line": "6",
+          "token": "research_agent",
+          "targetTokens": 62
+        },
+        {
+          "file": "agents/typescript/langgraph.json",
+          "line": "7",
+          "token": "research_agent",
+          "targetTokens": 62
+        }
+      ],
+      "path": "brain/rules/agent-name-contract.md"
+    },
+    {
+      "id": "agent-state-shape-contract",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "state",
+      "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+      "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+      "links": [
+        "agent-name-contract",
+        "research-chat-flow",
+        "copilotkit-runtime-route-convention"
+      ],
+      "failure": "silent",
+      "bodyTokens": 440,
+      "cites": [
+        {
+          "file": "src/lib/types.ts",
+          "line": "7",
+          "token": "AgentState",
+          "targetTokens": 54
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "9",
+          "token": "research_question",
+          "targetTokens": 54
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "10",
+          "token": "report",
+          "targetTokens": 54
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "11",
+          "token": "resources",
+          "targetTokens": 54
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "12",
+          "token": "logs",
+          "targetTokens": 54
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "29",
+          "token": "AgentState",
+          "targetTokens": 189
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "36",
+          "token": "research_question",
+          "targetTokens": 189
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "39",
+          "token": "logs",
+          "targetTokens": 189
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "19",
+          "token": "AgentStateAnnotation",
+          "targetTokens": 261
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "21",
+          "token": "research_question",
+          "targetTokens": 261
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "24",
+          "token": "logs",
+          "targetTokens": 261
+        }
+      ],
+      "path": "brain/rules/agent-state-shape-contract.md"
+    },
+    {
+      "id": "agent-typescript-parity",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "agent-typescript",
+      "title": "The TypeScript agent is an alternate port of the Python agent (not run by default)",
+      "summary": "agents/typescript mirrors the Python graph node-for-node with @langchain/langgraph; it is a lightly-used alternate — npm run dev runs the PYTHON agent, and the TS one is wired via pnpm + an explicit route.ts uncomment",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-state-shape-contract",
+        "build-tooling-convention"
+      ],
+      "bodyTokens": 400,
+      "cites": [
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "15",
+          "token": "StateGraph",
+          "targetTokens": 490
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "23",
+          "token": "addConditionalEdges",
+          "targetTokens": 490
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "34",
+          "token": "interruptAfter",
+          "targetTokens": 490
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "20",
+          "token": "openai",
+          "targetTokens": 313
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "40",
+          "token": "throw new Error",
+          "targetTokens": 313
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "19",
+          "token": "AgentStateAnnotation",
+          "targetTokens": 261
+        }
+      ],
+      "path": "brain/rules/agent-typescript-parity.md"
+    },
+    {
+      "id": "build-tooling-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "build-tooling",
+      "title": "Dev/build wiring — concurrently runs UI + Python agent; workspace:* means it lives in a monorepo",
+      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; CopilotKit deps are workspace:* so this app is really a package inside the CopilotKit monorepo, and Vercel builds it via nx from the repo root",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-typescript-parity"
+      ],
+      "bodyTokens": 373,
+      "cites": [
+        {
+          "file": "package.json",
+          "line": "9",
+          "token": "concurrently",
+          "targetTokens": 358
+        },
+        {
+          "file": "package.json",
+          "line": "12",
+          "token": "\"dev:agent:py\"",
+          "targetTokens": 358
+        },
+        {
+          "file": "package.json",
+          "line": "17",
+          "token": "\"workspace:*\"",
+          "targetTokens": 358
+        },
+        {
+          "file": "agents/python/langgraph.json",
+          "line": "5",
+          "token": "graphs",
+          "targetTokens": 56
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "37",
+          "token": "LANGGRAPH_FASTAPI",
+          "targetTokens": 392
+        },
+        {
+          "file": "vercel.json",
+          "line": "2",
+          "token": "nx run",
+          "targetTokens": 55
+        },
+        {
+          "file": "next.config.mjs",
+          "line": "3",
+          "token": "standalone",
+          "targetTokens": 39
+        }
+      ],
+      "path": "brain/rules/build-tooling-convention.md"
+    },
+    {
+      "id": "copilotkit-runtime-route-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "agent-bridge",
+      "title": "The /api/copilotkit route is the runtime bridge between browser and LangGraph",
+      "summary": "One Next.js route handler proxies the browser to the LangGraph agents; it uses EmptyAdapter (agents own the LLM), gates on a public \"api key\", and toggles HTTP vs LangGraph-Cloud mode by URL param",
+      "links": [
+        "agent-name-contract",
+        "agent-state-shape-contract",
+        "research-chat-flow",
+        "env-and-integrations"
+      ],
+      "bodyTokens": 507,
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "16",
+          "token": "EmptyAdapter",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "53",
+          "token": "POST",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "69",
+          "token": "REMOTE_ACTION_URL",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "71",
+          "token": "CopilotRuntime",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "99",
+          "token": "copilotRuntimeNextJSAppRouterEndpoint",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "28",
+          "token": "CopilotKit",
+          "targetTokens": 220
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "29",
+          "token": "runtimeUrl",
+          "targetTokens": 220
+        }
+      ],
+      "path": "brain/rules/copilotkit-runtime-route-convention.md"
+    },
+    {
+      "id": "delete-resources-hitl-contract",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "agent-bridge",
+      "title": "\"DeleteResources\" is the human-in-the-loop tool name shared by agent and frontend",
+      "summary": "The agent's DeleteResources tool routes to an interrupt, and the frontend renders the confirm dialog via useCopilotAction under the SAME string name — a mismatch means the delete never prompts and silently stalls",
+      "links": [
+        "research-chat-flow",
+        "agent-name-contract",
+        "add-agent-tool-howto"
+      ],
+      "failure": "silent",
+      "bodyTokens": 373,
+      "cites": [
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "39",
+          "token": "DeleteResources",
+          "targetTokens": 1631
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "32",
+          "token": "DeleteResources",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "82",
+          "token": "DeleteResources",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "150",
+          "token": "DeleteResources",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "55",
+          "token": "DeleteResources",
+          "targetTokens": 490
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "37",
+          "token": "DeleteResources",
+          "targetTokens": 1069
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "38",
+          "token": "DeleteResources",
+          "targetTokens": 1069
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "57",
+          "token": "DeleteResources",
+          "targetTokens": 1069
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "82",
+          "token": "DeleteResources",
+          "targetTokens": 1069
+        }
+      ],
+      "path": "brain/rules/delete-resources-hitl-contract.md"
+    },
+    {
+      "id": "design-system-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "components",
+      "title": "shadcn/ui (new-york) primitives + cn() + hardcoded brand accents",
+      "summary": "UI is shadcn \"new-york\" Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the",
+      "links": [
+        "nextjs-app-shell-convention"
+      ],
+      "bodyTokens": 365,
+      "cites": [
+        {
+          "file": "components.json",
+          "line": "3",
+          "token": "new-york",
+          "targetTokens": 106
+        },
+        {
+          "file": "src/components/ui/button.tsx",
+          "line": "7",
+          "token": "buttonVariants",
+          "targetTokens": 464
+        },
+        {
+          "file": "src/lib/utils.ts",
+          "line": "4",
+          "token": "cn",
+          "targetTokens": 90
+        },
+        {
+          "file": "tailwind.config.ts",
+          "line": "13",
+          "token": "hsl(var(--background))",
+          "targetTokens": 459
+        },
+        {
+          "file": "src/app/globals.css",
+          "line": "41",
+          "token": "--radius",
+          "targetTokens": 608
+        },
+        {
+          "file": "src/components/AddResourceDialog.tsx",
+          "line": "35",
+          "token": "#6766FC",
+          "targetTokens": 752
+        },
+        {
+          "file": "src/app/Main.tsx",
+          "line": "27",
+          "token": "#0E103D",
+          "targetTokens": 510
+        }
+      ],
+      "path": "brain/rules/design-system-convention.md"
+    },
+    {
+      "id": "env-and-integrations",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "external-integrations",
+      "title": "Environment variables and external services this app reads",
+      "summary": "Frontend route reads CopilotKit/LangSmith/deployment keys; each agent reads MODEL + provider keys + TAVILY_API_KEY; OPENAI_API_KEY appears commented-out in the runtime route (and with XAI in the readme env template) while ANTHROPIC_API_KEY has no repo occurrence — all provider LLM keys are otherwise read implicitly by the LangChain constructors",
+      "links": [
+        "copilotkit-runtime-route-convention",
+        "langgraph-agent-convention",
+        "repo-toolbox"
+      ],
+      "bodyTokens": 551,
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "23",
+          "token": "NEXT_PUBLIC_COPILOTKIT_API_KEY",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "17",
+          "token": "LANGSMITH_API_KEY",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "66",
+          "token": "LGC_DEPLOYMENT_URL",
+          "targetTokens": 814
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "69",
+          "token": "REMOTE_ACTION_URL",
+          "targetTokens": 814
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "19",
+          "token": "MODEL",
+          "targetTokens": 330
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "42",
+          "token": "GOOGLE_API_KEY",
+          "targetTokens": 330
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "26",
+          "token": "ChatOpenAI",
+          "targetTokens": 330
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "34",
+          "token": "TAVILY_API_KEY",
+          "targetTokens": 1097
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "41",
+          "token": "PORT",
+          "targetTokens": 326
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "33",
+          "token": "GOOGLE_API_KEY",
+          "targetTokens": 313
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "14",
+          "token": "OPENAI_API_KEY",
+          "targetTokens": 814
+        }
+      ],
+      "path": "brain/rules/env-and-integrations.md"
+    },
+    {
+      "id": "langgraph-agent-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "agent-python",
+      "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+      "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+      "links": [
+        "agent-typescript-parity",
+        "agent-state-shape-contract",
+        "delete-resources-hitl-contract",
+        "research-chat-flow",
+        "env-and-integrations"
+      ],
+      "bodyTokens": 535,
+      "cites": [
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "17",
+          "token": "StateGraph",
+          "targetTokens": 392
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "25",
+          "token": "set_entry_point",
+          "targetTokens": 392
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "33",
+          "token": "interrupt_after",
+          "targetTokens": 392
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "37",
+          "token": "LANGGRAPH_FASTAPI",
+          "targetTokens": 392
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "16",
+          "token": "@tool",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "77",
+          "token": "bind_tools",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "23",
+          "token": "openai",
+          "targetTokens": 330
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "49",
+          "token": "raise ValueError",
+          "targetTokens": 330
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "35",
+          "token": "TavilyClient",
+          "targetTokens": 1097
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "30",
+          "token": "_is_safe_url",
+          "targetTokens": 853
+        }
+      ],
+      "path": "brain/rules/langgraph-agent-convention.md"
+    },
+    {
+      "id": "nextjs-app-shell-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "routing-app-shell",
+      "title": "Next.js App Router shell — a single client-rendered page under a thin RSC layout",
+      "summary": "The whole app is one route; layout.tsx is the only server component (fonts + metadata), and everything from page.tsx down is \"use client\" because the coagent hooks need the browser",
+      "links": [
+        "provider-nesting-contract",
+        "copilotkit-runtime-route-convention",
+        "design-system-convention"
+      ],
+      "bodyTokens": 400,
+      "cites": [
+        {
+          "file": "src/app/layout.tsx",
+          "line": "22",
+          "token": "RootLayout",
+          "targetTokens": 196
+        },
+        {
+          "file": "src/app/layout.tsx",
+          "line": "6",
+          "token": "localFont",
+          "targetTokens": 196
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "1",
+          "token": "\"use client\"",
+          "targetTokens": 220
+        },
+        {
+          "file": "src/app/Main.tsx",
+          "line": "8",
+          "token": "Main",
+          "targetTokens": 510
+        },
+        {
+          "file": "src/app/globals.css",
+          "line": "15",
+          "token": "@layer base",
+          "targetTokens": 608
+        }
+      ],
+      "path": "brain/rules/nextjs-app-shell-convention.md"
+    },
+    {
+      "id": "provider-nesting-contract",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "routing-app-shell",
+      "title": "Provider nesting order — ModelSelectorProvider outside CopilotKit outside coagent hooks",
+      "summary": "useModelSelectorContext throws outside ModelSelectorProvider, and useCoAgent needs CopilotKit above it; the app-shell wrapping order in page.tsx is load-bearing and fails loudly if inverted",
+      "links": [
+        "nextjs-app-shell-convention",
+        "copilotkit-runtime-route-convention",
+        "agent-name-contract"
+      ],
+      "failure": "loud",
+      "bodyTokens": 350,
+      "cites": [
+        {
+          "file": "src/app/page.tsx",
+          "line": "13",
+          "token": "ModelSelectorProvider",
+          "targetTokens": 220
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "21",
+          "token": "useModelSelectorContext",
+          "targetTokens": 220
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "28",
+          "token": "CopilotKit",
+          "targetTokens": 220
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "36",
+          "token": "Main",
+          "targetTokens": 220
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "66",
+          "token": "throw new Error",
+          "targetTokens": 422
+        }
+      ],
+      "path": "brain/rules/provider-nesting-contract.md"
+    },
+    {
+      "id": "repo-toolbox",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "toolbox",
+      "title": "The committed agent toolbox — rafa skills, the rafinery MCP server, and permissions",
+      "summary": "The repo ships the rafa engineering SOP as .claude skills + 5 agent cards + the /rafa command, wired to the rafinery knowledge MCP over HTTP with a bearer key from env; permissions pre-allow the rafa CLI and .rafa reads",
+      "links": [
+        "env-and-integrations"
+      ],
+      "bodyTokens": 416,
+      "cites": [
+        {
+          "file": ".claude/skills/rafa-scan/SKILL.md",
+          "line": "2",
+          "token": "rafa-scan",
+          "targetTokens": 5333
+        },
+        {
+          "file": ".claude/commands/rafa.md",
+          "line": "2",
+          "token": "version",
+          "targetTokens": 6093
+        },
+        {
+          "file": ".mcp.json",
+          "line": "3",
+          "token": "rafinery",
+          "targetTokens": 50
+        },
+        {
+          "file": ".mcp.json",
+          "line": "7",
+          "token": "RAFA_MCP_KEY",
+          "targetTokens": 50
+        },
+        {
+          "file": ".claude/settings.json",
+          "line": "5",
+          "token": "@rafinery/cli",
+          "targetTokens": 265
+        },
+        {
+          "file": ".claude/settings.json",
+          "line": "4",
+          "token": "Read(.rafa",
+          "targetTokens": 265
+        }
+      ],
+      "path": "brain/rules/repo-toolbox.md"
+    },
+    {
+      "id": "add-agent-tool-howto",
+      "kind": "playbook",
+      "type": "how-to",
+      "domain": "agent-bridge",
+      "title": "How to add a new agent tool (and wire it to the canvas)",
+      "summary": "Add the no-op @tool schema, bind it in the chat node, route on its name, and — if it drives UI or streams a state field — mirror the string on the frontend (useCopilotAction) or in an emit_intermediate_state mapping",
+      "links": [
+        "langgraph-agent-convention",
+        "delete-resources-hitl-contract",
+        "agent-state-shape-contract",
+        "research-chat-flow"
+      ],
+      "bodyTokens": 444,
+      "cites": [
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "16",
+          "token": "@tool",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "77",
+          "token": "bind_tools",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "150",
+          "token": "DeleteResources",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "47",
+          "token": "state_key",
+          "targetTokens": 1265
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "38",
+          "token": "useCopilotAction",
+          "targetTokens": 1631
+        }
+      ],
+      "path": "brain/playbooks/add-agent-tool-howto.md"
+    },
+    {
+      "id": "model-selection-flow",
+      "kind": "playbook",
+      "type": "flow",
+      "domain": "agent-bridge",
+      "title": "How the model dropdown actually selects an LLM (it's state, not the agent name)",
+      "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph",
+      "links": [
+        "agent-name-contract",
+        "langgraph-agent-convention",
+        "research-chat-flow"
+      ],
+      "bodyTokens": 393,
+      "cites": [
+        {
+          "file": "src/components/ModelSelector.tsx",
+          "line": "23",
+          "token": "openai",
+          "targetTokens": 227
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "27",
+          "token": "coAgentsModel",
+          "targetTokens": 422
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "42",
+          "token": "research_agent",
+          "targetTokens": 422
+        },
+        {
+          "file": "src/app/Main.tsx",
+          "line": "13",
+          "token": "model",
+          "targetTokens": 510
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "18",
+          "token": "state.get",
+          "targetTokens": 330
+        }
+      ],
+      "path": "brain/playbooks/model-selection-flow.md"
+    },
+    {
+      "id": "research-chat-flow",
+      "kind": "playbook",
+      "type": "flow",
+      "domain": "agent-bridge",
+      "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+      "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete), and how tool-call intermediate state streams back to render the canvas and progress list",
+      "links": [
+        "agent-name-contract",
+        "agent-state-shape-contract",
+        "copilotkit-runtime-route-convention",
+        "langgraph-agent-convention",
+        "delete-resources-hitl-contract",
+        "model-selection-flow"
+      ],
+      "bodyTokens": 626,
+      "cites": [
+        {
+          "file": "src/app/Main.tsx",
+          "line": "51",
+          "token": "CopilotChat",
+          "targetTokens": 510
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "105",
+          "token": "handleRequest",
+          "targetTokens": 814
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "77",
+          "token": "bind_tools",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "43",
+          "token": "copilotkit_customize_config",
+          "targetTokens": 1265
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "73",
+          "token": "copilotkit_emit_state",
+          "targetTokens": 1097
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "28",
+          "token": "useCoAgentStateRender",
+          "targetTokens": 1631
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "195",
+          "token": "report",
+          "targetTokens": 1631
+        }
+      ],
+      "path": "brain/playbooks/research-chat-flow.md"
+    }
+  ],
+  "improvements": [
+    {
+      "id": "body-font-override-negates-geist",
+      "priority": "P3",
+      "lens": "product",
+      "status": "open",
+      "title": "globals.css hardcodes Arial on body, negating the two Geist fonts loaded in layout",
+      "summary": "layout.tsx loads Geist Sans + Geist Mono via next/font/local and wires the CSS variables, but globals.css sets body font-family to Arial, so the loaded fonts never apply to body text — dead weight plus off-brand typography",
+      "fix": "Set body font-family to var(--font-geist-sans) (or drop the Geist loading if Arial is intended) (~5 min)",
+      "leverage": {
+        "impact": "low",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "routing-app-shell",
+        "components"
+      ],
+      "cites": [
+        {
+          "file": "src/app/globals.css",
+          "line": "6",
+          "token": "Arial"
+        },
+        {
+          "file": "src/app/layout.tsx",
+          "line": "6",
+          "token": "localFont"
+        }
+      ],
+      "path": "improve/improvements/body-font-override-negates-geist.md"
+    },
+    {
+      "id": "coagent-initialstate-divergence",
+      "priority": "P2",
+      "lens": "architecture",
+      "status": "open",
+      "title": "Two useCoAgent hooks for the same agent seed different initialState",
+      "summary": "Main.tsx seeds the full AgentState (model, research_question, resources, report, logs) while ResearchCanvas.tsx seeds only { model } for the same agent name — a silent inconsistency where the initial shape depends on mount order",
+      "fix": "Share one initialState (extract a constant or seed the full shape in both) so the two hooks agree (~10 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "state",
+        "agent-bridge"
+      ],
+      "cites": [
+        {
+          "file": "src/app/Main.tsx",
+          "line": "12",
+          "token": "initialState"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "23",
+          "token": "initialState"
+        }
+      ],
+      "path": "improve/improvements/coagent-initialstate-divergence.md"
+    },
+    {
+      "id": "default-nextjs-metadata",
+      "priority": "P2",
+      "lens": "product",
+      "status": "open",
+      "title": "App ships the default \"Create Next App\" title and description to production",
+      "summary": "layout.tsx still carries the create-next-app boilerplate metadata, so the browser tab, SEO, and social embeds all read \"Create Next App\" / \"Generated by create next app\"",
+      "fix": "Set metadata.title/description in layout.tsx to the real product (\"Research Helper\") (~2 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "routing-app-shell"
+      ],
+      "cites": [
+        {
+          "file": "src/app/layout.tsx",
+          "line": "18",
+          "token": "Create Next App"
+        },
+        {
+          "file": "src/app/layout.tsx",
+          "line": "19",
+          "token": "Generated by create next app"
+        }
+      ],
+      "path": "improve/improvements/default-nextjs-metadata.md"
+    },
+    {
+      "id": "frontend-state-any-typing",
+      "priority": "P2",
+      "lens": "architecture",
+      "status": "open",
+      "title": "AgentState types resources/logs as any[] while concrete types exist",
+      "summary": "The frontend AgentState declares resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource is defined in the same file and a Log shape exists on the backend",
+      "fix": "Type resources as Resource[] and add a Log type for logs in types.ts (~5 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "state",
+        "components"
+      ],
+      "cites": [
+        {
+          "file": "src/lib/types.ts",
+          "line": "11",
+          "token": "any[]"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "12",
+          "token": "any[]"
+        }
+      ],
+      "path": "improve/improvements/frontend-state-any-typing.md"
+    },
+    {
+      "id": "lgc-deployment-url-ssrf-asymmetry",
+      "priority": "P2",
+      "lens": "security",
+      "status": "open",
+      "title": "The lgcDeploymentUrl SSRF guard checks host strings only — no DNS resolution, unlike the Python side",
+      "summary": "isSafeDeploymentUrl blocks private hostnames by literal/regex pattern but never resolves DNS, so a public hostname pointing at a private/metadata IP passes and the proxy forwards langsmithApiKey to it — the Python download guard does resolve DNS",
+      "fix": "Resolve the hostname and reject when any resolved address is private/loopback/link-local, mirroring download.py's _is_safe_url (~15 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "medium"
+      },
+      "blastRadius": [
+        "agent-bridge",
+        "external-integrations"
+      ],
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "29",
+          "token": "isSafeDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "38",
+          "token": "hostname"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "41",
+          "token": "getaddrinfo"
+        }
+      ],
+      "path": "improve/improvements/lgc-deployment-url-ssrf-asymmetry.md"
+    },
+    {
+      "id": "resource-cache-unbounded",
+      "priority": "P3",
+      "lens": "performance",
+      "status": "open",
+      "title": "_RESOURCE_CACHE grows unbounded for the life of the process",
+      "summary": "Downloaded page content is memoized in a module-level dict that is never evicted or size-capped, so a long-running agent process accumulates every fetched URL's full markdown in memory",
+      "fix": "Cap the cache (LRU / max entries) or add a size/TTL bound in download.py (~15 min)",
+      "leverage": {
+        "impact": "low",
+        "effort": "medium"
+      },
+      "blastRadius": [
+        "agent-python",
+        "data-persistence"
+      ],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "17",
+          "token": "_RESOURCE_CACHE"
+        }
+      ],
+      "path": "improve/improvements/resource-cache-unbounded.md"
+    },
+    {
+      "id": "search-node-unguarded-toolcall",
+      "priority": "P1",
+      "lens": "correctness",
+      "status": "open",
+      "title": "search_node assumes the model always returns a tool call — an empty response kills the run",
+      "summary": "search.py indexes tool_calls[0] with no guard; if a provider ignores the forced tool_choice (or returns text/refusal), an unhandled IndexError aborts the primary research flow mid-conversation",
+      "fix": "Guard tool_calls before indexing in search_node — if empty, emit a graceful log/message and return instead of throwing (~10 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "agent-python",
+        "agent-bridge"
+      ],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "66",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "130",
+          "token": "tool_calls[0]"
+        }
+      ],
+      "path": "improve/improvements/search-node-unguarded-toolcall.md"
+    },
+    {
+      "id": "stale-model-pins",
+      "priority": "P3",
+      "lens": "ops",
+      "status": "open",
+      "title": "Provider model IDs are pinned to aging snapshots that will eventually deprecate",
+      "summary": "get_model pins claude-3-5-sonnet-20240620 and gemini-1.5-pro — dated snapshots that providers eventually retire, at which point the corresponding dropdown option starts failing with a provider 404/deprecation error",
+      "fix": "Refresh the anthropic/google model IDs to current snapshots (and keep the TS port in sync) (~10 min)",
+      "leverage": {
+        "impact": "low",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "agent-python",
+        "external-integrations"
+      ],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "32",
+          "token": "claude-3-5-sonnet-20240620"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "41",
+          "token": "gemini-1.5-pro"
+        }
+      ],
+      "path": "improve/improvements/stale-model-pins.md"
+    },
+    {
+      "id": "submit-message-settimeout-race",
+      "priority": "P3",
+      "lens": "correctness",
+      "status": "open",
+      "title": "Chat submit clears logs then waits a hardcoded 30ms to sequence the state update",
+      "summary": "onSubmitMessage clears coagent logs then awaits an arbitrary 30ms setTimeout to let the state flush before the run starts — a timing hack that can race on a slow render and leave stale logs visible for the first frames",
+      "fix": "Sequence off the actual state commit rather than a fixed delay, or document why 30ms is required (~10 min)",
+      "leverage": {
+        "impact": "low",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "agent-bridge",
+        "components"
+      ],
+      "cites": [
+        {
+          "file": "src/app/Main.tsx",
+          "line": "55",
+          "token": "setState"
+        },
+        {
+          "file": "src/app/Main.tsx",
+          "line": "56",
+          "token": "setTimeout"
+        }
+      ],
+      "path": "improve/improvements/submit-message-settimeout-race.md"
+    }
+  ]
+}
