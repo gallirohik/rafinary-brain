@@ -1,0 +1,11 @@
+{
+  "kind": "amend",
+  "at": "2026-07-23T20:26:51.982Z",
+  "branch": "chore/update-rafa-0.8.13",
+  "map": [
+    {
+      "old": "a9a4d98b9ce8d68b201a8d7fd288667b69bb4c18",
+      "new": "e0c90581a9fdbab61285c459a12af848925cc984"
+    }
+  ]
+}
