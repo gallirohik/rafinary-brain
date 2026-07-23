@@ -15,9 +15,24 @@ approach: >-
   mirror as a real Citation interface + citations: Citation[] in
   src/lib/types.ts (frontend AgentState). The TypeScript agent's state.ts is
   intentionally NOT touched — TS parity is deferred (see the epic's Decisions).
-status: todo
+status: done
 priority: 2
 ---
+
+## Log
+
+- **2026-07-24** — Implemented: `Citation` TypedDict (`agents/python/src/lib/state.py`)
+  + matching `Citation` interface (`src/lib/types.ts`), `citations` field added to
+  both `AgentState` shapes. TS agent (`agents/typescript/src/state.ts`)
+  intentionally untouched per the logged "Python-only for now" decision.
+  Commit `35dcc30` `[verifiable-report-state] feat: add Citation type to AgentState`.
+  Build could not be run directly (`npm run build`) — this checkout is standalone
+  (no `node_modules`, `@copilotkit/*` deps use `workspace:*`, `npm install` fails
+  `EUNSUPPORTEDPROTOCOL`). prism independently confirmed the constraint (reproduced
+  the same npm error, no lockfile present) and instead verified via real
+  `@copilotkit/react-core` type defs (`initialState` types as `any`, `setState`
+  call sites all use `...state` spreads) that the widened type cannot break
+  either `useCoAgent<AgentState>` call site. Done-check: prism PASS.
 
 ## Done-check
 
