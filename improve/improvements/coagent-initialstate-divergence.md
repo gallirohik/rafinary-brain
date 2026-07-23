@@ -3,7 +3,7 @@ schemaVersion: 1
 id: coagent-initialstate-divergence
 priority: P2
 lens: architecture
-status: open
+status: fixed
 title: Two useCoAgent hooks for the same agent seed different initialState
 summary: Main.tsx seeds the full AgentState (model, research_question, resources, report, logs) while ResearchCanvas.tsx seeds only { model } for the same agent name — a silent inconsistency where the initial shape depends on mount order
 fix: Share one initialState (extract a constant or seed the full shape in both) so the two hooks agree (~10 min)

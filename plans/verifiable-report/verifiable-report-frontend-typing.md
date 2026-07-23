@@ -13,10 +13,22 @@ description: >-
 approach: >-
   Type resources: Resource[], add a Log type matching Progress.tsx's inline
   shape, type logs: Log[] in src/lib/types.ts.
-status: todo
+status: done
 priority: 3
-blocked_by: [verifiable-report-state]
 ---
+
+## Log
+
+- **2026-07-24** — Added `Log` type (`{message: string, done: boolean}`,
+  matching `Progress.tsx`'s inline shape) to `src/lib/types.ts`, retyped
+  `AgentState.resources` → `Resource[]` and `AgentState.logs` → `Log[]`.
+  Commit `9f6ba83` `[verifiable-report-frontend-typing] fix: type AgentState
+  resources/logs`. prism traced every reader/writer (add/remove/update
+  resource logic, Progress's log rendering) and confirmed no site relied on
+  `any`-looseness. `report_improvement_status(frontend-state-any-typing,
+  fixed)` called and confirmed via the platform's `reported` overlay; local
+  ledger file frontmatter updated to `status: fixed` to match. Done-check:
+  prism PASS.
 
 ## Done-check
 
