@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "codeSha": "319417a2b39b5470a2f1bd06d3d20690671d1b9d",
+  "codeSha": "3c9249156aef8061c87ace046bf39f2cbdc38656",
   "branch": "main",
   "health": {
     "verdict": "PASS"
@@ -1012,7 +1012,7 @@
       "id": "search-node-unguarded-toolcall",
       "priority": "P1",
       "lens": "correctness",
-      "status": "open",
+      "status": "fixed",
       "title": "search_node assumes the model always returns a tool call — an empty response kills the run",
       "summary": "search.py indexes tool_calls[0] with no guard; if a provider ignores the forced tool_choice (or returns text/refusal), an unhandled IndexError aborts the primary research flow mid-conversation",
       "fix": "Guard tool_calls before indexing in search_node — if empty, emit a graceful log/message and return instead of throwing (~10 min)",
