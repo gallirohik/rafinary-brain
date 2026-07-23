@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T11:54:36.491Z",
+  "repo": "",
+  "branch": "feat/git-improve-test",
+  "codeSha": "9fac68d53aa341c8d19f8fba036867718ccc2504",
+  "health": null,
+  "ledger": null,
+  "coverage": null,
+  "citations": null,
+  "notes": [],
+  "improvements": [
+    {
+      "id": "search-node-unguarded-toolcall",
+      "priority": "P1",
+      "lens": "correctness",
+      "status": "fixed",
+      "title": "search_node assumes the model always returns a tool call — an empty response kills the run",
+      "summary": "search.py indexes tool_calls[0] with no guard; if a provider ignores the forced tool_choice (or returns text/refusal), an unhandled IndexError aborts the primary research flow mid-conversation",
+      "fix": "Guard tool_calls before indexing in search_node — if empty, emit a graceful log/message and return instead of throwing (~10 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [
+        "agent-python",
+        "agent-bridge"
+      ],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "66",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "130",
+          "token": "tool_calls[0]"
+        }
+      ],
+      "path": "improve/improvements/search-node-unguarded-toolcall.md"
+    }
+  ]
+}
