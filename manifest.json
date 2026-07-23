@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "branch",
-  "codeSha": "3112f4f0df056e59b4201bf0ad649e7e0f910e6a",
+  "codeSha": "9f6ba830e0850d635aea97a1e027e3c9b416acd0",
   "branch": "chore/update-rafa-0.8.13",
   "base": {
     "brainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
@@ -42,7 +42,7 @@
       "id": "frontend-state-any-typing",
       "priority": "P2",
       "lens": "architecture",
-      "status": "open",
+      "status": "fixed",
       "title": "AgentState types resources/logs as any[] while concrete types exist",
       "summary": "The frontend AgentState declares resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource is defined in the same file and a Log shape exists on the backend",
       "fix": "Type resources as Resource[] and add a Log type for logs in types.ts (~5 min)",

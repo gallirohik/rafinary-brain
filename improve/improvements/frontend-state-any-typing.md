@@ -3,7 +3,7 @@ schemaVersion: 1
 id: frontend-state-any-typing
 priority: P2
 lens: architecture
-status: open
+status: fixed
 title: AgentState types resources/logs as any[] while concrete types exist
 summary: The frontend AgentState declares resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource is defined in the same file and a Log shape exists on the backend
 fix: Type resources as Resource[] and add a Log type for logs in types.ts (~5 min)

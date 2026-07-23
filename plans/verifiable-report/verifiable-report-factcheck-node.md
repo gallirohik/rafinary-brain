@@ -25,10 +25,29 @@ approach: >-
   causes a 400 "tool_calls must be followed by tool result messages" on the
   next chat_node invoke. add_node + the fact_check_node -> chat_node edge are
   wired in agent.py.
-status: todo
+status: done
 priority: 2
-blocked_by: [verifiable-report-state]
 ---
+
+## Log
+
+- **2026-07-24** — Implemented `agents/python/src/lib/fact_check.py` (new):
+  `ClaimCheckInput` + internal `ExtractClaimChecks` forced-tool-choice tool
+  (mirrors `search.py`'s `ExtractResources`), `fact_check_node` resolving the
+  original `FactCheckReport` tool_call_id on every exit path. Wired
+  `FactCheckReport` (outward no-op tool) + routing in `chat.py`, node + edge in
+  `agent.py`. Commit `3112f4f` `[verifiable-report-factcheck-node] feat: add
+  FactCheckReport node`. prism traced all three exit paths (empty report / no
+  tool_calls back / happy path) and confirmed the ToolMessage resolution is
+  airtight against the "tool_calls must be followed by tool result messages"
+  400. Two non-blocking observations from review (not Done-check failures,
+  left as-is): `fact_check_node` doesn't clear `state["logs"]` between runs
+  like `search_node` does (cosmetic accumulation), and it relies on the
+  routing invariant rather than asserting `tool_calls` is non-empty at the top
+  (safe today, less defensive than `search_node`). Live run / `npm run build`
+  not possible in this standalone checkout (no `node_modules`, `workspace:*`
+  deps, no parent monorepo) — verified via `python3 -m py_compile` + full
+  manual trace instead. Done-check: prism PASS.
 
 ## Done-check
 
