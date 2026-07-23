@@ -1,9 +1,72 @@
 {
   "schemaVersion": 1,
   "mode": "branch",
-  "codeSha": "f0d0a55ee29e126b3a86623bba381f524fbcf01d",
+  "codeSha": "35dcc30abe1396a52aa670c827048050d7292962",
   "branch": "chore/update-rafa-0.8.13",
-  "base": null,
+  "base": {
+    "brainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+  },
   "notes": [],
-  "improvements": []
+  "improvements": [
+    {
+      "id": "coagent-initialstate-divergence",
+      "priority": "P2",
+      "lens": "architecture",
+      "status": "open",
+      "title": "Two useCoAgent hooks for the same agent seed different initialState",
+      "summary": "Main.tsx seeds the full AgentState (model, research_question, resources, report, logs) while ResearchCanvas.tsx seeds only { model } for the same agent name — a silent inconsistency where the initial shape depends on mount order",
+      "fix": "Share one initialState (extract a constant or seed the full shape in both) so the two hooks agree (~10 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "src/app/Main.tsx",
+          "line": "12",
+          "token": "initialState"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "23",
+          "token": "initialState"
+        }
+      ],
+      "path": "improve/improvements/coagent-initialstate-divergence.md",
+      "provenance": {
+        "baseBrainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+      }
+    },
+    {
+      "id": "frontend-state-any-typing",
+      "priority": "P2",
+      "lens": "architecture",
+      "status": "open",
+      "title": "AgentState types resources/logs as any[] while concrete types exist",
+      "summary": "The frontend AgentState declares resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource is defined in the same file and a Log shape exists on the backend",
+      "fix": "Type resources as Resource[] and add a Log type for logs in types.ts (~5 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "src/lib/types.ts",
+          "line": "11",
+          "token": "any[]"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "12",
+          "token": "any[]"
+        }
+      ],
+      "path": "improve/improvements/frontend-state-any-typing.md",
+      "provenance": {
+        "baseBrainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+      }
+    }
+  ]
 }
