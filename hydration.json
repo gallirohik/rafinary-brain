@@ -1,0 +1,107 @@
+{
+  "files": {},
+  "sync": {
+    "chore/rafa-init": {
+      "brain/rules/agent-name-contract.md": {
+        "version": 1,
+        "hash": "389e56b8e33eb683ce50311b014f8dc214ff9b4870c324870e87994cc095db57"
+      },
+      "brain/rules/agent-state-shape-contract.md": {
+        "version": 1,
+        "hash": "beee42b51a666fc231154885d459aaa23042aa741f541178d5da497f296bc105"
+      },
+      "brain/rules/agent-typescript-parity.md": {
+        "version": 1,
+        "hash": "600c96160da70ce5f3ad482ce7c8c5ede2a664bb972e2bece483ca613ec7f8ab"
+      },
+      "brain/rules/build-tooling-convention.md": {
+        "version": 1,
+        "hash": "91eb5174393e4c6da389407ac0b7043e46979765e2d789256e647b92b1474105"
+      },
+      "brain/rules/copilotkit-runtime-route-convention.md": {
+        "version": 1,
+        "hash": "d264a005f64d130216254ddaa821890b8d04273c1d873f8a775ffd562d34f0cd"
+      },
+      "brain/rules/delete-resources-hitl-contract.md": {
+        "version": 1,
+        "hash": "884ed62eb040f7da303b18ae4a4f15bc2d691a3143f38db9c0fa9608cadaa69f"
+      },
+      "brain/rules/design-system-convention.md": {
+        "version": 1,
+        "hash": "9887db04aacf4aac32f4c97f57ab3e34b571123a6f508bd18f155dff30b9880a"
+      },
+      "brain/rules/env-and-integrations.md": {
+        "version": 1,
+        "hash": "0c8cb475a3936ab31322a38f8ecf9987c970060579943470c520ee12a492e4e0"
+      },
+      "brain/rules/langgraph-agent-convention.md": {
+        "version": 1,
+        "hash": "c77d2efa8a7e282d20e57a429ab11aa0a54680c564e89d71204d9ad6243b1839"
+      },
+      "brain/rules/nextjs-app-shell-convention.md": {
+        "version": 1,
+        "hash": "7568b8c3435eea826f5e8190c99cb777c3ac4ef2dda210d651f100941f4713a0"
+      },
+      "brain/rules/provider-nesting-contract.md": {
+        "version": 1,
+        "hash": "749c8dc2ed34e7c018f31af0ee57b05f9cb25b6192161ebf9ecadb2c1f630c57"
+      },
+      "brain/rules/repo-toolbox.md": {
+        "version": 1,
+        "hash": "9b68ba213206b4849c259867700a9798532909efe7b8e240d84d1f225c6ed465"
+      },
+      "brain/playbooks/add-agent-tool-howto.md": {
+        "version": 1,
+        "hash": "f9d70396b336f7baeff45fa5eb35300d3124e68ddf945aaa55ffbdbf35ada23b"
+      },
+      "brain/playbooks/model-selection-flow.md": {
+        "version": 1,
+        "hash": "cee50059943cfeb72ea18b1258ff848a8e167388082e09d05c501c95a68d0926"
+      },
+      "brain/playbooks/research-chat-flow.md": {
+        "version": 1,
+        "hash": "f9ff5a395d4a9aed2dfc32bdbd835263310fb001c00d87e4be9a2ecf22207bd4"
+      },
+      "improve/improvements/body-font-override-negates-geist.md": {
+        "version": 1,
+        "hash": "ae8d4e091c9f442fe2b04d4ee192d06b9f2b7c16d19a0076e4786fddf7af207f"
+      },
+      "improve/improvements/coagent-initialstate-divergence.md": {
+        "version": 1,
+        "hash": "00cb34cd0f977736c36d85d831de7c733a1641833732f84c4767ee02be3f0db8"
+      },
+      "improve/improvements/default-nextjs-metadata.md": {
+        "version": 1,
+        "hash": "358e55851593938d40b408556f75d968f0af48c9357ff313849b2cbfb710ce27"
+      },
+      "improve/improvements/frontend-state-any-typing.md": {
+        "version": 1,
+        "hash": "7e44e4a4de41a171ced51cf3bc8a7de55844c1ef87f127de81ae11ee3746ef26"
+      },
+      "improve/improvements/lgc-deployment-url-ssrf-asymmetry.md": {
+        "version": 1,
+        "hash": "681606475478fea7acf8de802378e3f1c91c3024a7ae26f9660269e6345ca281"
+      },
+      "improve/improvements/resource-cache-unbounded.md": {
+        "version": 1,
+        "hash": "8953364ddb5335e6a6ea1817096abe6e6b44262e07f9fcffe8ef8e5e25c9c561"
+      },
+      "improve/improvements/search-node-unguarded-toolcall.md": {
+        "version": 1,
+        "hash": "59a80edc98ced979cdcc57c55348fb99fbea1b58c3c9dcbdcdf5812c71dc66bb"
+      },
+      "improve/improvements/stale-model-pins.md": {
+        "version": 1,
+        "hash": "d64ec89a80ed655db845dbad61069c8d4e19b7c7d9a7a15c17b8c9c796c45c80"
+      },
+      "improve/improvements/submit-message-settimeout-race.md": {
+        "version": 1,
+        "hash": "d4965fcf70306e90bc36616a8b59d01d7cbd7e575365984e2c7521120a3410d0"
+      },
+      "intent/5e5580528796.md": {
+        "version": 1,
+        "hash": "24f8122f43f9a8510a6e44d9b457fd9667eafead6458bde7af11612ee69f9b7f"
+      }
+    }
+  }
+}
