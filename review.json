@@ -1,0 +1,656 @@
+{
+  "schemaVersion": 1,
+  "base": "3c9249156aef8061c87ace046bf39f2cbdc38656",
+  "filesChanged": 8,
+  "filesReviewed": 8,
+  "files": [
+    {
+      "path": "agents/python/src/agent.py",
+      "ranges": [
+        {
+          "start": 13,
+          "end": 13
+        },
+        {
+          "start": 24,
+          "end": 24
+        },
+        {
+          "start": 31,
+          "end": 31
+        }
+      ],
+      "notes": [
+        {
+          "id": "build-tooling-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "Dev/build wiring — concurrently runs UI + Python agent; workspace:* means it lives in a monorepo",
+          "domain": "build-tooling",
+          "line": "37",
+          "token": "LANGGRAPH_FASTAPI",
+          "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; CopilotKit deps are workspace:* so this app is really a package inside the CopilotKit monorepo, and Vercel builds it via nx from the repo root",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        },
+        {
+          "id": "langgraph-agent-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+          "domain": "agent-python",
+          "line": "17",
+          "token": "StateGraph",
+          "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        },
+        {
+          "id": "langgraph-agent-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+          "domain": "agent-python",
+          "line": "25",
+          "token": "set_entry_point",
+          "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        },
+        {
+          "id": "langgraph-agent-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+          "domain": "agent-python",
+          "line": "33",
+          "token": "interrupt_after",
+          "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        },
+        {
+          "id": "langgraph-agent-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+          "domain": "agent-python",
+          "line": "37",
+          "token": "LANGGRAPH_FASTAPI",
+          "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        }
+      ],
+      "improvements": [],
+      "relatedPlans": [
+        {
+          "id": "search-guard",
+          "status": "done",
+          "title": "Guard search_node against missing tool_calls (Python + TS parity)"
+        },
+        {
+          "id": "verifiable-report",
+          "status": null,
+          "title": "Verifiable report — citation-linked claims + a fact-check graph node"
+        }
+      ]
+    },
+    {
+      "path": "agents/python/src/lib/chat.py",
+      "ranges": [
+        {
+          "start": 36,
+          "end": 40
+        },
+        {
+          "start": 43,
+          "end": 43
+        },
+        {
+          "start": 88,
+          "end": 88
+        },
+        {
+          "start": 159,
+          "end": 162
+        }
+      ],
+      "notes": [
+        {
+          "id": "add-agent-tool-howto",
+          "kind": "playbook",
+          "type": "how-to",
+          "title": "How to add a new agent tool (and wire it to the canvas)",
+          "domain": "agent-bridge",
+          "line": "16",
+          "token": "@tool",
+          "summary": "Add the no-op @tool schema, bind it in the chat node, route on its name, and — if it drives UI or streams a state field — mirror the string on the frontend (useCopilotAction) or in an emit_intermediate_state mapping",
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        },
+        {
+          "id": "add-agent-tool-howto",
+          "kind": "playbook",
+          "type": "how-to",
+          "title": "How to add a new agent tool (and wire it to the canvas)",
+          "domain": "agent-bridge",
+          "line": "77",
+          "token": "bind_tools",
+          "summary": "Add the no-op @tool schema, bind it in the chat node, route on its name, and — if it drives UI or streams a state field — mirror the string on the frontend (useCopilotAction) or in an emit_intermediate_state mapping",
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        },
+        {
+          "id": "add-agent-tool-howto",
+          "kind": "playbook",
+          "type": "how-to",
+          "title": "How to add a new agent tool (and wire it to the canvas)",
+          "domain": "agent-bridge",
+          "line": "150",
+          "token": "DeleteResources",
+          "summary": "Add the no-op @tool schema, bind it in the chat node, route on its name, and — if it drives UI or streams a state field — mirror the string on the frontend (useCopilotAction) or in an emit_intermediate_state mapping",
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        },
+        {
+          "id": "add-agent-tool-howto",
+          "kind": "playbook",
+          "type": "how-to",
+          "title": "How to add a new agent tool (and wire it to the canvas)",
+          "domain": "agent-bridge",
+          "line": "47",
+          "token": "state_key",
+          "summary": "Add the no-op @tool schema, bind it in the chat node, route on its name, and — if it drives UI or streams a state field — mirror the string on the frontend (useCopilotAction) or in an emit_intermediate_state mapping",
+          "hit": "file",
+          "relevance": 3,
+          "engage": "deep"
+        },
+        {
+          "id": "research-chat-flow",
+          "kind": "playbook",
+          "type": "flow",
+          "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+          "domain": "agent-bridge",
+          "line": "77",
+          "token": "bind_tools",
+          "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete), and how tool-call intermediate state streams back to render the canvas and progress list",
+          "staleCites": 1,
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        },
+        {
+          "id": "research-chat-flow",
+          "kind": "playbook",
+          "type": "flow",
+          "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+          "domain": "agent-bridge",
+          "line": "43",
+          "token": "copilotkit_customize_config",
+          "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete), and how tool-call intermediate state streams back to render the canvas and progress list",
+          "staleCites": 1,
+          "hit": "direct",
+          "relevance": 6,
+          "engage": "deep"
+        },
+        {
+          "id": "delete-resources-hitl-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "\"DeleteResources\" is the human-in-the-loop tool name shared by agent and frontend",
+          "domain": "agent-bridge",
+          "line": "32",
+          "token": "DeleteResources",
+          "summary": "The agent's DeleteResources tool routes to an interrupt, and the frontend renders the confirm dialog via useCopilotAction under the SAME string name — a mismatch means the delete never prompts and silently stalls",
+          "hit": "file",
+          "relevance": 7,
+          "engage": "deep"
+        },
+        {
+          "id": "delete-resources-hitl-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "\"DeleteResources\" is the human-in-the-loop tool name shared by agent and frontend",
+          "domain": "agent-bridge",
+          "line": "82",
+          "token": "DeleteResources",
+          "summary": "The agent's DeleteResources tool routes to an interrupt, and the frontend renders the confirm dialog via useCopilotAction under the SAME string name — a mismatch means the delete never prompts and silently stalls",
+          "hit": "file",
+          "relevance": 7,
+          "engage": "deep"
+        },
+        {
+          "id": "delete-resources-hitl-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "\"DeleteResources\" is the human-in-the-loop tool name shared by agent and frontend",
+          "domain": "agent-bridge",
+          "line": "150",
+          "token": "DeleteResources",
+          "summary": "The agent's DeleteResources tool routes to an interrupt, and the frontend renders the confirm dialog via useCopilotAction under the SAME string name — a mismatch means the delete never prompts and silently stalls",
+          "hit": "file",
+          "relevance": 7,
+          "engage": "deep"
+        },
+        {
+          "id": "langgraph-agent-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+          "domain": "agent-python",
+          "line": "16",
+          "token": "@tool",
+          "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        },
+        {
+          "id": "langgraph-agent-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+          "domain": "agent-python",
+          "line": "77",
+          "token": "bind_tools",
+          "summary": "Both agents are the same 5-node StateGraph (download→chat→search/delete loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model",
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        }
+      ],
+      "improvements": [],
+      "relatedPlans": [
+        {
+          "id": "search-guard",
+          "status": "done",
+          "title": "Guard search_node against missing tool_calls (Python + TS parity)"
+        },
+        {
+          "id": "verifiable-report",
+          "status": null,
+          "title": "Verifiable report — citation-linked claims + a fact-check graph node"
+        }
+      ]
+    },
+    {
+      "path": "agents/python/src/lib/state.py",
+      "ranges": [
+        {
+          "start": 6,
+          "end": 6
+        },
+        {
+          "start": 29,
+          "end": 40
+        },
+        {
+          "start": 52,
+          "end": 52
+        }
+      ],
+      "notes": [
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "29",
+          "token": "AgentState",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 8,
+          "engage": "deep"
+        },
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "36",
+          "token": "research_question",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 8,
+          "engage": "deep"
+        },
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "39",
+          "token": "logs",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 8,
+          "engage": "deep"
+        }
+      ],
+      "improvements": [],
+      "relatedPlans": [
+        {
+          "id": "verifiable-report",
+          "status": null,
+          "title": "Verifiable report — citation-linked claims + a fact-check graph node"
+        }
+      ]
+    },
+    {
+      "path": "src/app/Main.tsx",
+      "ranges": [
+        {
+          "start": 3,
+          "end": 3
+        },
+        {
+          "start": 12,
+          "end": 12
+        }
+      ],
+      "notes": [
+        {
+          "id": "model-selection-flow",
+          "kind": "playbook",
+          "type": "flow",
+          "title": "How the model dropdown actually selects an LLM (it's state, not the agent name)",
+          "domain": "agent-bridge",
+          "line": "13",
+          "token": "model",
+          "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph",
+          "hit": "file",
+          "relevance": 3,
+          "engage": "deep"
+        },
+        {
+          "id": "research-chat-flow",
+          "kind": "playbook",
+          "type": "flow",
+          "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+          "domain": "agent-bridge",
+          "line": "51",
+          "token": "CopilotChat",
+          "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete), and how tool-call intermediate state streams back to render the canvas and progress list",
+          "staleCites": 1,
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        },
+        {
+          "id": "design-system-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "shadcn/ui (new-york) primitives + cn() + hardcoded brand accents",
+          "domain": "components",
+          "line": "27",
+          "token": "#0E103D",
+          "summary": "UI is shadcn \"new-york\" Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the",
+          "hit": "file",
+          "relevance": 0,
+          "engage": "skip"
+        },
+        {
+          "id": "nextjs-app-shell-convention",
+          "kind": "rule",
+          "type": "convention",
+          "title": "Next.js App Router shell — a single client-rendered page under a thin RSC layout",
+          "domain": "routing-app-shell",
+          "line": "8",
+          "token": "Main",
+          "summary": "The whole app is one route; layout.tsx is the only server component (fonts + metadata), and everything from page.tsx down is \"use client\" because the coagent hooks need the browser",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        }
+      ],
+      "improvements": [
+        {
+          "id": "coagent-initialstate-divergence",
+          "line": "12",
+          "priority": "P2",
+          "status": "open",
+          "title": "Two useCoAgent hooks for the same agent seed different initialState",
+          "token": "initialState"
+        },
+        {
+          "id": "submit-message-settimeout-race",
+          "line": "55",
+          "priority": "P3",
+          "status": "open",
+          "title": "Chat submit clears logs then waits a hardcoded 30ms to sequence the state update",
+          "token": "setState"
+        },
+        {
+          "id": "submit-message-settimeout-race",
+          "line": "56",
+          "priority": "P3",
+          "status": "open",
+          "title": "Chat submit clears logs then waits a hardcoded 30ms to sequence the state update",
+          "token": "setTimeout"
+        }
+      ],
+      "relatedPlans": [
+        {
+          "id": "verifiable-report",
+          "status": null,
+          "title": "Verifiable report — citation-linked claims + a fact-check graph node"
+        }
+      ]
+    },
+    {
+      "path": "src/components/ResearchCanvas.tsx",
+      "ranges": [
+        {
+          "start": 12,
+          "end": 12
+        },
+        {
+          "start": 16,
+          "end": 16
+        },
+        {
+          "start": 24,
+          "end": 24
+        },
+        {
+          "start": 201,
+          "end": 207
+        }
+      ],
+      "notes": [
+        {
+          "id": "add-agent-tool-howto",
+          "kind": "playbook",
+          "type": "how-to",
+          "title": "How to add a new agent tool (and wire it to the canvas)",
+          "domain": "agent-bridge",
+          "line": "38",
+          "token": "useCopilotAction",
+          "summary": "Add the no-op @tool schema, bind it in the chat node, route on its name, and — if it drives UI or streams a state field — mirror the string on the frontend (useCopilotAction) or in an emit_intermediate_state mapping",
+          "hit": "file",
+          "relevance": 1,
+          "engage": "triage"
+        },
+        {
+          "id": "research-chat-flow",
+          "kind": "playbook",
+          "type": "flow",
+          "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+          "domain": "agent-bridge",
+          "line": "28",
+          "token": "useCoAgentStateRender",
+          "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete), and how tool-call intermediate state streams back to render the canvas and progress list",
+          "staleCites": 1,
+          "hit": "file",
+          "relevance": 4,
+          "engage": "deep"
+        },
+        {
+          "id": "research-chat-flow",
+          "kind": "playbook",
+          "type": "flow",
+          "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+          "domain": "agent-bridge",
+          "line": "195",
+          "token": "report",
+          "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete), and how tool-call intermediate state streams back to render the canvas and progress list",
+          "staleCites": 1,
+          "hit": "file",
+          "relevance": 2,
+          "engage": "triage"
+        },
+        {
+          "id": "delete-resources-hitl-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "\"DeleteResources\" is the human-in-the-loop tool name shared by agent and frontend",
+          "domain": "agent-bridge",
+          "line": "39",
+          "token": "DeleteResources",
+          "summary": "The agent's DeleteResources tool routes to an interrupt, and the frontend renders the confirm dialog via useCopilotAction under the SAME string name — a mismatch means the delete never prompts and silently stalls",
+          "hit": "file",
+          "relevance": 5,
+          "engage": "deep"
+        }
+      ],
+      "improvements": [
+        {
+          "id": "coagent-initialstate-divergence",
+          "line": "23",
+          "priority": "P2",
+          "status": "open",
+          "title": "Two useCoAgent hooks for the same agent seed different initialState",
+          "token": "initialState"
+        }
+      ],
+      "relatedPlans": [
+        {
+          "id": "verifiable-report",
+          "status": null,
+          "title": "Verifiable report — citation-linked claims + a fact-check graph node"
+        }
+      ]
+    },
+    {
+      "path": "src/lib/types.ts",
+      "ranges": [
+        {
+          "start": 7,
+          "end": 18
+        },
+        {
+          "start": 23,
+          "end": 25
+        },
+        {
+          "start": 27,
+          "end": 41
+        }
+      ],
+      "notes": [
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "7",
+          "token": "AgentState",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 10,
+          "engage": "deep"
+        },
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "9",
+          "token": "research_question",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 10,
+          "engage": "deep"
+        },
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "10",
+          "token": "report",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 10,
+          "engage": "deep"
+        },
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "11",
+          "token": "resources",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 10,
+          "engage": "deep"
+        },
+        {
+          "id": "agent-state-shape-contract",
+          "kind": "rule",
+          "type": "contract",
+          "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+          "domain": "state",
+          "line": "12",
+          "token": "logs",
+          "summary": "The five fields (model, research_question, report, resources, logs) are defined three times — TS frontend type, Python TypedDict, TS Annotation — and must stay in sync or streamed state silently fails to bind to the UI",
+          "hit": "direct",
+          "relevance": 10,
+          "engage": "deep"
+        }
+      ],
+      "improvements": [
+        {
+          "id": "frontend-state-any-typing",
+          "line": "11",
+          "priority": "P2",
+          "status": "open",
+          "title": "AgentState types resources/logs as any[] while concrete types exist",
+          "token": "any[]"
+        },
+        {
+          "id": "frontend-state-any-typing",
+          "line": "12",
+          "priority": "P2",
+          "status": "open",
+          "title": "AgentState types resources/logs as any[] while concrete types exist",
+          "token": "any[]"
+        }
+      ],
+      "relatedPlans": [
+        {
+          "id": "verifiable-report",
+          "status": null,
+          "title": "Verifiable report — citation-linked claims + a fact-check graph node"
+        }
+      ]
+    }
+  ]
+}

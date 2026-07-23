@@ -6,7 +6,304 @@
   "base": {
     "brainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
   },
-  "notes": [],
+  "notes": [
+    {
+      "id": "model-selection-flow",
+      "kind": "playbook",
+      "type": "flow",
+      "domain": "agent-bridge",
+      "title": "How the model dropdown actually selects an LLM (it's state, not the agent name)",
+      "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph",
+      "links": [
+        "agent-name-contract",
+        "langgraph-agent-convention",
+        "research-chat-flow"
+      ],
+      "cites": [
+        {
+          "file": "src/components/ModelSelector.tsx",
+          "line": "23",
+          "token": "openai"
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "27",
+          "token": "coAgentsModel"
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "42",
+          "token": "research_agent"
+        },
+        {
+          "file": "src/app/Main.tsx",
+          "line": "12",
+          "token": "model"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "18",
+          "token": "state.get"
+        }
+      ],
+      "path": "brain/playbooks/model-selection-flow.md",
+      "provenance": {
+        "baseBrainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+      }
+    },
+    {
+      "id": "research-chat-flow",
+      "kind": "playbook",
+      "type": "flow",
+      "domain": "agent-bridge",
+      "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
+      "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete/fact-check), and how tool-call intermediate state (or a direct node return, for fact-check) streams back to render the canvas, progress list, and fact-check panel",
+      "links": [
+        "agent-name-contract",
+        "agent-state-shape-contract",
+        "copilotkit-runtime-route-convention",
+        "langgraph-agent-convention",
+        "delete-resources-hitl-contract",
+        "model-selection-flow"
+      ],
+      "cites": [
+        {
+          "file": "src/app/Main.tsx",
+          "line": "45",
+          "token": "CopilotChat"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "105",
+          "token": "handleRequest"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "82",
+          "token": "bind_tools"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "48",
+          "token": "copilotkit_customize_config"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "160",
+          "token": "FactCheckReport"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "137",
+          "token": "citations"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "81",
+          "token": "copilotkit_emit_state"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "27",
+          "token": "useCoAgentStateRender"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "193",
+          "token": "report"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "202",
+          "token": "citations"
+        }
+      ],
+      "path": "brain/playbooks/research-chat-flow.md",
+      "provenance": {
+        "baseBrainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+      }
+    },
+    {
+      "id": "agent-state-shape-contract",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "state",
+      "title": "AgentState is a cross-process shape shared by the frontend and both agents",
+      "summary": "Six fields (model, research_question, report, resources, logs, citations) are defined across the TS frontend type and the Python agent; citations is Python+frontend ONLY (the TS agent's state.ts intentionally lags, verifiable-report plan decision) — a field the backend emits but the frontend doesn't expect (or vice versa) simply doesn't render",
+      "links": [
+        "agent-name-contract",
+        "research-chat-flow",
+        "copilotkit-runtime-route-convention"
+      ],
+      "cites": [
+        {
+          "file": "src/lib/types.ts",
+          "line": "19",
+          "token": "AgentState"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "21",
+          "token": "research_question"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "22",
+          "token": "report"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "23",
+          "token": "resources"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "24",
+          "token": "logs"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "25",
+          "token": "citations"
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "41",
+          "token": "AgentState"
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "48",
+          "token": "research_question"
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "51",
+          "token": "logs"
+        },
+        {
+          "file": "agents/python/src/lib/state.py",
+          "line": "52",
+          "token": "citations"
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "19",
+          "token": "AgentStateAnnotation"
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "21",
+          "token": "research_question"
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "24",
+          "token": "logs"
+        }
+      ],
+      "path": "brain/rules/agent-state-shape-contract.md",
+      "provenance": {
+        "baseBrainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+      }
+    },
+    {
+      "id": "langgraph-agent-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "agent-python",
+      "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
+      "summary": "The Python agent is a 6-node StateGraph (download→chat→search/delete/fact-check loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model. The TS agent still mirrors the older 5-node shape (fact_check_node not yet ported, verifiable-report plan decision)",
+      "links": [
+        "agent-typescript-parity",
+        "agent-state-shape-contract",
+        "delete-resources-hitl-contract",
+        "research-chat-flow",
+        "env-and-integrations"
+      ],
+      "cites": [
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "18",
+          "token": "StateGraph"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "27",
+          "token": "set_entry_point"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "36",
+          "token": "interrupt_after"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "40",
+          "token": "LANGGRAPH_FASTAPI"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "13",
+          "token": "fact_check_node"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "24",
+          "token": "fact_check_node"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "31",
+          "token": "fact_check_node"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "37",
+          "token": "FactCheckReport"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "88",
+          "token": "FactCheckReport"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "160",
+          "token": "FactCheckReport"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "44",
+          "token": "ExtractClaimChecks"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "23",
+          "token": "openai"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "49",
+          "token": "raise ValueError"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "35",
+          "token": "TavilyClient"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "30",
+          "token": "_is_safe_url"
+        }
+      ],
+      "path": "brain/rules/langgraph-agent-convention.md",
+      "provenance": {
+        "baseBrainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
+      }
+    }
+  ],
   "improvements": [
     {
       "id": "coagent-initialstate-divergence",

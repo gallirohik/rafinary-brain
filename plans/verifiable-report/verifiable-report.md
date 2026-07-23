@@ -12,6 +12,7 @@ description: >-
   resource content, plus a citations layer the frontend renders so every claim
   shows what backs it (or that nothing does).
 priority: 2
+status: done
 domains: [state, agent-python, agent-bridge, components]
 branch: chore/update-rafa-0.8.13
 ---
@@ -91,3 +92,24 @@ sources and flag statements nothing supports.
 - **Trigger mechanism**: on-demand via chat (new no-op `FactCheckReport` tool,
   same pattern as `Search`/`DeleteResources`) — zero new UI, avoids an extra
   LLM call + latency on every report edit.
+
+## Plan-done review gate
+
+`rafa review`'s deterministic pre-pass (8 changed files, 31/32 notes engaged, 6
+deep) + a prism-style judge pass found the diff coherent and grounded, and
+caught 4 brain notes this diff had made stale/incomplete — fixed as branch
+working-set edits (not touching main): `agent-state-shape-contract` (now
+documents 6 fields, `citations` Python+frontend-only), `langgraph-agent-convention`
+(now documents the 6th node, `fact_check_node`), `research-chat-flow` (now
+documents the `FactCheckReport` branch + fixed 5 drifted line-cites), and
+`model-selection-flow` (fixed one drifted line-cite). `rafa verify-citations`
+passes 43/43 resolution, 1/1 policy, after the fixes. These land in the org
+brain at merge-to-main distillation.
+
+**Residual risk (surfaced, not silently accepted): no live, LLM-driven
+fact-check run has ever executed** — this dev environment has no OpenAI/
+Anthropic/Tavily API keys. Everything about the runtime path (model call →
+citations populate → UI flags unsupported claims → next chat turn doesn't
+400) is proven by static trace + parity with the already-working `search_node`,
+not by execution. Run one live smoke test with real API keys before this
+reaches real users.
