@@ -14,10 +14,23 @@ description: >-
 approach: >-
   Extract one shared initialState constant (including citations: []) used by
   both useCoAgent call sites in Main.tsx and ResearchCanvas.tsx.
-status: todo
+status: done
 priority: 3
-blocked_by: [verifiable-report-state]
 ---
+
+## Log
+
+- **2026-07-24** — Added `createInitialAgentState(model)` factory to
+  `src/lib/types.ts` (single source of truth, incl. `citations: []`); both
+  `Main.tsx` and `ResearchCanvas.tsx` now call it instead of seeding divergent
+  shapes (`ResearchCanvas` previously seeded only `{ model }`). Commit
+  `e0c9058` `[verifiable-report-initialstate] refactor: unify initialState
+  seed`. prism independently traced render guards under old vs. new seed and
+  confirmed identical output (no behavior change), and confirmed `citations`
+  isn't read by any render path so it can't introduce undefined-field issues.
+  `report_improvement_status(coagent-initialstate-divergence, fixed)` called
+  and confirmed via the platform's `reported` overlay; local ledger file
+  frontmatter updated to `status: fixed`. Done-check: prism PASS.
 
 ## Done-check
 
