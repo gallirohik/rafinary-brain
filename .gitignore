@@ -6,3 +6,4 @@ distill-verdicts.json
 benchmark.demo.json
 *.theirs.md
 distill-incoming/
+review.json
