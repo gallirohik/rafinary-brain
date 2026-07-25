@@ -7,3 +7,5 @@ benchmark.demo.json
 *.theirs.md
 distill-incoming/
 review.json
+session-facts.json
+loop-events-tail.json
