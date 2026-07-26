@@ -14,6 +14,9 @@ cites:
   - src/app/page.tsx:28 :: CopilotKit
   - src/app/page.tsx:36 :: Main
   - src/lib/model-selector-provider.tsx:66 :: throw new Error
+description: "useModelSelectorContext throws outside ModelSelectorProvider, and useCoAgent needs CopilotKit above it; the app-shell wrapping order in page.tsx is load-bearing and fails loudly if inverted"
+tags: [routing-app-shell]
+timestamp: 2026-07-26T22:44:42.840Z
 ---
 The app shell is a fixed stack of React context providers, and the nesting order is a
 contract — invert it and the app crashes on render (loud, not silent).
@@ -35,3 +38,15 @@ the outer provider must resolve before the inner one is configured. Moving a coa
 above `CopilotKit`, or a context consumer above `ModelSelectorProvider`, breaks at runtime.
 See [the app-shell convention](/brain/rules/nextjs-app-shell-convention.md). `anchor: none`
 because provider nesting is a composition contract, not a greppable token.
+
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [src/app/page.tsx:13](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L13) — `ModelSelectorProvider`
+[2] [src/app/page.tsx:21](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L21) — `useModelSelectorContext`
+[3] [src/app/page.tsx:28](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L28) — `CopilotKit`
+[4] [src/app/page.tsx:36](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L36) — `Main`
+[5] [src/lib/model-selector-provider.tsx:66](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/lib/model-selector-provider.tsx#L66) — `throw new Error`
+
+<!-- okf:citations:end -->

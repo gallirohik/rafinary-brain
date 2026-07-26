@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "codeSha": "93364b3a9c6050099242eece9e22d30b9729fcdb",
+  "codeSha": "0dc7bf284b707888b5ef71c29693170c0d14a839",
   "branch": "main",
   "health": {
     "verdict": "PASS"
@@ -27,22 +27,22 @@
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "77",
+          "line": "82",
           "token": "bind_tools"
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "150",
+          "line": "156",
           "token": "DeleteResources"
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "47",
+          "line": "52",
           "token": "state_key"
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
-          "line": "38",
+          "line": "37",
           "token": "useCopilotAction"
         }
       ],
@@ -54,11 +54,12 @@
       "type": "flow",
       "domain": "agent-bridge",
       "title": "How the model dropdown actually selects an LLM (it's state, not the agent name)",
-      "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph",
+      "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, both names resolve to the same graph, and a MODEL env var silently overrides the dropdown entirely",
       "links": [
         "agent-name-contract",
         "langgraph-agent-convention",
-        "research-chat-flow"
+        "research-chat-flow",
+        "env-and-integrations"
       ],
       "cites": [
         {
@@ -85,6 +86,16 @@
           "file": "agents/python/src/lib/model.py",
           "line": "18",
           "token": "state.get"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "19",
+          "token": "MODEL"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "11",
+          "token": "load_dotenv"
         }
       ],
       "path": "brain/playbooks/model-selection-flow.md"
@@ -112,7 +123,7 @@
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "105",
+          "line": "141",
           "token": "handleRequest"
         },
         {
@@ -159,6 +170,99 @@
       "path": "brain/playbooks/research-chat-flow.md"
     },
     {
+      "id": "security-posture",
+      "kind": "playbook",
+      "type": "flow",
+      "domain": "security",
+      "title": "Trust boundaries, auth chokepoints, and secret handling — what is actually exposed",
+      "summary": "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere, and the only hardened edges are the two SSRF guards on user-supplied URLs",
+      "links": [
+        "copilotkit-runtime-route-convention",
+        "env-and-integrations",
+        "langgraph-agent-convention",
+        "build-tooling-convention",
+        "research-chat-flow"
+      ],
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "86",
+          "token": "export const POST"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "24",
+          "token": "isAuthorized"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "26",
+          "token": "Boolean(apiKey)"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "87-89",
+          "token": "Unauthorized"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "22",
+          "token": "visible to anyone via devtools"
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "33",
+          "token": "NEXT_PUBLIC_COPILOTKIT_API_KEY"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "59",
+          "token": "isSafeDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "19",
+          "token": "langsmithApiKey"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "17",
+          "token": "add_langgraph_fastapi_endpoint"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "44",
+          "token": "0.0.0.0"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "11",
+          "token": "load_dotenv"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "30",
+          "token": "_is_safe_url"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "41",
+          "token": "getaddrinfo"
+        },
+        {
+          "file": "agents/python/langgraph.json",
+          "line": "9",
+          "token": ".env"
+        },
+        {
+          "file": ".gitignore",
+          "line": "38",
+          "token": ".env"
+        }
+      ],
+      "path": "brain/playbooks/security-posture.md"
+    },
+    {
       "id": "agent-name-contract",
       "kind": "rule",
       "type": "contract",
@@ -184,42 +288,42 @@
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "73",
+          "line": "109",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "74",
+          "line": "110",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "76",
+          "line": "112",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "77",
+          "line": "113",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "85",
+          "line": "121",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "88",
+          "line": "124",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "90",
+          "line": "126",
           "token": "research_agent"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "93",
+          "line": "129",
           "token": "research_agent"
         },
         {
@@ -352,7 +456,7 @@
       "type": "convention",
       "domain": "agent-typescript",
       "title": "The TypeScript agent is an alternate port of the Python agent (not run by default)",
-      "summary": "agents/typescript mirrors the Python graph node-for-node with @langchain/langgraph; it is a lightly-used alternate — npm run dev runs the PYTHON agent, and the TS one is wired via pnpm + an explicit route.ts uncomment",
+      "summary": "agents/typescript mirrors an OLDER Python graph with @langchain/langgraph — 5 nodes, no fact_check_node, no citations state; it is a lightly-used alternate that npm run dev does NOT start, so treat Python as the source of truth and expect the port to lag",
       "links": [
         "langgraph-agent-convention",
         "agent-state-shape-contract",
@@ -397,11 +501,12 @@
       "kind": "rule",
       "type": "convention",
       "domain": "build-tooling",
-      "title": "Dev/build wiring — concurrently runs UI + Python agent; workspace:* means it lives in a monorepo",
-      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; CopilotKit deps are workspace:* so this app is really a package inside the CopilotKit monorepo, and Vercel builds it via nx from the repo root",
+      "title": "Dev/build wiring — concurrently runs UI + Python agent; the ROOT app was de-workspaced but the TS agent, vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)",
+      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps were de-workspaced to ^1.63.2 so the UI installs standalone, but agents/typescript still pins @copilotkit/sdk-js at workspace:*, vercel.json still cd's three levels up to run nx, and readme.md still documents the upstream layout — three stale-upstream leftovers, and readme.md is the one that will actively mislead you",
       "links": [
         "langgraph-agent-convention",
-        "agent-typescript-parity"
+        "agent-typescript-parity",
+        "env-and-integrations"
       ],
       "cites": [
         {
@@ -417,7 +522,17 @@
         {
           "file": "package.json",
           "line": "17",
-          "token": "\"workspace:*\""
+          "token": "\"@copilotkit/react-core\""
+        },
+        {
+          "file": "package.json",
+          "line": "43",
+          "token": "\"nx\""
+        },
+        {
+          "file": "agents/typescript/package.json",
+          "line": "13",
+          "token": "workspace:*"
         },
         {
           "file": "agents/python/langgraph.json",
@@ -426,7 +541,7 @@
         },
         {
           "file": "agents/python/src/agent.py",
-          "line": "37",
+          "line": "40",
           "token": "LANGGRAPH_FASTAPI"
         },
         {
@@ -438,6 +553,46 @@
           "file": "next.config.mjs",
           "line": "3",
           "token": "standalone"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "41",
+          "token": "PORT"
+        },
+        {
+          "file": "agents/python/uv.lock",
+          "line": "1",
+          "token": "version"
+        },
+        {
+          "file": "package.json",
+          "line": "13",
+          "token": "uv sync"
+        },
+        {
+          "file": "readme.md",
+          "line": "24",
+          "token": "cd agent-py"
+        },
+        {
+          "file": "readme.md",
+          "line": "25",
+          "token": "poetry install"
+        },
+        {
+          "file": "readme.md",
+          "line": "60",
+          "token": "cd ./ui"
+        },
+        {
+          "file": "readme.md",
+          "line": "77",
+          "token": "remoteEndpoints"
+        },
+        {
+          "file": "readme.md",
+          "line": "108",
+          "token": "./agent-py"
         }
       ],
       "path": "brain/rules/build-tooling-convention.md"
@@ -448,38 +603,49 @@
       "type": "convention",
       "domain": "agent-bridge",
       "title": "The /api/copilotkit route is the runtime bridge between browser and LangGraph",
-      "summary": "One Next.js route handler proxies the browser to the LangGraph agents; it uses EmptyAdapter (agents own the LLM), gates on a public \"api key\", and toggles HTTP vs LangGraph-Cloud mode by URL param",
+      "summary": "One Next.js route handler proxies the browser to the LangGraph agents; it uses EmptyAdapter (agents own the LLM), gates on a public \"api key\", toggles HTTP vs LangGraph-Cloud mode by URL param, and DNS-resolves the lgcDeploymentUrl before trusting it",
       "links": [
         "agent-name-contract",
         "agent-state-shape-contract",
         "research-chat-flow",
-        "env-and-integrations"
+        "env-and-integrations",
+        "security-posture"
       ],
       "cites": [
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "16",
+          "line": "18",
           "token": "EmptyAdapter"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "53",
+          "line": "86",
           "token": "POST"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "69",
+          "line": "105",
           "token": "REMOTE_ACTION_URL"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "71",
+          "line": "107",
           "token": "CopilotRuntime"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "99",
+          "line": "135",
           "token": "copilotRuntimeNextJSAppRouterEndpoint"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "59",
+          "token": "isSafeDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "74",
+          "token": "dns.lookup"
         },
         {
           "file": "src/app/page.tsx",
@@ -490,6 +656,16 @@
           "file": "src/app/page.tsx",
           "line": "29",
           "token": "runtimeUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "26",
+          "token": "Boolean(apiKey)"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "87-89",
+          "token": "Unauthorized"
         }
       ],
       "path": "brain/rules/copilotkit-runtime-route-convention.md"
@@ -509,7 +685,7 @@
       "cites": [
         {
           "file": "src/components/ResearchCanvas.tsx",
-          "line": "39",
+          "line": "38",
           "token": "DeleteResources"
         },
         {
@@ -519,12 +695,12 @@
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "82",
+          "line": "87",
           "token": "DeleteResources"
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "150",
+          "line": "156",
           "token": "DeleteResources"
         },
         {
@@ -598,8 +774,13 @@
         },
         {
           "file": "src/app/Main.tsx",
-          "line": "27",
+          "line": "21",
           "token": "#0E103D"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "1",
+          "token": "\"use client\""
         }
       ],
       "path": "brain/rules/design-system-convention.md"
@@ -610,31 +791,32 @@
       "type": "convention",
       "domain": "external-integrations",
       "title": "Environment variables and external services this app reads",
-      "summary": "Frontend route reads CopilotKit/LangSmith/deployment keys; each agent reads MODEL + provider keys + TAVILY_API_KEY; OPENAI_API_KEY appears commented-out in the runtime route (and with XAI in the readme env template) while ANTHROPIC_API_KEY has no repo occurrence — all provider LLM keys are otherwise read implicitly by the LangChain constructors",
+      "summary": "NEXT_PUBLIC_COPILOTKIT_API_KEY is REQUIRED for the app to function — unset means every POST /api/copilotkit 401s silently; beyond it the route reads LangSmith/deployment keys, each agent reads MODEL + provider keys + TAVILY_API_KEY, OPENAI_API_KEY appears only commented-out in the runtime route while ANTHROPIC_API_KEY has no occurrence in CODE — all provider LLM keys are otherwise read implicitly by the LangChain constructors",
       "links": [
         "copilotkit-runtime-route-convention",
         "langgraph-agent-convention",
-        "repo-toolbox"
+        "repo-toolbox",
+        "security-posture"
       ],
       "cites": [
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "23",
+          "line": "25",
           "token": "NEXT_PUBLIC_COPILOTKIT_API_KEY"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "17",
+          "line": "19",
           "token": "LANGSMITH_API_KEY"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "66",
+          "line": "102",
           "token": "LGC_DEPLOYMENT_URL"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "69",
+          "line": "105",
           "token": "REMOTE_ACTION_URL"
         },
         {
@@ -668,9 +850,29 @@
           "token": "GOOGLE_API_KEY"
         },
         {
+          "file": "agents/typescript/src/search.ts",
+          "line": "38",
+          "token": "TAVILY_API_KEY"
+        },
+        {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "14",
+          "line": "16",
           "token": "OPENAI_API_KEY"
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "33",
+          "token": "NEXT_PUBLIC_COPILOTKIT_API_KEY"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "26",
+          "token": "Boolean(apiKey)"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "87-89",
+          "token": "Unauthorized"
         }
       ],
       "path": "brain/rules/env-and-integrations.md"
@@ -681,13 +883,14 @@
       "type": "convention",
       "domain": "agent-python",
       "title": "LangGraph research agent — node structure, no-op tool schemas, and model routing",
-      "summary": "The Python agent is a 6-node StateGraph (download→chat→search/delete/fact-check loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model. The TS agent still mirrors the older 5-node shape (fact_check_node not yet ported, verifiable-report plan decision)",
+      "summary": "The Python agent is a 6-node StateGraph (download→chat→search/delete/fact-check loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model. Two scars live here: the guard-tool_calls[0] convention that fact_check_node itself breaks at 4 sites, and the \\\"ERROR\\\" sentinel in _RESOURCE_CACHE that makes one failed download permanent for the process. The TS agent still mirrors the older 5-node shape (fact_check_node not yet ported, verifiable-report plan decision)",
       "links": [
         "agent-typescript-parity",
         "agent-state-shape-contract",
         "delete-resources-hitl-contract",
         "research-chat-flow",
-        "env-and-integrations"
+        "env-and-integrations",
+        "security-posture"
       ],
       "cites": [
         {
@@ -764,6 +967,76 @@
           "file": "agents/python/src/lib/download.py",
           "line": "30",
           "token": "_is_safe_url"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "67",
+          "token": "if not ai_message.tool_calls"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "139",
+          "token": "if not ai_message_response.tool_calls"
+        },
+        {
+          "file": "agents/python/src/lib/delete.py",
+          "line": "26",
+          "token": "if ai_message.tool_calls"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "65",
+          "token": "ai_message.tool_calls[0][\"id\"]"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "114",
+          "token": "ai_message.tool_calls[0][\"id\"]"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "126",
+          "token": "if not ai_message_response.tool_calls"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "129",
+          "token": "ai_message.tool_calls[0][\"id\"]"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "141",
+          "token": "ai_message.tool_calls[0][\"id\"]"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "24",
+          "token": "_RESOURCE_CACHE.get(url, \"\")"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "66",
+          "token": "_RESOURCE_CACHE[url] = \"ERROR\""
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "81",
+          "token": "_RESOURCE_CACHE[url] = \"ERROR\""
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "97",
+          "token": "if not get_resource(resource[\"url\"])"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "72",
+          "token": "if content == \"ERROR\""
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "81",
+          "token": "if content in (\"\", \"ERROR\")"
         }
       ],
       "path": "brain/rules/langgraph-agent-convention.md"
@@ -855,8 +1128,8 @@
       "kind": "rule",
       "type": "convention",
       "domain": "toolbox",
-      "title": "The committed agent toolbox — rafa skills, the rafinery MCP server, and permissions",
-      "summary": "The repo ships the rafa engineering SOP as .claude skills + 5 agent cards + the /rafa command, wired to the rafinery knowledge MCP over HTTP with a bearer key from env; permissions pre-allow the rafa CLI and .rafa reads",
+      "title": "The committed agent toolbox — rafa skills, harness-neutral .agents skills, the rafinery MCP server, and permissions",
+      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 7 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these), wired to the rafinery knowledge MCP over HTTP with a bearer key from env",
       "links": [
         "env-and-integrations"
       ],
@@ -890,6 +1163,26 @@
           "file": ".claude/settings.json",
           "line": "4",
           "token": "Read(.rafa"
+        },
+        {
+          "file": ".claude/settings.json",
+          "line": "10",
+          "token": "SessionStart"
+        },
+        {
+          "file": ".agents/skills/tdd/SKILL.md",
+          "line": "2",
+          "token": "tdd"
+        },
+        {
+          "file": ".agents/skills/vercel-composition-patterns/SKILL.md",
+          "line": "2",
+          "token": "vercel-composition-patterns"
+        },
+        {
+          "file": "rafa.json",
+          "line": "11",
+          "token": "skills"
         }
       ],
       "path": "brain/rules/repo-toolbox.md"
@@ -899,6 +1192,7 @@
     {
       "id": "body-font-override-negates-geist",
       "priority": "P3",
+      "category": "product",
       "lens": "product",
       "status": "open",
       "title": "globals.css hardcodes Arial on body, negating the two Geist fonts loaded in layout",
@@ -926,8 +1220,9 @@
     {
       "id": "coagent-initialstate-divergence",
       "priority": "P2",
+      "category": "architecture",
       "lens": "architecture",
-      "status": "fixed",
+      "status": "open",
       "title": "Two useCoAgent hooks for the same agent seed different initialState",
       "summary": "Main.tsx seeds the full AgentState (model, research_question, resources, report, logs) while ResearchCanvas.tsx seeds only { model } for the same agent name — a silent inconsistency where the initial shape depends on mount order",
       "fix": "Share one initialState (extract a constant or seed the full shape in both) so the two hooks agree (~10 min)",
@@ -944,20 +1239,92 @@
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
-          "line": "23",
+          "line": "24",
           "token": "initialState"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "32",
+          "token": "createInitialAgentState"
         }
       ],
       "path": "improve/improvements/coagent-initialstate-divergence.md"
     },
     {
+      "id": "copilotkit-runtime-transitive-cves",
+      "priority": "P2",
+      "category": "security",
+      "lens": "security",
+      "status": "open",
+      "title": "Three advisories ride in under @copilotkit/runtime — uuid, @hono/node-server, @ai-sdk/provider-utils",
+      "summary": "The CopilotKit runtime that backs the app's only server route pulls uuid@10.0.0 (missing buffer bounds check), @hono/node-server@1.19.15 (Windows path traversal in serve-static) and @ai-sdk/provider-utils@3.0.30 (uncontrolled resource consumption, no fix published); the caret range on @copilotkit/runtime means a lockfile refresh may clear the first two",
+      "fix": "Refresh the lockfile within the existing `^1.63.2` range (`pnpm update @copilotkit/runtime`), then re-run `npx @rafinery/cli audit`; add pnpm.overrides for uuid >= 13.0.1 / @hono/node-server >= 2.0.5 only if the refresh does not move them (~15 min)",
+      "leverage": {
+        "impact": "low",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "package.json",
+          "line": "19",
+          "token": "@copilotkit/runtime"
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "line": "3669",
+          "token": "uuid@10.0.0"
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "line": "438",
+          "token": "'@hono/node-server@1.19.15'"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "7",
+          "token": "@copilotkit/runtime"
+        }
+      ],
+      "path": "improve/improvements/copilotkit-runtime-transitive-cves.md"
+    },
+    {
       "id": "default-nextjs-metadata",
       "priority": "P2",
+      "category": "product",
       "lens": "product",
       "status": "open",
       "title": "App ships the default \"Create Next App\" title and description to production",
-      "summary": "layout.tsx still carries the create-next-app boilerplate metadata, so the browser tab, SEO, and social embeds all read \"Create Next App\" / \"Generated by create next app\"",
+      "summary": "layout.tsx carried the create-next-app boilerplate metadata, so the browser tab, SEO, and social embeds all read \"Create Next App\" / \"Generated by create next app\" — now replaced with the real product title",
       "fix": "Set metadata.title/description in layout.tsx to the real product (\"Research Helper\") (~2 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "src/app/layout.tsx",
+          "line": "18",
+          "token": "Research Helper"
+        },
+        {
+          "file": "src/app/layout.tsx",
+          "line": "19",
+          "token": "AI-assisted research canvas"
+        }
+      ],
+      "path": "improve/improvements/default-nextjs-metadata.md"
+    },
+    {
+      "id": "default-nextjs-metadata",
+      "priority": "P2",
+      "category": "product",
+      "lens": "product",
+      "status": "fixed",
+      "title": "App ships the default \\\"Create Next App\\\" title and description to production",
+      "summary": "layout.tsx still carries the create-next-app boilerplate metadata, so the browser tab, SEO, and social embeds all read \\\"Create Next App\\\" / \\\"Generated by create next app\\\"",
+      "fix": "Set metadata.title/description in layout.tsx to the real product (\\\"Research Helper\\\") (~2 min)",
       "leverage": {
         "impact": "high",
         "effort": "low"
@@ -978,10 +1345,107 @@
       "path": "improve/improvements/default-nextjs-metadata.md"
     },
     {
+      "id": "download-error-sentinel-blocks-retry",
+      "priority": "P1",
+      "category": "correctness",
+      "lens": "correctness",
+      "status": "open",
+      "title": "The \"ERROR\" cache sentinel is truthy, so a URL that fails to download once is never retried",
+      "summary": "_download_resource writes the literal string \"ERROR\" into _RESOURCE_CACHE on any failure, but download_node's re-download test is `if not get_resource(url)` — \"ERROR\" is a non-empty (truthy) string, so one transient network blip permanently poisons that resource for the life of the process while the UI reports the download as done",
+      "fix": "Test for real content in download_node — `if get_resource(url) in (\"\", \"ERROR\")` — so errored URLs are retried instead of being cached as permanent failures (~10 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "97",
+          "token": "if not get_resource"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "24",
+          "token": "_RESOURCE_CACHE.get"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "66",
+          "token": "\"ERROR\""
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "81",
+          "token": "\"ERROR\""
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "72",
+          "token": "content == \"ERROR\""
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "81",
+          "token": "(\"\", \"ERROR\")"
+        }
+      ],
+      "path": "improve/improvements/download-error-sentinel-blocks-retry.md"
+    },
+    {
+      "id": "fact-check-node-unguarded-toolcall",
+      "priority": "P2",
+      "category": "correctness",
+      "lens": "correctness",
+      "status": "open",
+      "title": "fact_check_node indexes tool_calls[0] unguarded at four sites — the only node that breaks the repo's own guard convention",
+      "summary": "search_node and perform_delete_node both check `if ai_message.tool_calls` before indexing, but fact_check_node — the newest node — reads ai_message.tool_calls[0][\"id\"] at four sites with no guard, so any path that reaches it without a live tool call raises IndexError and aborts the graph run",
+      "fix": "Hoist one guard at the top of fact_check_node (bail early if `not ai_message.tool_calls`) and reuse the resolved id, mirroring search_node's shape (~10 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "65",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "114",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "129",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "141",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "67",
+          "token": "if not ai_message.tool_calls"
+        },
+        {
+          "file": "agents/python/src/lib/delete.py",
+          "line": "26",
+          "token": "if ai_message.tool_calls"
+        }
+      ],
+      "path": "improve/improvements/fact-check-node-unguarded-toolcall.md"
+    },
+    {
       "id": "frontend-state-any-typing",
       "priority": "P2",
+      "category": "architecture",
       "lens": "architecture",
-      "status": "fixed",
+      "status": "open",
       "title": "AgentState types resources/logs as any[] while concrete types exist",
       "summary": "The frontend AgentState declares resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource is defined in the same file and a Log shape exists on the backend",
       "fix": "Type resources as Resource[] and add a Log type for logs in types.ts (~5 min)",
@@ -993,13 +1457,18 @@
       "cites": [
         {
           "file": "src/lib/types.ts",
-          "line": "11",
-          "token": "any[]"
+          "line": "23",
+          "token": "Resource[]"
         },
         {
           "file": "src/lib/types.ts",
-          "line": "12",
-          "token": "any[]"
+          "line": "24",
+          "token": "Log[]"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "14",
+          "token": "Log"
         }
       ],
       "path": "improve/improvements/frontend-state-any-typing.md"
@@ -1007,8 +1476,52 @@
     {
       "id": "lgc-deployment-url-ssrf-asymmetry",
       "priority": "P2",
+      "category": "security",
       "lens": "security",
       "status": "open",
+      "title": "The lgcDeploymentUrl SSRF guard checks host strings only — no DNS resolution, unlike the Python side",
+      "summary": "isSafeDeploymentUrl blocked private hostnames by literal/regex pattern but never resolved DNS, so a public hostname pointing at a private/metadata IP passed and the proxy forwarded langsmithApiKey to it — now fixed; the guard resolves DNS and checks every resolved address, mirroring download.py",
+      "fix": "Resolve the hostname and reject when any resolved address is private/loopback/link-local, mirroring download.py's _is_safe_url (~15 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "medium"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "59",
+          "token": "isSafeDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "74",
+          "token": "dns.lookup"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "29",
+          "token": "isPrivateIPv4"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "43",
+          "token": "isPrivateIPv6"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "41",
+          "token": "getaddrinfo"
+        }
+      ],
+      "path": "improve/improvements/lgc-deployment-url-ssrf-asymmetry.md"
+    },
+    {
+      "id": "lgc-deployment-url-ssrf-asymmetry",
+      "priority": "P2",
+      "category": "security",
+      "lens": "security",
+      "status": "fixed",
       "title": "The lgcDeploymentUrl SSRF guard checks host strings only — no DNS resolution, unlike the Python side",
       "summary": "isSafeDeploymentUrl blocks private hostnames by literal/regex pattern but never resolves DNS, so a public hostname pointing at a private/metadata IP passes and the proxy forwards langsmithApiKey to it — the Python download guard does resolve DNS",
       "fix": "Resolve the hostname and reject when any resolved address is private/loopback/link-local, mirroring download.py's _is_safe_url (~15 min)",
@@ -1037,8 +1550,80 @@
       "path": "improve/improvements/lgc-deployment-url-ssrf-asymmetry.md"
     },
     {
+      "id": "next-dependency-cves",
+      "priority": "P1",
+      "category": "security",
+      "lens": "security",
+      "status": "open",
+      "title": "next@15.5.15 carries 21 open advisories (10 high) — fixed only by the 16.x line",
+      "summary": "The exact-pinned direct dependency next@15.5.15 has 21 OSV advisories against it (10 high / 9 moderate / 2 low), spanning middleware-bypass, SSRF in Server Actions and rewrites, cache poisoning, XSS and DoS; every one is cleared by upgrading to >= 16.2.11",
+      "fix": "Bump the exact pin `\"next\": \"15.5.15\"` to >= 16.2.11 (a 15 -> 16 major; read the upgrade guide, then re-run `npx @rafinery/cli audit`) (~half a day)",
+      "leverage": {
+        "impact": "high",
+        "effort": "high"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "package.json",
+          "line": "27",
+          "token": "next"
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "line": "2816",
+          "token": "next@15.5.15"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "86",
+          "token": "export const POST"
+        }
+      ],
+      "path": "improve/improvements/next-dependency-cves.md"
+    },
+    {
+      "id": "next-transitive-postcss-sharp-cves",
+      "priority": "P1",
+      "category": "security",
+      "lens": "security",
+      "status": "open",
+      "title": "postcss@8.4.31 and sharp@0.34.5 pulled in under next carry 4 advisories (3 high)",
+      "summary": "Two packages resolved transitively through next@15.5.15 are vulnerable — postcss 8.4.31 (arbitrary file read, path traversal in source-map auto-loading, XSS in stringify output) and sharp 0.34.5 (inherited libvips CVEs); both are fixable now with a pnpm override, without waiting on the next 15 -> 16 major",
+      "fix": "Add pnpm.overrides for `postcss: \">=8.5.18\"` and `sharp: \">=0.35.0\"`, reinstall, re-run `npx @rafinery/cli audit` (~15 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "pnpm-lock.yaml",
+          "line": "3045",
+          "token": "postcss@8.4.31"
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "line": "3349",
+          "token": "sharp@0.34.5"
+        },
+        {
+          "file": "package.json",
+          "line": "39",
+          "token": "postcss"
+        },
+        {
+          "file": "postcss.config.mjs",
+          "line": "4",
+          "token": "tailwindcss"
+        }
+      ],
+      "path": "improve/improvements/next-transitive-postcss-sharp-cves.md"
+    },
+    {
       "id": "resource-cache-unbounded",
       "priority": "P3",
+      "category": "performance",
       "lens": "performance",
       "status": "open",
       "title": "_RESOURCE_CACHE grows unbounded for the life of the process",
@@ -1061,8 +1646,9 @@
     {
       "id": "search-node-unguarded-toolcall",
       "priority": "P1",
+      "category": "correctness",
       "lens": "correctness",
-      "status": "fixed",
+      "status": "open",
       "title": "search_node assumes the model always returns a tool call — an empty response kills the run",
       "summary": "search.py indexes tool_calls[0] with no guard; if a provider ignores the forced tool_choice (or returns text/refusal), an unhandled IndexError aborts the primary research flow mid-conversation",
       "fix": "Guard tool_calls before indexing in search_node — if empty, emit a graceful log/message and return instead of throwing (~10 min)",
@@ -1074,13 +1660,23 @@
       "cites": [
         {
           "file": "agents/python/src/lib/search.py",
-          "line": "66",
+          "line": "74",
           "token": "tool_calls[0]"
         },
         {
           "file": "agents/python/src/lib/search.py",
-          "line": "130",
+          "line": "152",
           "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/search.py",
+          "line": "145",
+          "token": "tool_call_id"
+        },
+        {
+          "file": "agents/typescript/src/search.ts",
+          "line": "53",
+          "token": "tool_calls?.length"
         }
       ],
       "path": "improve/improvements/search-node-unguarded-toolcall.md"
@@ -1088,6 +1684,7 @@
     {
       "id": "stale-model-pins",
       "priority": "P3",
+      "category": "ops",
       "lens": "ops",
       "status": "open",
       "title": "Provider model IDs are pinned to aging snapshots that will eventually deprecate",
@@ -1115,6 +1712,7 @@
     {
       "id": "submit-message-settimeout-race",
       "priority": "P3",
+      "category": "correctness",
       "lens": "correctness",
       "status": "open",
       "title": "Chat submit clears logs then waits a hardcoded 30ms to sequence the state update",
@@ -1128,12 +1726,12 @@
       "cites": [
         {
           "file": "src/app/Main.tsx",
-          "line": "55",
+          "line": "49",
           "token": "setState"
         },
         {
           "file": "src/app/Main.tsx",
-          "line": "56",
+          "line": "50",
           "token": "setTimeout"
         }
       ],
