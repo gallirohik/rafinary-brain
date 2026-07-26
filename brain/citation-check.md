@@ -2,7 +2,7 @@
 type: "Citation Check"
 title: "Citation check report"
 description: "checker v2 — all gates pass · 0 warn(s)"
-timestamp: 2026-07-26T23:01:14.407Z
+timestamp: 2026-07-26T23:40:38.334Z
 ---
 # Citation check (generated — do not hand-edit) · checker v2
 
