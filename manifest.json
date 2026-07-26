@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "mode": "branch",
-  "codeSha": "57648853de130d2be9485fdbc7805c82e7d6b5bd",
+  "codeSha": "366fdaa1096d10090597d3898ccd7299271ba7aa",
   "branch": "chore/update-rafa-0.8.13",
   "base": {
     "brainSha": "3c9249156aef8061c87ace046bf39f2cbdc38656"
@@ -308,6 +308,7 @@
     {
       "id": "coagent-initialstate-divergence",
       "priority": "P2",
+      "category": "architecture",
       "lens": "architecture",
       "status": "fixed",
       "title": "Two useCoAgent hooks for the same agent seed different initialState",
@@ -338,6 +339,7 @@
     {
       "id": "frontend-state-any-typing",
       "priority": "P2",
+      "category": "architecture",
       "lens": "architecture",
       "status": "fixed",
       "title": "AgentState types resources/logs as any[] while concrete types exist",
