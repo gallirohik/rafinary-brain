@@ -13,6 +13,9 @@ cites:
   - src/app/api/copilotkit/route.ts:29 :: isSafeDeploymentUrl
   - src/app/api/copilotkit/route.ts:38 :: hostname
   - agents/python/src/lib/download.py:41 :: getaddrinfo
+type: Improvement
+description: "isSafeDeploymentUrl blocks private hostnames by literal/regex pattern but never resolves DNS, so a public hostname pointing at a private/metadata IP passes and the proxy forwards langsmithApiKey to it — the Python download guard does resolve DNS"
+timestamp: 2026-07-27T03:12:52+05:30
 ---
 `isSafeDeploymentUrl` (`route.ts:29-51`) is the guard that keeps the runtime proxy — which
 carries `langsmithApiKey` — from being redirected at internal hosts
@@ -29,3 +32,12 @@ backend's for the identical threat. It compiles and passes the happy path (real 
 URLs work), so nothing flags the gap. Defense-in-depth on an opt-in path (`?lgcDeploymentUrl=`),
 hence P2 — but the fix is to reuse the Python side's already-correct pattern.
 
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [src/app/api/copilotkit/route.ts:29](https://github.com/gallirohik/research-canvas/blob/f24654dd39611b425744ebde320df74a27e82b9d/src/app/api/copilotkit/route.ts#L29) — `isSafeDeploymentUrl`
+[2] [src/app/api/copilotkit/route.ts:38](https://github.com/gallirohik/research-canvas/blob/f24654dd39611b425744ebde320df74a27e82b9d/src/app/api/copilotkit/route.ts#L38) — `hostname`
+[3] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/f24654dd39611b425744ebde320df74a27e82b9d/agents/python/src/lib/download.py#L41) — `getaddrinfo`
+
+<!-- okf:citations:end -->
