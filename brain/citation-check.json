@@ -1,0 +1,29 @@
+{
+  "checkerVersion": 2,
+  "at": "2026-07-26T21:27:17.167Z",
+  "pass": true,
+  "gates": {
+    "resolution": {
+      "pass": 183,
+      "total": 183
+    },
+    "completeness": {
+      "pass": 28,
+      "total": 28
+    },
+    "policy": {
+      "pass": 4,
+      "total": 4
+    },
+    "absence": {
+      "pass": 13,
+      "total": 13
+    },
+    "inventory": {
+      "pass": 10,
+      "total": 10
+    }
+  },
+  "warns": 0,
+  "linkWarns": 0
+}
