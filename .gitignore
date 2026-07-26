@@ -1,0 +1,11 @@
+dirty.jsonl
+hydration.json
+reflex.jsonl
+sensor-errors.jsonl
+distill-verdicts.json
+benchmark.demo.json
+review.json
+session-facts.json
+loop-events-tail.json
+*.theirs.md
+distill-incoming/
