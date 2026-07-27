@@ -1,10 +1,22 @@
 {
   "schemaVersion": 1,
   "mode": "branch",
-  "codeSha": "db589fef88eb4d8c34d5dc00b7c2544bc08a67c3",
+  "codeSha": "eab174db9c3cd7382515c3eb8ace68dad3f2c8fc",
   "branch": "feat/run-app",
   "provenance": {
-    "agentCommits": 0
+    "agentCommits": 1,
+    "commitsCovered": [
+      "db589fef88eb"
+    ],
+    "lastAgentRun": {
+      "at": "2026-07-28T02:42:12+05:30",
+      "codeSha": "eab174db9c3cd7382515c3eb8ace68dad3f2c8fc",
+      "actor": {
+        "model": "mechanical",
+        "agent": "cli@0.16.1",
+        "runner": "session"
+      }
+    }
   },
   "base": null,
   "notes": [],
