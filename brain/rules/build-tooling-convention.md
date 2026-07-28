@@ -3,15 +3,18 @@ schemaVersion: 1
 id: build-tooling-convention
 type: convention
 domain: build-tooling
-title: Dev/build wiring — concurrently runs UI + Python agent; the ROOT app was de-workspaced but the TS agent, vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)
-summary: npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps were de-workspaced to ^1.63.2 so the UI installs standalone, but agents/typescript still pins @copilotkit/sdk-js at workspace:*, vercel.json still cd's three levels up to run nx, and readme.md still documents the upstream layout — three stale-upstream leftovers, and readme.md is the one that will actively mislead you
+title: "Dev/build wiring — concurrently runs UI + Python agent; the root app AND the TS agent are now de-workspaced, but vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)"
+summary: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you"
 links: [langgraph-agent-convention, agent-typescript-parity, env-and-integrations]
+absent: workspace:*
 cites:
   - package.json:9 :: concurrently
   - package.json:12 :: "dev:agent:py"
+  - package.json:14 :: install:agent:ts
   - package.json:17 :: "@copilotkit/react-core"
   - package.json:43 :: "nx"
-  - agents/typescript/package.json:13 :: workspace:*
+  - agents/typescript/package.json:13 :: "@copilotkit/sdk-js"
+  - agents/typescript/package.json:23 :: "langchain"
   - agents/python/langgraph.json:5 :: graphs
   - agents/python/src/agent.py:40 :: LANGGRAPH_FASTAPI
   - vercel.json:2 :: nx run
@@ -24,13 +27,6 @@ cites:
   - readme.md:60 :: cd ./ui
   - readme.md:77 :: remoteEndpoints
   - readme.md:108 :: ./agent-py
-anchor: workspace:*
-absent: remoteEndpoints
-absent: langGraphPlatformEndpoint
-absent: poetry
-description: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps were de-workspaced to ^1.63.2 so the UI installs standalone, but agents/typescript still pins @copilotkit/sdk-js at workspace:*, vercel.json still cd's three levels up to run nx, and readme.md still documents the upstream layout — three stale-upstream leftovers, and readme.md is the one that will actively mislead you"
-tags: [build-tooling]
-timestamp: 2026-07-26T22:44:42.840Z
 ---
 How the app is run and built.
 
@@ -52,23 +48,30 @@ checkpointer on the `LANGGRAPH_FASTAPI` env flag (`agent.py:40`): unset/`false` 
 checkpointer (LangGraph API mode); `true` (set by `main.py:12`) → `MemorySaver` (CopilotKit
 mode). Know this when the graph behaves differently under `langgraph dev` vs `npm run dev`.
 
-**The de-workspacing is HALF DONE — know which half you're in.** This checkout is a fork of
-one leaf of the upstream CopilotKit examples monorepo. The root app was cut loose from that
-workspace; two other places were not.
+**The de-workspacing is now DONE for both packages — the leftovers are deploy/docs.** This
+checkout is a fork of one leaf of the upstream CopilotKit examples monorepo. Both installable
+packages have been cut loose from that workspace; two non-package artifacts were not.
 
 Migrated (installs standalone):
 - The three CopilotKit deps at the root were **de-workspaced** to real npm ranges — `^1.63.2`
   for `@copilotkit/react-core` (`package.json:17`), `react-ui` (`:18`) and `runtime` (`:19`)
   — and a root `pnpm-lock.yaml` was committed. A plain `pnpm install` here resolves.
+- **`agents/typescript` was de-workspaced on 2026-07-28.** `@copilotkit/sdk-js` moved from
+  `workspace:*` to `^1.63.2` (`agents/typescript/package.json:13`), so
+  `npm run install:agent:ts` (`package.json:14`) now resolves outside the upstream workspace,
+  and a `pnpm-lock.yaml` was committed alongside it. `workspace:*` is declared `absent:` on
+  this note, so gate B3 re-greps it every run — if any package regains one, this note fails
+  until it is re-stated.
+
+  Removing the pin was necessary but **not sufficient** to run the TS agent: `sdk-js@1.63.2`
+  requires `@langchain/core`/`@langchain/langgraph` `>=0.4.0`, while the folder was frozen at
+  `core@0.3.x` / `langgraph@0.2.44`, so graph import died with `ERR_PACKAGE_PATH_NOT_EXPORTED`.
+  The langchain pins were moved to 1.x in the same pass (`@langchain/core:15`,
+  `@langchain/langgraph:17`, and `langchain` itself added as a direct dep at `:23` because
+  sdk-js peers on it). The graph ran unmodified afterward — no source change was needed. It is
+  still not wired into `npm run dev` ([agent parity](/brain/rules/agent-typescript-parity.md)).
 
 Still monorepo-bound (fails outside it):
-- **`agents/typescript/package.json:13` still pins `@copilotkit/sdk-js: "workspace:*"`.**
-  So `npm run install:agent:ts` (`package.json:14` → `pnpm i` in that folder) cannot resolve
-  outside the upstream workspace. This is the practical reason the TS port is hard to run,
-  on top of it not being wired into `dev` at all
-  ([agent parity](/brain/rules/agent-typescript-parity.md)). `workspace:*` is declared as
-  this note's `anchor:`, so the checker asserts every code occurrence stays cited here —
-  if the root ever regains one, this note fails until it's re-stated.
 - **`vercel.json` was not updated**: `installCommand`/`buildCommand` still `cd ../../../`
   and run `npx nx run @copilotkit-examples/research-canvas:build` (`vercel.json:2-3`), and
   `package.json` still carries the `nx` target block (`:43-49`). Those paths only exist
@@ -130,3 +133,4 @@ path).
 [17] [readme.md:108](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/readme.md#L108) — `./agent-py`
 
 <!-- okf:citations:end -->
+

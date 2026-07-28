@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "codeSha": "1d21094147086aa6c56bee895330ac896e09686f",
+  "codeSha": "0c96b3c1289772846eae57f8768be579cc7d8fe4",
   "branch": "main",
   "health": {
     "verdict": "PASS"
@@ -490,8 +490,8 @@
       "kind": "rule",
       "type": "convention",
       "domain": "build-tooling",
-      "title": "Dev/build wiring — concurrently runs UI + Python agent; the ROOT app was de-workspaced but the TS agent, vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)",
-      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps were de-workspaced to ^1.63.2 so the UI installs standalone, but agents/typescript still pins @copilotkit/sdk-js at workspace:*, vercel.json still cd's three levels up to run nx, and readme.md still documents the upstream layout — three stale-upstream leftovers, and readme.md is the one that will actively mislead you",
+      "title": "Dev/build wiring — concurrently runs UI + Python agent; the root app AND the TS agent are now de-workspaced, but vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)",
+      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you",
       "links": [
         "langgraph-agent-convention",
         "agent-typescript-parity",
@@ -510,6 +510,11 @@
         },
         {
           "file": "package.json",
+          "line": "14",
+          "token": "install:agent:ts"
+        },
+        {
+          "file": "package.json",
           "line": "17",
           "token": "\"@copilotkit/react-core\""
         },
@@ -521,7 +526,12 @@
         {
           "file": "agents/typescript/package.json",
           "line": "13",
-          "token": "workspace:*"
+          "token": "\"@copilotkit/sdk-js\""
+        },
+        {
+          "file": "agents/typescript/package.json",
+          "line": "23",
+          "token": "\"langchain\""
         },
         {
           "file": "agents/python/langgraph.json",
@@ -1104,6 +1114,57 @@
         }
       ],
       "path": "brain/rules/repo-toolbox.md"
+    },
+    {
+      "id": "resource-text-dominates-the-system-prompt",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "agent-bridge",
+      "title": "Every resource's full page text is re-sent in the system prompt on every turn — capped in TypeScript, still uncapped in Python",
+      "summary": "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-typescript-parity",
+        "research-chat-flow"
+      ],
+      "cites": [
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "114",
+          "token": "JSON.stringify(resources)"
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "21",
+          "token": "MAX_TOTAL_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "73",
+          "token": "MAX_TOTAL_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/typescript/src/download.ts",
+          "line": "17",
+          "token": "MAX_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "109",
+          "token": "{resources}"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "74",
+          "token": "resources.append"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "78",
+          "token": "_RESOURCE_CACHE"
+        }
+      ],
+      "path": "brain/rules/resource-text-dominates-the-system-prompt.md"
     }
   ],
   "improvements": [
