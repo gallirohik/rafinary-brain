@@ -4,8 +4,9 @@
   "codeSha": "76693139dff1207f1da069af63fe2caf3e782ccf",
   "branch": "feat/run-app",
   "provenance": {
-    "agentCommits": 2,
+    "agentCommits": 3,
     "commitsCovered": [
+      "76693139dff1",
       "db589fef88eb",
       "eab174db9c3c"
     ],
@@ -19,7 +20,163 @@
       }
     }
   },
-  "base": null,
-  "notes": [],
+  "base": {
+    "brainSha": "1d21094147086aa6c56bee895330ac896e09686f"
+  },
+  "notes": [
+    {
+      "id": "agent-typescript-parity",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "agent-typescript",
+      "title": "The TypeScript agent is an alternate port of the Python agent (not run by default)",
+      "summary": "agents/typescript mirrors an OLDER Python graph with @langchain/langgraph — 5 nodes, no fact_check_node, no citations state; it is a lightly-used alternate that npm run dev does NOT start, so treat Python as the source of truth and expect the port to lag",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-state-shape-contract",
+        "build-tooling-convention"
+      ],
+      "cites": [
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "15",
+          "token": "StateGraph"
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "23",
+          "token": "addConditionalEdges"
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "34",
+          "token": "interruptAfter"
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "20",
+          "token": "openai"
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "40",
+          "token": "throw new Error"
+        },
+        {
+          "file": "agents/typescript/src/state.ts",
+          "line": "19",
+          "token": "AgentStateAnnotation"
+        }
+      ],
+      "path": "brain/rules/agent-typescript-parity.md",
+      "provenance": {
+        "baseBrainSha": "1d21094147086aa6c56bee895330ac896e09686f"
+      }
+    },
+    {
+      "id": "build-tooling-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "build-tooling",
+      "title": "Dev/build wiring — concurrently runs UI + Python agent; the ROOT app was de-workspaced but the TS agent, vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)",
+      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps were de-workspaced to ^1.63.2 so the UI installs standalone, but agents/typescript still pins @copilotkit/sdk-js at workspace:*, vercel.json still cd's three levels up to run nx, and readme.md still documents the upstream layout — three stale-upstream leftovers, and readme.md is the one that will actively mislead you",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-typescript-parity",
+        "env-and-integrations"
+      ],
+      "cites": [
+        {
+          "file": "package.json",
+          "line": "9",
+          "token": "concurrently"
+        },
+        {
+          "file": "package.json",
+          "line": "12",
+          "token": "\"dev:agent:py\""
+        },
+        {
+          "file": "package.json",
+          "line": "17",
+          "token": "\"@copilotkit/react-core\""
+        },
+        {
+          "file": "package.json",
+          "line": "43",
+          "token": "\"nx\""
+        },
+        {
+          "file": "agents/typescript/package.json",
+          "line": "13",
+          "token": "workspace:*"
+        },
+        {
+          "file": "agents/python/langgraph.json",
+          "line": "5",
+          "token": "graphs"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "40",
+          "token": "LANGGRAPH_FASTAPI"
+        },
+        {
+          "file": "vercel.json",
+          "line": "2",
+          "token": "nx run"
+        },
+        {
+          "file": "next.config.mjs",
+          "line": "3",
+          "token": "standalone"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "41",
+          "token": "PORT"
+        },
+        {
+          "file": "agents/python/uv.lock",
+          "line": "1",
+          "token": "version"
+        },
+        {
+          "file": "package.json",
+          "line": "13",
+          "token": "uv sync"
+        },
+        {
+          "file": "readme.md",
+          "line": "24",
+          "token": "cd agent-py"
+        },
+        {
+          "file": "readme.md",
+          "line": "25",
+          "token": "poetry install"
+        },
+        {
+          "file": "readme.md",
+          "line": "60",
+          "token": "cd ./ui"
+        },
+        {
+          "file": "readme.md",
+          "line": "77",
+          "token": "remoteEndpoints"
+        },
+        {
+          "file": "readme.md",
+          "line": "108",
+          "token": "./agent-py"
+        }
+      ],
+      "path": "brain/rules/build-tooling-convention.md",
+      "provenance": {
+        "baseBrainSha": "1d21094147086aa6c56bee895330ac896e09686f"
+      }
+    }
+  ],
   "improvements": []
 }

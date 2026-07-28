@@ -1,8 +1,8 @@
 ---
 type: IntentRecord
 description: "per-commit intent trail (capture-engine P2) — provenance, consumed at merge, never org-brain truth"
-code-commit: db589fef88eb4d8c34d5dc00b7c2544bc08a67c3
-code-branch: feat/run-app
+codeCommit: db589fef88eb4d8c34d5dc00b7c2544bc08a67c3
+codeBranch: feat/run-app
 timestamp: 2026-07-27T21:12:15.407Z
 ---
 
