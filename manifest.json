@@ -15,7 +15,7 @@
       "codeSha": "76693139dff1207f1da069af63fe2caf3e782ccf",
       "actor": {
         "model": "mechanical",
-        "agent": "cli@0.16.1",
+        "agent": "cli@0.16.2",
         "runner": "session"
       }
     }
@@ -24,55 +24,6 @@
     "brainSha": "1d21094147086aa6c56bee895330ac896e09686f"
   },
   "notes": [
-    {
-      "id": "agent-typescript-parity",
-      "kind": "rule",
-      "type": "convention",
-      "domain": "agent-typescript",
-      "title": "The TypeScript agent is an alternate port of the Python agent (not run by default)",
-      "summary": "agents/typescript mirrors an OLDER Python graph with @langchain/langgraph — 5 nodes, no fact_check_node, no citations state; it is a lightly-used alternate that npm run dev does NOT start, so treat Python as the source of truth and expect the port to lag",
-      "links": [
-        "langgraph-agent-convention",
-        "agent-state-shape-contract",
-        "build-tooling-convention"
-      ],
-      "cites": [
-        {
-          "file": "agents/typescript/src/agent.ts",
-          "line": "15",
-          "token": "StateGraph"
-        },
-        {
-          "file": "agents/typescript/src/agent.ts",
-          "line": "23",
-          "token": "addConditionalEdges"
-        },
-        {
-          "file": "agents/typescript/src/agent.ts",
-          "line": "34",
-          "token": "interruptAfter"
-        },
-        {
-          "file": "agents/typescript/src/model.ts",
-          "line": "20",
-          "token": "openai"
-        },
-        {
-          "file": "agents/typescript/src/model.ts",
-          "line": "40",
-          "token": "throw new Error"
-        },
-        {
-          "file": "agents/typescript/src/state.ts",
-          "line": "19",
-          "token": "AgentStateAnnotation"
-        }
-      ],
-      "path": "brain/rules/agent-typescript-parity.md",
-      "provenance": {
-        "baseBrainSha": "1d21094147086aa6c56bee895330ac896e09686f"
-      }
-    },
     {
       "id": "build-tooling-convention",
       "kind": "rule",
