@@ -2,19 +2,23 @@
 schemaVersion: 1
 id: search-node-unguarded-toolcall
 priority: P1
-lens: correctness
+category: correctness
 status: fixed
 title: search_node assumes the model always returns a tool call — an empty response kills the run
-summary: search.py indexes tool_calls[0] with no guard; if a provider ignores the forced tool_choice (or returns text/refusal), an unhandled IndexError aborts the primary research flow mid-conversation
+summary: search.py indexed tool_calls[0] with no guard; if a provider ignored the forced tool_choice (or returned text/refusal), an unhandled IndexError aborted the primary research flow mid-conversation — both indexing sites now carry an early-return guard
 fix: Guard tool_calls before indexing in search_node — if empty, emit a graceful log/message and return instead of throwing (~10 min)
 leverage: { impact: medium, effort: low }
 blast_radius: [agent-python, agent-bridge]
 cites:
-  - agents/python/src/lib/search.py:66 :: tool_calls[0]
-  - agents/python/src/lib/search.py:130 :: tool_calls[0]
+  - agents/python/src/lib/search.py:67 :: if not ai_message.tool_calls
+  - agents/python/src/lib/search.py:139 :: if not ai_message_response.tool_calls
 found: 2026-07-20
 fixed: 2026-07-23
 fixed_by: search-guard
+type: Improvement
+description: "search.py indexed tool_calls[0] with no guard; if a provider ignored the forced tool_choice (or returned text/refusal), an unhandled IndexError aborted the primary research flow mid-conversation — both indexing sites now carry an early-return guard"
+tags: [correctness, P1]
+timestamp: 2026-07-20
 ---
 `search_node` (the actively-run Python backend, see
 [langgraph-agent-convention](/brain/rules/langgraph-agent-convention.md)) reads the incoming
@@ -54,3 +58,18 @@ without appending that `ToolMessage`, leaving the original Search `tool_call` un
 next `chat_node` model turn would 400 ("tool_calls must be followed by tool result messages").
 **prism caught it**, it was fixed and re-validated PASS; the TS port applied the resolving
 `ToolMessage` from the start and also passed prism validation.
+
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
+[2] [agents/python/src/lib/search.py:139](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L139) — `if not ai_message_response.tool_calls`
+
+<!-- okf:citations:end -->
+
+Re-verified 2026-07-30: both guards are present in current source (`search.py:67`, `:139`).
+This row's citations were re-pointed at the guards in the same pass — they previously named
+the pre-fix indexing lines (`:66`, `:130`), which the edit shifted onto a blank line and a
+bracket. `verify-citations` skips `status: fixed` rows, so that rot was invisible to the gate;
+citing the fix rather than the removed defect keeps a tombstone checkable.

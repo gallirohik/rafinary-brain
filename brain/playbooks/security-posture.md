@@ -148,20 +148,20 @@ one — but it is the property to re-check whenever a tool is added.
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L86) — `export const POST`
-[2] [src/app/api/copilotkit/route.ts:24](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L24) — `isAuthorized`
-[3] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
-[4] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
-[5] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
-[6] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[7] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
-[8] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L19) — `langsmithApiKey`
-[9] [agents/python/main.py:17](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L17) — `add_langgraph_fastapi_endpoint`
-[10] [agents/python/main.py:44](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L44) — `0.0.0.0`
-[11] [agents/python/main.py:11](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L11) — `load_dotenv`
-[12] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L30) — `_is_safe_url`
-[13] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L41) — `getaddrinfo`
-[14] [agents/python/langgraph.json:9](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/langgraph.json#L9) — `.env`
-[15] [.gitignore:38](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/.gitignore#L38) — `.env`
+[1] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L86) — `export const POST`
+[2] [src/app/api/copilotkit/route.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L24) — `isAuthorized`
+[3] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
+[4] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
+[5] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
+[6] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
+[7] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
+[8] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L19) — `langsmithApiKey`
+[9] [agents/python/main.py:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L17) — `add_langgraph_fastapi_endpoint`
+[10] [agents/python/main.py:44](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L44) — `0.0.0.0`
+[11] [agents/python/main.py:11](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L11) — `load_dotenv`
+[12] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L30) — `_is_safe_url`
+[13] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L41) — `getaddrinfo`
+[14] [agents/python/langgraph.json:9](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/langgraph.json#L9) — `.env`
+[15] [.gitignore:38](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/.gitignore#L38) — `.env`
 
 <!-- okf:citations:end -->

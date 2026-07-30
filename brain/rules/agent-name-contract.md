@@ -66,23 +66,23 @@ To add or rename an agent you must touch all five files in lockstep. See
 
 # Citations
 
-[1] [src/lib/model-selector-provider.tsx:42](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/lib/model-selector-provider.tsx#L42) — `research_agent`
-[2] [src/lib/model-selector-provider.tsx:44](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/lib/model-selector-provider.tsx#L44) — `research_agent`
-[3] [src/app/api/copilotkit/route.ts:109](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L109) — `research_agent`
-[4] [src/app/api/copilotkit/route.ts:110](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L110) — `research_agent`
-[5] [src/app/api/copilotkit/route.ts:112](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L112) — `research_agent`
-[6] [src/app/api/copilotkit/route.ts:113](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L113) — `research_agent`
-[7] [src/app/api/copilotkit/route.ts:121](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L121) — `research_agent`
-[8] [src/app/api/copilotkit/route.ts:124](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L124) — `research_agent`
-[9] [src/app/api/copilotkit/route.ts:126](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L126) — `research_agent`
-[10] [src/app/api/copilotkit/route.ts:129](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L129) — `research_agent`
-[11] [agents/python/langgraph.json:6](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/langgraph.json#L6) — `research_agent`
-[12] [agents/python/langgraph.json:7](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/langgraph.json#L7) — `research_agent`
-[13] [agents/python/main.py:20](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L20) — `research_agent`
-[14] [agents/python/main.py:22](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L22) — `research_agent`
-[15] [agents/python/main.py:27](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L27) — `research_agent`
-[16] [agents/python/main.py:29](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L29) — `research_agent`
-[17] [agents/typescript/langgraph.json:6](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/langgraph.json#L6) — `research_agent`
-[18] [agents/typescript/langgraph.json:7](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/langgraph.json#L7) — `research_agent`
+[1] [src/lib/model-selector-provider.tsx:42](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/model-selector-provider.tsx#L42) — `research_agent`
+[2] [src/lib/model-selector-provider.tsx:44](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/model-selector-provider.tsx#L44) — `research_agent`
+[3] [src/app/api/copilotkit/route.ts:109](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L109) — `research_agent`
+[4] [src/app/api/copilotkit/route.ts:110](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L110) — `research_agent`
+[5] [src/app/api/copilotkit/route.ts:112](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L112) — `research_agent`
+[6] [src/app/api/copilotkit/route.ts:113](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L113) — `research_agent`
+[7] [src/app/api/copilotkit/route.ts:121](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L121) — `research_agent`
+[8] [src/app/api/copilotkit/route.ts:124](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L124) — `research_agent`
+[9] [src/app/api/copilotkit/route.ts:126](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L126) — `research_agent`
+[10] [src/app/api/copilotkit/route.ts:129](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L129) — `research_agent`
+[11] [agents/python/langgraph.json:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/langgraph.json#L6) — `research_agent`
+[12] [agents/python/langgraph.json:7](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/langgraph.json#L7) — `research_agent`
+[13] [agents/python/main.py:20](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L20) — `research_agent`
+[14] [agents/python/main.py:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L22) — `research_agent`
+[15] [agents/python/main.py:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L27) — `research_agent`
+[16] [agents/python/main.py:29](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L29) — `research_agent`
+[17] [agents/typescript/langgraph.json:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/langgraph.json#L6) — `research_agent`
+[18] [agents/typescript/langgraph.json:7](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/langgraph.json#L7) — `research_agent`
 
 <!-- okf:citations:end -->

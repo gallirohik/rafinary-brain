@@ -1,10 +1,24 @@
 {
   "schemaVersion": 1,
-  "codeSha": "0c96b3c1289772846eae57f8768be579cc7d8fe4",
-  "branch": "main",
-  "health": {
-    "verdict": "PASS"
+  "mode": "branch",
+  "codeSha": "f080881f884f8a7bb9050bcb611583d2abf15354",
+  "branch": "feat/rafa-update-with-knowledge",
+  "provenance": {
+    "agentCommits": 1,
+    "commitsCovered": [
+      "3776db6d44ae"
+    ],
+    "lastAgentRun": {
+      "at": "2026-07-30T14:12:35+05:30",
+      "codeSha": "f080881f884f8a7bb9050bcb611583d2abf15354",
+      "actor": {
+        "model": "mechanical",
+        "agent": "cli@0.17.0",
+        "runner": "session"
+      }
+    }
   },
+  "base": null,
   "notes": [
     {
       "id": "add-agent-tool-howto",
@@ -112,7 +126,7 @@
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "105",
+          "line": "135",
           "token": "handleRequest"
         },
         {
@@ -449,7 +463,8 @@
       "links": [
         "langgraph-agent-convention",
         "agent-state-shape-contract",
-        "build-tooling-convention"
+        "build-tooling-convention",
+        "state-persistence-convention"
       ],
       "cites": [
         {
@@ -709,22 +724,22 @@
         },
         {
           "file": "agents/typescript/src/chat.ts",
-          "line": "37",
+          "line": "42",
           "token": "DeleteResources"
         },
         {
           "file": "agents/typescript/src/chat.ts",
-          "line": "38",
+          "line": "43",
           "token": "DeleteResources"
         },
         {
           "file": "agents/typescript/src/chat.ts",
-          "line": "57",
+          "line": "62",
           "token": "DeleteResources"
         },
         {
           "file": "agents/typescript/src/chat.ts",
-          "line": "82",
+          "line": "95",
           "token": "DeleteResources"
         }
       ],
@@ -736,7 +751,7 @@
       "type": "convention",
       "domain": "components",
       "title": "shadcn/ui (new-york) primitives + cn() + hardcoded brand accents",
-      "summary": "UI is shadcn \"new-york\" Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the",
+      "summary": "UI is shadcn 'new-york' Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the #6766FC/#0E103D brand colors inline rather than as tokens",
       "links": [
         "nextjs-app-shell-convention"
       ],
@@ -888,7 +903,8 @@
         "agent-state-shape-contract",
         "delete-resources-hitl-contract",
         "research-chat-flow",
-        "env-and-integrations"
+        "env-and-integrations",
+        "state-persistence-convention"
       ],
       "cites": [
         {
@@ -925,6 +941,21 @@
           "file": "agents/python/src/agent.py",
           "line": "31",
           "token": "fact_check_node"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "43",
+          "token": "Literal"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "28",
+          "token": "add_edge"
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "23",
+          "token": "addConditionalEdges"
         },
         {
           "file": "agents/python/src/lib/chat.py",
@@ -1057,7 +1088,7 @@
       "type": "convention",
       "domain": "toolbox",
       "title": "The committed agent toolbox — rafa skills, harness-neutral .agents skills, the rafinery MCP server, and permissions",
-      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 7 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these), wired to the rafinery knowledge MCP over HTTP with a bearer key from env",
+      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), wired to the rafinery knowledge MCP over HTTP with a bearer key from env",
       "links": [
         "env-and-integrations"
       ],
@@ -1165,6 +1196,104 @@
         }
       ],
       "path": "brain/rules/resource-text-dominates-the-system-prompt.md"
+    },
+    {
+      "id": "state-persistence-convention",
+      "kind": "rule",
+      "type": "convention",
+      "domain": "data-persistence",
+      "title": "Nothing is persisted — resource text and graph checkpoints live in process memory, and the sqlite checkpointer deps are never used",
+      "summary": "There is no database, ORM, or client-side storage anywhere in this app: downloaded page text sits in a module-level _RESOURCE_CACHE dict and conversation state in an in-memory MemorySaver, so a backend restart silently empties both; langgraph-checkpoint-sqlite/aiosqlite are declared dependencies whose savers are never imported, and the TS agent compiles with no checkpointer at all",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-typescript-parity",
+        "agent-state-shape-contract",
+        "research-chat-flow",
+        "resource-text-dominates-the-system-prompt"
+      ],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "17",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "24",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "66",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "78",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "81",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "40",
+          "token": "LANGGRAPH_FASTAPI"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "45",
+          "token": "MemorySaver"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "47",
+          "token": "MemorySaver"
+        },
+        {
+          "file": "agents/python/src/agent.py",
+          "line": "48",
+          "token": "checkpointer"
+        },
+        {
+          "file": "agents/python/main.py",
+          "line": "12",
+          "token": "LANGGRAPH_FASTAPI"
+        },
+        {
+          "file": "agents/python/pyproject.toml",
+          "line": "24",
+          "token": "langgraph-checkpoint-sqlite"
+        },
+        {
+          "file": "agents/python/pyproject.toml",
+          "line": "25",
+          "token": "aiosqlite"
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "8",
+          "token": "MemorySaver"
+        },
+        {
+          "file": "agents/typescript/src/agent.ts",
+          "line": "33",
+          "token": "workflow.compile"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "80",
+          "token": "get_resource"
+        },
+        {
+          "file": "src/components/ResearchCanvas.tsx",
+          "line": "87",
+          "token": "setState"
+        }
+      ],
+      "path": "brain/rules/state-persistence-convention.md"
     }
   ],
   "improvements": [
@@ -1203,7 +1332,7 @@
       "lens": "architecture",
       "status": "fixed",
       "title": "Two useCoAgent hooks for the same agent seed different initialState",
-      "summary": "Main.tsx seeds the full AgentState (model, research_question, resources, report, logs) while ResearchCanvas.tsx seeds only { model } for the same agent name — a silent inconsistency where the initial shape depends on mount order",
+      "summary": "Main.tsx seeded the full AgentState (model, research_question, resources, report, logs) while ResearchCanvas.tsx seeded only { model } for the same agent name — a silent inconsistency where the initial shape depended on mount order; both now call one shared createInitialAgentState factory",
       "fix": "Share one initialState (extract a constant or seed the full shape in both) so the two hooks agree (~10 min)",
       "leverage": {
         "impact": "medium",
@@ -1212,14 +1341,19 @@
       "blastRadius": [],
       "cites": [
         {
+          "file": "src/lib/types.ts",
+          "line": "32",
+          "token": "createInitialAgentState"
+        },
+        {
           "file": "src/app/Main.tsx",
           "line": "12",
-          "token": "initialState"
+          "token": "createInitialAgentState"
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
-          "line": "23",
-          "token": "initialState"
+          "line": "24",
+          "token": "createInitialAgentState"
         }
       ],
       "path": "improve/improvements/coagent-initialstate-divergence.md"
@@ -1267,7 +1401,7 @@
       "priority": "P2",
       "category": "product",
       "lens": "product",
-      "status": "open",
+      "status": "fixed",
       "title": "App ships the default \"Create Next App\" title and description to production",
       "summary": "layout.tsx carried the create-next-app boilerplate metadata, so the browser tab, SEO, and social embeds all read \"Create Next App\" / \"Generated by create next app\" — now replaced with the real product title",
       "fix": "Set metadata.title/description in layout.tsx to the real product (\"Research Helper\") (~2 min)",
@@ -1393,7 +1527,7 @@
       "lens": "architecture",
       "status": "fixed",
       "title": "AgentState types resources/logs as any[] while concrete types exist",
-      "summary": "The frontend AgentState declares resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource is defined in the same file and a Log shape exists on the backend",
+      "summary": "The frontend AgentState declared resources and logs as any[], erasing type safety across the whole cross-process state contract even though Resource was defined in the same file and a Log shape existed on the backend; both are now concretely typed",
       "fix": "Type resources as Resource[] and add a Log type for logs in types.ts (~5 min)",
       "leverage": {
         "impact": "medium",
@@ -1403,23 +1537,86 @@
       "cites": [
         {
           "file": "src/lib/types.ts",
-          "line": "11",
-          "token": "any[]"
+          "line": "23",
+          "token": "resources: Resource[]"
         },
         {
           "file": "src/lib/types.ts",
-          "line": "12",
-          "token": "any[]"
+          "line": "24",
+          "token": "logs: Log[]"
+        },
+        {
+          "file": "src/lib/types.ts",
+          "line": "14",
+          "token": "export type Log"
         }
       ],
       "path": "improve/improvements/frontend-state-any-typing.md"
+    },
+    {
+      "id": "lgc-deployment-url-key-exfiltration",
+      "priority": "P1",
+      "category": "security",
+      "lens": "security",
+      "status": "open",
+      "title": "The SSRF guard blocks private targets but not public ones — any caller can redirect the proxy at their own host and receive LANGSMITH_API_KEY",
+      "summary": "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control",
+      "fix": "Allowlist the deployment host instead of only denying private ones — compare the parsed hostname against LGC_DEPLOYMENT_URL's host (or an explicit env allowlist) and 400 on anything else; while in page.tsx, wrap the value in encodeURIComponent (~15 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "92",
+          "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "19",
+          "token": "LANGSMITH_API_KEY"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "122",
+          "token": "deploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "123",
+          "token": "langsmithApiKey"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "81",
+          "token": "addresses.every"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "22",
+          "token": "visible to anyone via devtools"
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "40",
+          "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "24",
+          "token": "lgcDeploymentUrl"
+        }
+      ],
+      "path": "improve/improvements/lgc-deployment-url-key-exfiltration.md"
     },
     {
       "id": "lgc-deployment-url-ssrf-asymmetry",
       "priority": "P2",
       "category": "security",
       "lens": "security",
-      "status": "open",
+      "status": "fixed",
       "title": "The lgcDeploymentUrl SSRF guard checks host strings only — no DNS resolution, unlike the Python side",
       "summary": "isSafeDeploymentUrl blocked private hostnames by literal/regex pattern but never resolved DNS, so a public hostname pointing at a private/metadata IP passed and the proxy forwarded langsmithApiKey to it — now fixed; the guard resolves DNS and checks every resolved address, mirroring download.py",
       "fix": "Resolve the hostname and reject when any resolved address is private/loopback/link-local, mirroring download.py's _is_safe_url (~15 min)",
@@ -1529,6 +1726,107 @@
       "path": "improve/improvements/next-transitive-postcss-sharp-cves.md"
     },
     {
+      "id": "parallel-tool-calls-openai-only",
+      "priority": "P2",
+      "category": "correctness",
+      "lens": "correctness",
+      "status": "open",
+      "title": "parallel_tool_calls is disabled for ChatOpenAI only, but chat_node answers just tool_calls[0] for every provider",
+      "summary": "chat_node suppresses parallel tool calls by class-name check on ChatOpenAI alone, then handles the response by reading tool_calls[0] and emitting exactly one ToolMessage; on anthropic/google_genai/grok the model may return several tool calls in one message, leaving the rest without a matching tool result and the next turn rejected by the provider",
+      "fix": "Disable parallel tool calls for the other providers too (ChatAnthropic accepts it via bind_tools, Gemini via tool_config), or emit a ToolMessage for every entry in tool_calls rather than only [0] (~15 min)",
+      "leverage": {
+        "impact": "medium",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "79",
+          "token": "ChatOpenAI"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "80",
+          "token": "parallel_tool_calls"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "120",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "129",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "153",
+          "token": "tool_calls[0]"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "30",
+          "token": "ChatAnthropic"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "39",
+          "token": "ChatGoogleGenerativeAI"
+        }
+      ],
+      "path": "improve/improvements/parallel-tool-calls-openai-only.md"
+    },
+    {
+      "id": "python-resource-text-uncapped",
+      "priority": "P1",
+      "category": "performance",
+      "lens": "performance",
+      "status": "open",
+      "title": "The TypeScript agent caps resource text in the system prompt; the Python agent — the one that actually runs — does not",
+      "summary": "chat_node serialises every downloaded resource's full page text into the system prompt on every turn with no truncation and no aggregate budget, so one long article can exceed an entire per-minute token allowance in a single request and 429 unrecoverably; the TS port fixed exactly this with MAX_RESOURCE_CHARS/MAX_TOTAL_RESOURCE_CHARS, but npm run dev starts the Python backend",
+      "fix": "Port the TS caps to Python — truncate each cached page to ~8000 chars with a [truncated] marker in download.py, and budget the aggregate to ~24000 chars in chat_node's resource loop (~20 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "109",
+          "token": "{resources}"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "74",
+          "token": "resources.append"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "78",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "21",
+          "token": "MAX_TOTAL_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/typescript/src/download.ts",
+          "line": "17",
+          "token": "MAX_RESOURCE_CHARS"
+        },
+        {
+          "file": "package.json",
+          "line": "11",
+          "token": "dev:agent:py"
+        }
+      ],
+      "path": "improve/improvements/python-resource-text-uncapped.md"
+    },
+    {
       "id": "resource-cache-unbounded",
       "priority": "P3",
       "category": "performance",
@@ -1558,7 +1856,7 @@
       "lens": "correctness",
       "status": "fixed",
       "title": "search_node assumes the model always returns a tool call — an empty response kills the run",
-      "summary": "search.py indexes tool_calls[0] with no guard; if a provider ignores the forced tool_choice (or returns text/refusal), an unhandled IndexError aborts the primary research flow mid-conversation",
+      "summary": "search.py indexed tool_calls[0] with no guard; if a provider ignored the forced tool_choice (or returned text/refusal), an unhandled IndexError aborted the primary research flow mid-conversation — both indexing sites now carry an early-return guard",
       "fix": "Guard tool_calls before indexing in search_node — if empty, emit a graceful log/message and return instead of throwing (~10 min)",
       "leverage": {
         "impact": "medium",
@@ -1568,28 +1866,28 @@
       "cites": [
         {
           "file": "agents/python/src/lib/search.py",
-          "line": "66",
-          "token": "tool_calls[0]"
+          "line": "67",
+          "token": "if not ai_message.tool_calls"
         },
         {
           "file": "agents/python/src/lib/search.py",
-          "line": "130",
-          "token": "tool_calls[0]"
+          "line": "139",
+          "token": "if not ai_message_response.tool_calls"
         }
       ],
       "path": "improve/improvements/search-node-unguarded-toolcall.md"
     },
     {
       "id": "stale-model-pins",
-      "priority": "P3",
+      "priority": "P1",
       "category": "ops",
       "lens": "ops",
       "status": "open",
-      "title": "Provider model IDs are pinned to aging snapshots that will eventually deprecate",
-      "summary": "get_model pins claude-3-5-sonnet-20240620 and gemini-1.5-pro — dated snapshots that providers eventually retire, at which point the corresponding dropdown option starts failing with a provider 404/deprecation error",
-      "fix": "Refresh the anthropic/google model IDs to current snapshots (and keep the TS port in sync) (~10 min)",
+      "title": "The anthropic dropdown option is already dead — claude-3-5-sonnet-20240620 was retired and now 404s",
+      "summary": "get_model pins claude-3-5-sonnet-20240620, which Anthropic retired on 2025-10-28 and which now returns 404 on every request, so selecting the anthropic model in the picker fails at call time today — not eventually; gemini-1.5-pro is in the same aging class and both pins are duplicated verbatim in the TypeScript port",
+      "fix": "Replace the retired Anthropic pin with a current model id (claude-sonnet-5 is the documented replacement for this snapshot), re-check the Gemini pin against Google's current list, and update agents/typescript/src/model.ts in the same edit (~10 min)",
       "leverage": {
-        "impact": "low",
+        "impact": "high",
         "effort": "low"
       },
       "blastRadius": [],
@@ -1602,6 +1900,16 @@
         {
           "file": "agents/python/src/lib/model.py",
           "line": "41",
+          "token": "gemini-1.5-pro"
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "26",
+          "token": "claude-3-5-sonnet-20240620"
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "32",
           "token": "gemini-1.5-pro"
         }
       ],
@@ -1634,6 +1942,20 @@
         }
       ],
       "path": "improve/improvements/submit-message-settimeout-race.md"
+    }
+  ],
+  "drafts": [
+    {
+      "path": "brain/playbooks/index.md",
+      "error": "no frontmatter block"
+    },
+    {
+      "path": "brain/rules/index.md",
+      "error": "no frontmatter block"
+    },
+    {
+      "path": "improve/improvements/index.md",
+      "error": "no frontmatter block"
     }
   ]
 }

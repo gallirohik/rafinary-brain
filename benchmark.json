@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "measured": true,
+  "kind": "measured",
+  "repo": "gallirohik/research-canvas",
+  "codeSha": "0c96b3c",
+  "task": "summarize-sources",
+  "at": "2026-07-30T08:40:59.091Z",
+  "cold": {
+    "phases": {
+      "scope": 0,
+      "build": 96909,
+      "correction": 92268
+    },
+    "totalTokens": 189177
+  },
+  "brain": {
+    "phases": {
+      "scope": 0,
+      "build": 104708,
+      "correction": 0
+    },
+    "totalTokens": 104708
+  },
+  "ratio": 1.81,
+  "improvement": {
+    "kind": "prevented-defect",
+    "breach": "The cold agent left the new Python summarize_node injecting resource text UNCAPPED, reproducing the known 429 failure mode in a new place. It DID apply the 24k aggregate cap to the TypeScript twin — because chat.ts has a visible local example to copy — but Python has no such example, so the uncapped half was invisible to it. The brain agent ported the cap to the Python node on the first pass, citing resource-text-dominates-the-system-prompt (the contract note recording that the cap landed in TS only and Python still lags). Both agents independently got every other watched convention right, including the chat.py:43 Command[Literal[...]] routing entry, the dual-file AgentState declaration, the createInitialAgentState seed, and search_node-style tool_calls guards with ToolMessage resolution on every early-return path.",
+    "prevented": true
+  },
+  "caveat": "MEASURED on this repo — not the estimated baseline. A small repo is near the worst case for amortization; the gap widens on larger codebases (audit 2026-06-03, :90)."
+}

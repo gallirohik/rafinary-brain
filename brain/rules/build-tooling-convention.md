@@ -7,6 +7,9 @@ title: "Dev/build wiring — concurrently runs UI + Python agent; the root app A
 summary: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you"
 links: [langgraph-agent-convention, agent-typescript-parity, env-and-integrations]
 absent: workspace:*
+absent: poetry
+absent: remoteEndpoints
+absent: langGraphPlatformEndpoint
 cites:
   - package.json:9 :: concurrently
   - package.json:12 :: "dev:agent:py"
@@ -27,6 +30,9 @@ cites:
   - readme.md:60 :: cd ./ui
   - readme.md:77 :: remoteEndpoints
   - readme.md:108 :: ./agent-py
+description: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you"
+tags: [build-tooling]
+timestamp: 2026-07-28T14:39:04Z
 ---
 How the app is run and built.
 
@@ -114,23 +120,25 @@ path).
 
 # Citations
 
-[1] [package.json:9](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L9) — `concurrently`
-[2] [package.json:12](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L12) — `"dev:agent:py"`
-[3] [package.json:17](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L17) — `"@copilotkit/react-core"`
-[4] [package.json:43](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L43) — `"nx"`
-[5] [agents/typescript/package.json:13](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/package.json#L13) — `workspace:*`
-[6] [agents/python/langgraph.json:5](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/langgraph.json#L5) — `graphs`
-[7] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
-[8] [vercel.json:2](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/vercel.json#L2) — `nx run`
-[9] [next.config.mjs:3](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/next.config.mjs#L3) — `standalone`
-[10] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L41) — `PORT`
-[11] [agents/python/uv.lock:1](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/uv.lock#L1) — `version`
-[12] [package.json:13](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L13) — `uv sync`
-[13] [readme.md:24](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/readme.md#L24) — `cd agent-py`
-[14] [readme.md:25](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/readme.md#L25) — `poetry install`
-[15] [readme.md:60](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/readme.md#L60) — `cd ./ui`
-[16] [readme.md:77](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/readme.md#L77) — `remoteEndpoints`
-[17] [readme.md:108](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/readme.md#L108) — `./agent-py`
+[1] [package.json:9](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L9) — `concurrently`
+[2] [package.json:12](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L12) — `"dev:agent:py"`
+[3] [package.json:14](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L14) — `install:agent:ts`
+[4] [package.json:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L17) — `"@copilotkit/react-core"`
+[5] [package.json:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L43) — `"nx"`
+[6] [agents/typescript/package.json:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/package.json#L13) — `"@copilotkit/sdk-js"`
+[7] [agents/typescript/package.json:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/package.json#L23) — `"langchain"`
+[8] [agents/python/langgraph.json:5](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/langgraph.json#L5) — `graphs`
+[9] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
+[10] [vercel.json:2](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/vercel.json#L2) — `nx run`
+[11] [next.config.mjs:3](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/next.config.mjs#L3) — `standalone`
+[12] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L41) — `PORT`
+[13] [agents/python/uv.lock:1](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/uv.lock#L1) — `version`
+[14] [package.json:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L13) — `uv sync`
+[15] [readme.md:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L24) — `cd agent-py`
+[16] [readme.md:25](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L25) — `poetry install`
+[17] [readme.md:60](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L60) — `cd ./ui`
+[18] [readme.md:77](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L77) — `remoteEndpoints`
+[19] [readme.md:108](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L108) — `./agent-py`
 
 <!-- okf:citations:end -->
 

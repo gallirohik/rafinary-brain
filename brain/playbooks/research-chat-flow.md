@@ -8,7 +8,7 @@ summary: "Traces a user message from CopilotChat through the /api/copilotkit run
 links: [agent-name-contract, agent-state-shape-contract, copilotkit-runtime-route-convention, langgraph-agent-convention, delete-resources-hitl-contract, model-selection-flow]
 cites:
   - src/app/Main.tsx:45 :: CopilotChat
-  - src/app/api/copilotkit/route.ts:105 :: handleRequest
+  - src/app/api/copilotkit/route.ts:135 :: handleRequest
   - agents/python/src/lib/chat.py:82 :: bind_tools
   - agents/python/src/lib/chat.py:48 :: copilotkit_customize_config
   - agents/python/src/lib/chat.py:160 :: FactCheckReport
@@ -17,6 +17,9 @@ cites:
   - src/components/ResearchCanvas.tsx:27 :: useCoAgentStateRender
   - src/components/ResearchCanvas.tsx:193 :: report
   - src/components/ResearchCanvas.tsx:202 :: citations
+description: "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete/fact-check), and how tool-call intermediate state (or a direct node return, for fact-check) streams back to render the canvas, progress list, and fact-check panel"
+tags: [agent-bridge]
+timestamp: 2026-07-30T07:03:57.993Z
 ---
 The load-bearing round trip. Follow it when debugging "I typed in chat and the canvas didn't
 update" or "the report/resources/citations aren't streaming."
@@ -27,9 +30,14 @@ update" or "the report/resources/citations aren't streaming."
    [the agent-name contract](/brain/rules/agent-name-contract.md).
 
 2. **Runtime route** `POST /api/copilotkit` (`route.ts`) checks the cosmetic `x-api-key`,
-   builds a `CopilotRuntime` whose `research_agent[_google_genai]` entries proxy to the
-   backend (`LangGraphHttpAgent` → `REMOTE_ACTION_URL`, default localhost:8000), and calls
-   `handleRequest(req)` (`route.ts:105`). `EmptyAdapter` means the runtime holds no LLM.
+   then — if the caller passed `?lgcDeploymentUrl=` — validates it through
+   `isSafeDeploymentUrl` (DNS-resolving SSRF guard; **400s** on a private/loopback target
+   before any proxying), builds a `CopilotRuntime` whose `research_agent[_google_genai]`
+   entries proxy to the backend (`LangGraphHttpAgent` → `REMOTE_ACTION_URL`, default
+   localhost:8000), and calls `handleRequest(req)` (`route.ts:135-141`). `EmptyAdapter`
+   means the runtime holds no LLM. A chat that dies with a 400 rather than a stall is
+   almost always this guard — see
+   [the route convention](/brain/rules/copilotkit-runtime-route-convention.md).
 
 3. **Graph executes** (`agents/python/src/agent.py`), entry `download` → `chat_node`.
    `chat_node` (`chat.py`) loads resource contents, calls `get_model(state)`, and
@@ -69,3 +77,20 @@ config, the [state shape](/brain/rules/agent-state-shape-contract.md), or the
 [agent name](/brain/rules/agent-name-contract.md). For `citations` specifically, also check
 that `fact_check_node` actually resolved the `FactCheckReport` tool_call_id with a
 `ToolMessage` — an unresolved tool call 400s the NEXT chat turn instead of failing loudly here.
+
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [src/app/Main.tsx:45](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L45) — `CopilotChat`
+[2] [src/app/api/copilotkit/route.ts:135](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L135) — `handleRequest`
+[3] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L82) — `bind_tools`
+[4] [agents/python/src/lib/chat.py:48](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L48) — `copilotkit_customize_config`
+[5] [agents/python/src/lib/chat.py:160](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L160) — `FactCheckReport`
+[6] [agents/python/src/lib/fact_check.py:137](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L137) — `citations`
+[7] [agents/python/src/lib/search.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L81) — `copilotkit_emit_state`
+[8] [src/components/ResearchCanvas.tsx:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L27) — `useCoAgentStateRender`
+[9] [src/components/ResearchCanvas.tsx:193](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L193) — `report`
+[10] [src/components/ResearchCanvas.tsx:202](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L202) — `citations`
+
+<!-- okf:citations:end -->

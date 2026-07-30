@@ -70,11 +70,15 @@ Env var **names** and where source reads them (values never inspected; `.env*` n
   `GOOGLE_API_KEY`. It is flagged as a non-exemplar in
   [build-tooling](/brain/rules/build-tooling-convention.md); **this note is the authoritative
   env list.**
-  `ANTHROPIC_API_KEY` has **no occurrence in code** — declared `absent:` in frontmatter so
-  gate B3 re-greps it every run and the claim can't silently go stale. (Per the one docs
-  rule used throughout this brain, occurrence counts exclude markdown; `ANTHROPIC_API_KEY`
-  does appear once in a committed rafa SOP doc, `.claude/skills/rafa-distill/SKILL.md:10`,
-  which is tooling prose, not an app key read.)
+  `ANTHROPIC_API_KEY` has **no occurrence anywhere in this repository** — not in code, not
+  in docs. It is declared `absent:` in frontmatter so gate B3 re-greps it every run and the
+  claim can't silently go stale. Selecting **Anthropic** in the model dropdown therefore
+  works only if the key is supplied through the environment, where nothing in this repo
+  names it: `ChatAnthropic` reads it implicitly inside the LangChain constructor
+  (`model.py:30`), so grepping the codebase for the variable you need returns nothing. The
+  same implicit-constructor pattern covers `grok`/`ChatXAI` (`model.py:47`) — consult the
+  provider SDK for the exact variable name, because this repo never states it. That is the
+  trap this bullet exists to flag.
 
 **TS agent** (`agents/typescript/`): same `MODEL`, `GOOGLE_API_KEY` (`model.ts:33`),
 `TAVILY_API_KEY` (`search.ts:38`), plus the same implicit provider keys via its `@langchain/*`
@@ -90,20 +94,20 @@ server-only vs browser-visible is mapped in
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:25](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L25) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
-[3] [src/app/api/copilotkit/route.ts:102](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L102) — `LGC_DEPLOYMENT_URL`
-[4] [src/app/api/copilotkit/route.ts:105](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L105) — `REMOTE_ACTION_URL`
-[5] [agents/python/src/lib/model.py:19](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/model.py#L19) — `MODEL`
-[6] [agents/python/src/lib/model.py:42](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/model.py#L42) — `GOOGLE_API_KEY`
-[7] [agents/python/src/lib/model.py:26](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/model.py#L26) — `ChatOpenAI`
-[8] [agents/python/src/lib/search.py:34](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/search.py#L34) — `TAVILY_API_KEY`
-[9] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/main.py#L41) — `PORT`
-[10] [agents/typescript/src/model.ts:33](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/model.ts#L33) — `GOOGLE_API_KEY`
-[11] [agents/typescript/src/search.ts:38](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/search.ts#L38) — `TAVILY_API_KEY`
-[12] [src/app/api/copilotkit/route.ts:16](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L16) — `OPENAI_API_KEY`
-[13] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[14] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
-[15] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
+[1] [src/app/api/copilotkit/route.ts:25](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L25) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
+[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
+[3] [src/app/api/copilotkit/route.ts:102](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L102) — `LGC_DEPLOYMENT_URL`
+[4] [src/app/api/copilotkit/route.ts:105](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L105) — `REMOTE_ACTION_URL`
+[5] [agents/python/src/lib/model.py:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L19) — `MODEL`
+[6] [agents/python/src/lib/model.py:42](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L42) — `GOOGLE_API_KEY`
+[7] [agents/python/src/lib/model.py:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L26) — `ChatOpenAI`
+[8] [agents/python/src/lib/search.py:34](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L34) — `TAVILY_API_KEY`
+[9] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L41) — `PORT`
+[10] [agents/typescript/src/model.ts:33](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/model.ts#L33) — `GOOGLE_API_KEY`
+[11] [agents/typescript/src/search.ts:38](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/search.ts#L38) — `TAVILY_API_KEY`
+[12] [src/app/api/copilotkit/route.ts:16](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L16) — `OPENAI_API_KEY`
+[13] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
+[14] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
+[15] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
 
 <!-- okf:citations:end -->

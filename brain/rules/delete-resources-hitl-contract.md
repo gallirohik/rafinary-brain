@@ -14,10 +14,10 @@ cites:
   - agents/python/src/lib/chat.py:87 :: DeleteResources
   - agents/python/src/lib/chat.py:156 :: DeleteResources
   - agents/typescript/src/agent.ts:55 :: DeleteResources
-  - agents/typescript/src/chat.ts:37 :: DeleteResources
-  - agents/typescript/src/chat.ts:38 :: DeleteResources
-  - agents/typescript/src/chat.ts:57 :: DeleteResources
-  - agents/typescript/src/chat.ts:82 :: DeleteResources
+  - agents/typescript/src/chat.ts:42 :: DeleteResources
+  - agents/typescript/src/chat.ts:43 :: DeleteResources
+  - agents/typescript/src/chat.ts:62 :: DeleteResources
+  - agents/typescript/src/chat.ts:95 :: DeleteResources
 description: "The agent's DeleteResources tool routes to an interrupt, and the frontend renders the confirm dialog via useCopilotAction under the SAME string name — a mismatch means the delete never prompts and silently stalls"
 tags: [agent-bridge]
 timestamp: 2026-07-26T22:44:42.840Z
@@ -28,12 +28,12 @@ is the coupling, and it must be identical on both sides.
 
 Backend side (agent):
 - The tool is declared as a no-op `@tool` and bound to the model (`chat.py:32,87`; TS
-  `chat.ts:37-38,82`). It has no body — it exists only to be *called*, not run.
+  `chat.ts:42-43,95`). It has no body — it exists only to be *called*, not run.
 - When the model calls it, the chat node routes `goto="delete_node"` (`chat.py:156`; TS
   `agent.ts:55`), and the graph is compiled with `interrupt_after=["delete_node"]`
   (`agent.py` / `agent.ts` compile). The graph **pauses** there.
 - The TS agent additionally declares `emitToolCalls: "DeleteResources"` in the chat node's
-  CopilotKit config (`chat.ts:57`) so the pending call is streamed to the UI.
+  CopilotKit config (`chat.ts:62`) so the pending call is streamed to the UI.
 
 Frontend side:
 - `useCopilotAction({ name: "DeleteResources", available: "remote", renderAndWait: ... })`
@@ -50,14 +50,14 @@ dialog ever appears — the run hangs with no error. This is the canonical examp
 
 # Citations
 
-[1] [src/components/ResearchCanvas.tsx:38](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/components/ResearchCanvas.tsx#L38) — `DeleteResources`
-[2] [agents/python/src/lib/chat.py:32](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L32) — `DeleteResources`
-[3] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L87) — `DeleteResources`
-[4] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L156) — `DeleteResources`
-[5] [agents/typescript/src/agent.ts:55](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/agent.ts#L55) — `DeleteResources`
-[6] [agents/typescript/src/chat.ts:37](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/chat.ts#L37) — `DeleteResources`
-[7] [agents/typescript/src/chat.ts:38](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/chat.ts#L38) — `DeleteResources`
-[8] [agents/typescript/src/chat.ts:57](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/chat.ts#L57) — `DeleteResources`
-[9] [agents/typescript/src/chat.ts:82](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/chat.ts#L82) — `DeleteResources`
+[1] [src/components/ResearchCanvas.tsx:38](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L38) — `DeleteResources`
+[2] [agents/python/src/lib/chat.py:32](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L32) — `DeleteResources`
+[3] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L87) — `DeleteResources`
+[4] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L156) — `DeleteResources`
+[5] [agents/typescript/src/agent.ts:55](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L55) — `DeleteResources`
+[6] [agents/typescript/src/chat.ts:42](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L42) — `DeleteResources`
+[7] [agents/typescript/src/chat.ts:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L43) — `DeleteResources`
+[8] [agents/typescript/src/chat.ts:62](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L62) — `DeleteResources`
+[9] [agents/typescript/src/chat.ts:95](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L95) — `DeleteResources`
 
 <!-- okf:citations:end -->

@@ -17,6 +17,7 @@ found: 2026-07-27
 type: Improvement
 description: "The exact-pinned direct dependency next@15.5.15 has 21 OSV advisories against it (10 high / 9 moderate / 2 low), spanning middleware-bypass, SSRF in Server Actions and rewrites, cache poisoning, XSS and DoS; every one is cleared by upgrading to >= 16.2.11"
 timestamp: 2026-07-27
+tags: [security, P1]
 ---
 Source: `npx @rafinery/cli audit --json` (`rafa.audit/v1`, run 2026-07-26), dependency tier —
 tool `osv-api+pnpm-audit (pnpm-lock.yaml)`. Machine-sourced; not re-guessed.
@@ -75,8 +76,8 @@ levers available in the meantime.
 
 # Citations
 
-[1] [package.json:27](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L27) — `next`
-[2] [pnpm-lock.yaml:2816](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/pnpm-lock.yaml#L2816) — `next@15.5.15`
-[3] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L86) — `export const POST`
+[1] [package.json:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L27) — `next`
+[2] [pnpm-lock.yaml:2816](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L2816) — `next@15.5.15`
+[3] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L86) — `export const POST`
 
 <!-- okf:citations:end -->
