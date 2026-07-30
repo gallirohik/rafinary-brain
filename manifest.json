@@ -1,9 +1,57 @@
 {
   "schemaVersion": 1,
-  "codeSha": "0c96b3c1289772846eae57f8768be579cc7d8fe4",
+  "codeSha": "cdd463ba519f6da63d04b45d31da5f4f254d0790",
   "branch": "main",
   "health": {
     "verdict": "PASS"
+  },
+  "coverage": {
+    "domains": [
+      {
+        "domain": "agent-bridge",
+        "status": "mapped"
+      },
+      {
+        "domain": "agent-python",
+        "status": "mapped"
+      },
+      {
+        "domain": "agent-typescript",
+        "status": "mapped"
+      },
+      {
+        "domain": "build-tooling",
+        "status": "mapped"
+      },
+      {
+        "domain": "components",
+        "status": "mapped"
+      },
+      {
+        "domain": "data-persistence",
+        "status": "mapped"
+      },
+      {
+        "domain": "external-integrations",
+        "status": "mapped"
+      },
+      {
+        "domain": "routing-app-shell",
+        "status": "mapped"
+      },
+      {
+        "domain": "security",
+        "status": "mapped"
+      },
+      {
+        "domain": "state",
+        "status": "mapped"
+      },
+      {
+        "domain": "toolbox",
+        "status": "mapped"
+      }
+    ]
   },
   "notes": [
     {
