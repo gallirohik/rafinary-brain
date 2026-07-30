@@ -5,7 +5,7 @@ type: convention
 domain: agent-typescript
 title: The TypeScript agent is an alternate port of the Python agent (not run by default)
 summary: agents/typescript mirrors an OLDER Python graph with @langchain/langgraph — 5 nodes, no fact_check_node, no citations state; it is a lightly-used alternate that npm run dev does NOT start, so treat Python as the source of truth and expect the port to lag
-links: [langgraph-agent-convention, agent-state-shape-contract, build-tooling-convention]
+links: [langgraph-agent-convention, agent-state-shape-contract, build-tooling-convention, state-persistence-convention]
 cites:
   - agents/typescript/src/agent.ts:15 :: StateGraph
   - agents/typescript/src/agent.ts:23 :: addConditionalEdges
@@ -34,12 +34,16 @@ the source of truth; the TS port lags.
 decision, "Python-only for now", not accidental rot):
 - **No `fact_check_node`.** Python's graph has six nodes; the TS graph has five
   (`agent.ts:15-34`). There is no `FactCheckReport` tool in `chat.ts` — its `bindTools`
-  list stops at `DeleteResources` (`chat.ts:82`).
+  call (`chat.ts:94`) passes a list that stops at `DeleteResources` (`chat.ts:95`).
 - **No `citations` in state.** `AgentStateAnnotation` (`state.ts:19-26`) declares only
   `model`, `research_question`, `report`, `resources`, `logs` — see
   [the state shape contract](/brain/rules/agent-state-shape-contract.md).
 - If you wire the TS agent back in as the live backend, the frontend's Fact Check panel
   simply never renders (the `state.citations` guard stays false) — silently, no error.
+- **No checkpointer.** `agent.ts:8` imports `MemorySaver` and never uses it; the graph
+  compiles with only `interruptAfter`. Python attaches one
+  (`agent.py:48`), so the delete interrupt is resumable there and **not** here — see
+  [state-persistence-convention](/brain/rules/state-persistence-convention.md).
 
 **Structural differences worth knowing** (the port is not line-identical):
 - Graph edges use `addConditionalEdges("chat_node", route, [...])` with a standalone `route`
@@ -54,17 +58,17 @@ decision, "Python-only for now", not accidental rot):
 Everything in [the LangGraph agent convention](/brain/rules/langgraph-agent-convention.md)
 (no-op tool schemas, get_model routing, SSRF-guarded download, Tavily search) applies here
 too, in TS form. The empty-`tool_calls` guards added to `search_node` DO exist in the TS
-port (`search.ts:53`, `search.ts:148-150`) — that fix was mirrored; fact-check was not.
+port (`search.ts:53`, `search.ts:157`) — that fix was mirrored; fact-check was not.
 
 <!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
 
 # Citations
 
-[1] [agents/typescript/src/agent.ts:15](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/agent.ts#L15) — `StateGraph`
-[2] [agents/typescript/src/agent.ts:23](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/agent.ts#L23) — `addConditionalEdges`
-[3] [agents/typescript/src/agent.ts:34](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/agent.ts#L34) — `interruptAfter`
-[4] [agents/typescript/src/model.ts:20](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/model.ts#L20) — `openai`
-[5] [agents/typescript/src/model.ts:40](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/model.ts#L40) — `throw new Error`
-[6] [agents/typescript/src/state.ts:19](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/typescript/src/state.ts#L19) — `AgentStateAnnotation`
+[1] [agents/typescript/src/agent.ts:15](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L15) — `StateGraph`
+[2] [agents/typescript/src/agent.ts:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L23) — `addConditionalEdges`
+[3] [agents/typescript/src/agent.ts:34](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L34) — `interruptAfter`
+[4] [agents/typescript/src/model.ts:20](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/model.ts#L20) — `openai`
+[5] [agents/typescript/src/model.ts:40](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/model.ts#L40) — `throw new Error`
+[6] [agents/typescript/src/state.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L19) — `AgentStateAnnotation`
 
 <!-- okf:citations:end -->

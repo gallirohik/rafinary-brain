@@ -16,6 +16,7 @@ found: 2026-07-20
 type: Improvement
 description: "layout.tsx loads Geist Sans + Geist Mono via next/font/local and wires the CSS variables, but globals.css sets body font-family to Arial, so the loaded fonts never apply to body text — dead weight plus off-brand typography"
 timestamp: 2026-07-20
+tags: [product, P3]
 ---
 `layout.tsx:6-15` loads two local Geist fonts via `next/font/local` and exposes them as
 `--font-geist-sans` / `--font-geist-mono` on `<body>` ([nextjs-app-shell-convention]
@@ -35,7 +36,7 @@ wins on specificity/order against the token layer — moving it inside the layer
 
 # Citations
 
-[1] [src/app/globals.css:6](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/globals.css#L6) — `Arial`
-[2] [src/app/layout.tsx:6](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/layout.tsx#L6) — `localFont`
+[1] [src/app/globals.css:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/globals.css#L6) — `Arial`
+[2] [src/app/layout.tsx:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/layout.tsx#L6) — `localFont`
 
 <!-- okf:citations:end -->

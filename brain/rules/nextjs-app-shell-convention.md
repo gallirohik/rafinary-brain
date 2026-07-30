@@ -49,10 +49,10 @@ no `[params]`, no additional `page.tsx` files. Orientation:
 
 # Citations
 
-[1] [src/app/layout.tsx:22](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/layout.tsx#L22) — `RootLayout`
-[2] [src/app/layout.tsx:6](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/layout.tsx#L6) — `localFont`
-[3] [src/app/page.tsx:1](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L1) — `"use client"`
-[4] [src/app/Main.tsx:8](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/Main.tsx#L8) — `Main`
-[5] [src/app/globals.css:15](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/globals.css#L15) — `@layer base`
+[1] [src/app/layout.tsx:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/layout.tsx#L22) — `RootLayout`
+[2] [src/app/layout.tsx:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/layout.tsx#L6) — `localFont`
+[3] [src/app/page.tsx:1](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L1) — `"use client"`
+[4] [src/app/Main.tsx:8](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L8) — `Main`
+[5] [src/app/globals.css:15](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/globals.css#L15) — `@layer base`
 
 <!-- okf:citations:end -->

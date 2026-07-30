@@ -71,16 +71,16 @@ for every key this route reads.
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:18](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L18) — `EmptyAdapter`
-[2] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L86) — `POST`
-[3] [src/app/api/copilotkit/route.ts:105](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L105) — `REMOTE_ACTION_URL`
-[4] [src/app/api/copilotkit/route.ts:107](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L107) — `CopilotRuntime`
-[5] [src/app/api/copilotkit/route.ts:135](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L135) — `copilotRuntimeNextJSAppRouterEndpoint`
-[6] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
-[7] [src/app/api/copilotkit/route.ts:74](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L74) — `dns.lookup`
-[8] [src/app/page.tsx:28](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L28) — `CopilotKit`
-[9] [src/app/page.tsx:29](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/page.tsx#L29) — `runtimeUrl`
-[10] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
-[11] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
+[1] [src/app/api/copilotkit/route.ts:18](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L18) — `EmptyAdapter`
+[2] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L86) — `POST`
+[3] [src/app/api/copilotkit/route.ts:105](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L105) — `REMOTE_ACTION_URL`
+[4] [src/app/api/copilotkit/route.ts:107](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L107) — `CopilotRuntime`
+[5] [src/app/api/copilotkit/route.ts:135](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L135) — `copilotRuntimeNextJSAppRouterEndpoint`
+[6] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
+[7] [src/app/api/copilotkit/route.ts:74](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L74) — `dns.lookup`
+[8] [src/app/page.tsx:28](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L28) — `CopilotKit`
+[9] [src/app/page.tsx:29](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L29) — `runtimeUrl`
+[10] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
+[11] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
 
 <!-- okf:citations:end -->

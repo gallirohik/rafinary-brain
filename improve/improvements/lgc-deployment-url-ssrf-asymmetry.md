@@ -20,6 +20,7 @@ fixed: 2026-07-26
 type: Improvement
 description: "isSafeDeploymentUrl blocked private hostnames by literal/regex pattern but never resolved DNS, so a public hostname pointing at a private/metadata IP passed and the proxy forwarded langsmithApiKey to it — now fixed; the guard resolves DNS and checks every resolved address, mirroring download.py"
 timestamp: 2026-07-20
+tags: [security, P2]
 ---
 `isSafeDeploymentUrl` is the guard that keeps the runtime proxy — which carries
 `langsmithApiKey` (`route.ts:19`) — from being redirected at internal hosts
@@ -55,10 +56,10 @@ string check — that is the exact regression this row records.
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
-[2] [src/app/api/copilotkit/route.ts:74](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L74) — `dns.lookup`
-[3] [src/app/api/copilotkit/route.ts:29](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L29) — `isPrivateIPv4`
-[4] [src/app/api/copilotkit/route.ts:43](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L43) — `isPrivateIPv6`
-[5] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L41) — `getaddrinfo`
+[1] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
+[2] [src/app/api/copilotkit/route.ts:74](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L74) — `dns.lookup`
+[3] [src/app/api/copilotkit/route.ts:29](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L29) — `isPrivateIPv4`
+[4] [src/app/api/copilotkit/route.ts:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L43) — `isPrivateIPv6`
+[5] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L41) — `getaddrinfo`
 
 <!-- okf:citations:end -->

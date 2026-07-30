@@ -16,6 +16,9 @@ cites:
   - agents/python/src/lib/chat.py:109 :: {resources}
   - agents/python/src/lib/chat.py:74 :: resources.append
   - agents/python/src/lib/download.py:78 :: _RESOURCE_CACHE
+description: "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT"
+tags: [agent-bridge]
+timestamp: 2026-07-28T14:39:04Z
 ---
 
 The research agents do not summarise their sources. Each `chat_node` walks
@@ -75,3 +78,17 @@ reference implementation to port, not as the fix.
 `report` and the accumulated `state.messages` are also injected in full each
 turn. Resources are the dominant term, not the sole one — if prompt size still
 grows after capping resources, look there next.
+
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [agents/typescript/src/chat.ts:114](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L114) — `JSON.stringify(resources)`
+[2] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
+[3] [agents/typescript/src/chat.ts:73](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L73) — `MAX_TOTAL_RESOURCE_CHARS`
+[4] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
+[5] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L109) — `{resources}`
+[6] [agents/python/src/lib/chat.py:74](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L74) — `resources.append`
+[7] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
+
+<!-- okf:citations:end -->

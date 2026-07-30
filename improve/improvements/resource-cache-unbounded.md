@@ -15,6 +15,7 @@ found: 2026-07-20
 type: Improvement
 description: "Downloaded page content is memoized in a module-level dict that is never evicted or size-capped, so a long-running agent process accumulates every fetched URL's full markdown in memory"
 timestamp: 2026-07-20
+tags: [performance, P3]
 ---
 `_RESOURCE_CACHE` (`download.py:17`) memoizes each fetched URL's full HTML-to-markdown body
 keyed by URL, and is written on every successful (or errored) download (`download.py:66,78,81`).
@@ -34,6 +35,6 @@ claim".
 
 # Citations
 
-[1] [agents/python/src/lib/download.py:17](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L17) — `_RESOURCE_CACHE`
+[1] [agents/python/src/lib/download.py:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L17) — `_RESOURCE_CACHE`
 
 <!-- okf:citations:end -->

@@ -18,6 +18,7 @@ found: 2026-07-27
 type: Improvement
 description: "The CopilotKit runtime that backs the app's only server route pulls uuid@10.0.0 (missing buffer bounds check), @hono/node-server@1.19.15 (Windows path traversal in serve-static) and @ai-sdk/provider-utils@3.0.30 (uncontrolled resource consumption, no fix published); the caret range on @copilotkit/runtime means a lockfile refresh may clear the first two"
 timestamp: 2026-07-27
+tags: [security, P2]
 ---
 Source: `npx @rafinery/cli audit --json` (`rafa.audit/v1`, run 2026-07-26), dependency tier.
 Machine-sourced from the envelope.
@@ -69,9 +70,9 @@ than at install time.
 
 # Citations
 
-[1] [package.json:19](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L19) — `@copilotkit/runtime`
-[2] [pnpm-lock.yaml:3669](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/pnpm-lock.yaml#L3669) — `uuid@10.0.0`
-[3] [pnpm-lock.yaml:438](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/pnpm-lock.yaml#L438) — `'@hono/node-server@1.19.15'`
-[4] [src/app/api/copilotkit/route.ts:7](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/api/copilotkit/route.ts#L7) — `@copilotkit/runtime`
+[1] [package.json:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L19) — `@copilotkit/runtime`
+[2] [pnpm-lock.yaml:3669](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L3669) — `uuid@10.0.0`
+[3] [pnpm-lock.yaml:438](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L438) — `'@hono/node-server@1.19.15'`
+[4] [src/app/api/copilotkit/route.ts:7](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L7) — `@copilotkit/runtime`
 
 <!-- okf:citations:end -->

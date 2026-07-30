@@ -18,6 +18,7 @@ found: 2026-07-27
 type: Improvement
 description: "Two packages resolved transitively through next@15.5.15 are vulnerable — postcss 8.4.31 (arbitrary file read, path traversal in source-map auto-loading, XSS in stringify output) and sharp 0.34.5 (inherited libvips CVEs); both are fixable now with a pnpm override, without waiting on the next 15 -> 16 major"
 timestamp: 2026-07-27
+tags: [security, P1]
 ---
 Source: `npx @rafinery/cli audit --json` (`rafa.audit/v1`, run 2026-07-26), dependency tier.
 Machine-sourced from the envelope.
@@ -65,9 +66,9 @@ deferred, take the override now: it retires 4 of the 28 findings for ~15 minutes
 
 # Citations
 
-[1] [pnpm-lock.yaml:3045](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/pnpm-lock.yaml#L3045) — `postcss@8.4.31`
-[2] [pnpm-lock.yaml:3349](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/pnpm-lock.yaml#L3349) — `sharp@0.34.5`
-[3] [package.json:39](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/package.json#L39) — `postcss`
-[4] [postcss.config.mjs:4](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/postcss.config.mjs#L4) — `tailwindcss`
+[1] [pnpm-lock.yaml:3045](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L3045) — `postcss@8.4.31`
+[2] [pnpm-lock.yaml:3349](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L3349) — `sharp@0.34.5`
+[3] [package.json:39](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L39) — `postcss`
+[4] [postcss.config.mjs:4](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/postcss.config.mjs#L4) — `tailwindcss`
 
 <!-- okf:citations:end -->

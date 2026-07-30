@@ -12,6 +12,9 @@ cites:
   - src/lib/model-selector-provider.tsx:42 :: research_agent
   - src/app/Main.tsx:12 :: model
   - agents/python/src/lib/model.py:18 :: state.get
+description: "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph"
+tags: [agent-bridge]
+timestamp: 2026-07-26T23:55:19Z
 ---
 A subtle flow worth getting right before you "fix a broken model option."
 
@@ -42,3 +45,14 @@ model failing is far more likely a missing provider API key (see
 [env-and-integrations](/brain/rules/env-and-integrations.md)) than a wiring gap. Don't
 "remove the dead options" — verify the keys first.
 
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [src/components/ModelSelector.tsx:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ModelSelector.tsx#L23) — `openai`
+[2] [src/lib/model-selector-provider.tsx:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/model-selector-provider.tsx#L27) — `coAgentsModel`
+[3] [src/lib/model-selector-provider.tsx:42](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/model-selector-provider.tsx#L42) — `research_agent`
+[4] [src/app/Main.tsx:12](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L12) — `model`
+[5] [agents/python/src/lib/model.py:18](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L18) — `state.get`
+
+<!-- okf:citations:end -->

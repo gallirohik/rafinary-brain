@@ -16,6 +16,7 @@ found: 2026-07-20
 type: Improvement
 description: "onSubmitMessage clears coagent logs then awaits an arbitrary 30ms setTimeout to let the state flush before the run starts — a timing hack that can race on a slow render and leave stale logs visible for the first frames"
 timestamp: 2026-07-20
+tags: [correctness, P3]
 ---
 On chat submit (`Main.tsx:47-51`) the handler clears the coagent `logs`
 (`setState({ ...state, logs: [] })`, `Main.tsx:49`) then `await`s a hardcoded
@@ -31,7 +32,7 @@ silent (works most of the time), so nothing flags it. Prefer sequencing off the 
 
 # Citations
 
-[1] [src/app/Main.tsx:49](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/Main.tsx#L49) — `setState`
-[2] [src/app/Main.tsx:50](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/Main.tsx#L50) — `setTimeout`
+[1] [src/app/Main.tsx:49](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L49) — `setState`
+[2] [src/app/Main.tsx:50](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L50) — `setTimeout`
 
 <!-- okf:citations:end -->

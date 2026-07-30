@@ -20,6 +20,7 @@ found: 2026-07-27
 type: Improvement
 description: "_download_resource writes the literal string 'ERROR' into _RESOURCE_CACHE on any failure, but download_node's re-download test is `if not get_resource(url)` — 'ERROR' is a non-empty (truthy) string, so one transient network blip permanently poisons that resource for the life of the process while the UI reports the download as done"
 timestamp: 2026-07-27
+tags: [correctness, P1]
 ---
 `_download_resource` uses the literal string `"ERROR"` as a failure sentinel in
 `_RESOURCE_CACHE` — written on SSRF rejection (`download.py:66`) and on **any** exception at
@@ -70,11 +71,11 @@ This row is about *permanent failure caching* — different defect, same dict.
 
 # Citations
 
-[1] [agents/python/src/lib/download.py:97](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L97) — `if not get_resource`
-[2] [agents/python/src/lib/download.py:24](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L24) — `_RESOURCE_CACHE.get`
-[3] [agents/python/src/lib/download.py:66](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L66) — `"ERROR"`
-[4] [agents/python/src/lib/download.py:81](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/download.py#L81) — `"ERROR"`
-[5] [agents/python/src/lib/chat.py:72](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L72) — `content == "ERROR"`
-[6] [agents/python/src/lib/fact_check.py:81](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/fact_check.py#L81) — `("", "ERROR")`
+[1] [agents/python/src/lib/download.py:97](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L97) — `if not get_resource`
+[2] [agents/python/src/lib/download.py:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L24) — `_RESOURCE_CACHE.get`
+[3] [agents/python/src/lib/download.py:66](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L66) — `"ERROR"`
+[4] [agents/python/src/lib/download.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L81) — `"ERROR"`
+[5] [agents/python/src/lib/chat.py:72](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L72) — `content == "ERROR"`
+[6] [agents/python/src/lib/fact_check.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L81) — `("", "ERROR")`
 
 <!-- okf:citations:end -->

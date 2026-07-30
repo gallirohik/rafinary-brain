@@ -24,16 +24,23 @@ Adding a tool means touching a few coordinated sites. Pick the pattern by what t
 2. Add it to the `bind_tools([...])` list in the chat node (`chat.py:82-89`).
 3. Handle its call: inspect `ai_message.tool_calls[0]["name"]` and either update state or
    route to a node (`chat.py:152-162` shows the `goto` dispatch chain; `:156` is the
-   `DeleteResources` branch). Add a graph node + edges in `agent.py` if it needs its own
-   step. **Always guard `tool_calls` before indexing `[0]`** — a provider can return no
+   `DeleteResources` branch). If it needs its own step, add the node in `agent.py`
+   (`add_node`) **and — the step that is easy to miss — add the node name to
+   `chat_node`'s return annotation at `chat.py:43`**,
+   `Command[Literal[..., "__end__"]]`. That `Literal` is the *only* declaration of
+   `chat_node`'s legal destinations; `agent.py` carries no `add_conditional_edges` at all.
+   Omit it and the `goto` silently fails to route — no mypy, no tests, no CI will catch it
+   (see [langgraph-agent-convention](/brain/rules/langgraph-agent-convention.md)). Static
+   edges into/out of your node still go in `agent.py` via `add_edge`.
+   **Always guard `tool_calls` before indexing `[0]`** — a provider can return no
    tool call even under forced `tool_choice`; `search_node` learned this the hard way and
    now guards both sites, and any node that resolves a caller's `tool_call_id` must still
    append the matching `ToolMessage` on the early-return path or the NEXT chat turn 400s.
    **Copy `search_node` (`search.py:67,139`), NOT `fact_check_node`** — the newest node is
    the one that breaks this rule: it indexes the incoming `ai_message.tool_calls[0]["id"]`
    unguarded at `fact_check.py:65`, `:114`, `:129` and `:141` (its only guard, `:126`,
-   covers the forced *response*, not the incoming call). Details and the per-node table are
-   in [langgraph-agent-convention](/brain/rules/langgraph-agent-convention.md).
+   covers the forced *response*, not the incoming call). The node-by-node context is in
+   [langgraph-agent-convention](/brain/rules/langgraph-agent-convention.md).
 4. Decide explicitly about the **TypeScript** agent. Python is the live backend; the TS port
    is an accepted-lagging alternate that already lacks `FactCheckReport` and `citations`
    ([agent parity](/brain/rules/agent-typescript-parity.md)). Mirror the tool there if you
@@ -61,10 +68,10 @@ prompts.
 
 # Citations
 
-[1] [agents/python/src/lib/chat.py:16](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L16) — `@tool`
-[2] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L82) — `bind_tools`
-[3] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L156) — `DeleteResources`
-[4] [agents/python/src/lib/chat.py:52](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/chat.py#L52) — `state_key`
-[5] [src/components/ResearchCanvas.tsx:37](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/components/ResearchCanvas.tsx#L37) — `useCopilotAction`
+[1] [agents/python/src/lib/chat.py:16](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L16) — `@tool`
+[2] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L82) — `bind_tools`
+[3] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L156) — `DeleteResources`
+[4] [agents/python/src/lib/chat.py:52](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L52) — `state_key`
+[5] [src/components/ResearchCanvas.tsx:37](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L37) — `useCopilotAction`
 
 <!-- okf:citations:end -->

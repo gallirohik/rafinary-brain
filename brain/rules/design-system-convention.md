@@ -4,7 +4,7 @@ id: design-system-convention
 type: convention
 domain: components
 title: shadcn/ui (new-york) primitives + cn() + hardcoded brand accents
-summary: UI is shadcn "new-york" Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the #6766FC/#0E103D brand colors inline rather than as tokens
+summary: "UI is shadcn 'new-york' Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the #6766FC/#0E103D brand colors inline rather than as tokens"
 links: [nextjs-app-shell-convention]
 cites:
   - components.json:3 :: new-york
@@ -15,7 +15,7 @@ cites:
   - src/components/AddResourceDialog.tsx:35 :: #6766FC
   - src/app/Main.tsx:21 :: #0E103D
   - src/components/ResearchCanvas.tsx:1 :: "use client"
-description: "UI is shadcn 'new-york' Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the"
+description: "UI is shadcn 'new-york' Radix primitives in components/ui with CSS-variable tokens and the cn() merge helper; feature components layer on top but hardcode the #6766FC/#0E103D brand colors inline rather than as tokens"
 tags: [components]
 timestamp: 2026-07-26T22:44:42.840Z
 ---
@@ -54,13 +54,13 @@ theme change won't touch them. If you restyle, grep the raw hex, don't just edit
 
 # Citations
 
-[1] [components.json:3](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/components.json#L3) — `new-york`
-[2] [src/components/ui/button.tsx:7](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/components/ui/button.tsx#L7) — `buttonVariants`
-[3] [src/lib/utils.ts:4](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/lib/utils.ts#L4) — `cn`
-[4] [tailwind.config.ts:13](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/tailwind.config.ts#L13) — `hsl(var(--background))`
-[5] [src/app/globals.css:41](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/globals.css#L41) — `--radius`
-[6] [src/components/AddResourceDialog.tsx:35](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/components/AddResourceDialog.tsx#L35) — `#6766FC`
-[7] [src/app/Main.tsx:21](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/app/Main.tsx#L21) — `#0E103D`
-[8] [src/components/ResearchCanvas.tsx:1](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/src/components/ResearchCanvas.tsx#L1) — `"use client"`
+[1] [components.json:3](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/components.json#L3) — `new-york`
+[2] [src/components/ui/button.tsx:7](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ui/button.tsx#L7) — `buttonVariants`
+[3] [src/lib/utils.ts:4](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/utils.ts#L4) — `cn`
+[4] [tailwind.config.ts:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/tailwind.config.ts#L13) — `hsl(var(--background))`
+[5] [src/app/globals.css:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/globals.css#L41) — `--radius`
+[6] [src/components/AddResourceDialog.tsx:35](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/AddResourceDialog.tsx#L35) — `#6766FC`
+[7] [src/app/Main.tsx:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L21) — `#0E103D`
+[8] [src/components/ResearchCanvas.tsx:1](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L1) — `"use client"`
 
 <!-- okf:citations:end -->

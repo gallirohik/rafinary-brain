@@ -20,6 +20,7 @@ found: 2026-07-27
 type: Improvement
 description: "search_node and perform_delete_node both check `if ai_message.tool_calls` before indexing, but fact_check_node — the newest node — reads ai_message.tool_calls[0]['id'] at four sites with no guard, so any path that reaches it without a live tool call raises IndexError and aborts the graph run"
 timestamp: 2026-07-27
+tags: [correctness, P2]
 ---
 The repo has an explicit defensive convention — *never index `tool_calls[0]` unguarded*,
 because forced `tool_choice` is not honored identically by the four providers the app offers
@@ -64,11 +65,11 @@ means the port inherits the guarded shape rather than the drifted one.
 
 # Citations
 
-[1] [agents/python/src/lib/fact_check.py:65](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/fact_check.py#L65) — `tool_calls[0]`
-[2] [agents/python/src/lib/fact_check.py:114](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/fact_check.py#L114) — `tool_calls[0]`
-[3] [agents/python/src/lib/fact_check.py:129](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/fact_check.py#L129) — `tool_calls[0]`
-[4] [agents/python/src/lib/fact_check.py:141](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/fact_check.py#L141) — `tool_calls[0]`
-[5] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
-[6] [agents/python/src/lib/delete.py:26](https://github.com/gallirohik/research-canvas/blob/c31971e8a2b5a4992aee13917704e47e492369d7/agents/python/src/lib/delete.py#L26) — `if ai_message.tool_calls`
+[1] [agents/python/src/lib/fact_check.py:65](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L65) — `tool_calls[0]`
+[2] [agents/python/src/lib/fact_check.py:114](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L114) — `tool_calls[0]`
+[3] [agents/python/src/lib/fact_check.py:129](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L129) — `tool_calls[0]`
+[4] [agents/python/src/lib/fact_check.py:141](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L141) — `tool_calls[0]`
+[5] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
+[6] [agents/python/src/lib/delete.py:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/delete.py#L26) — `if ai_message.tool_calls`
 
 <!-- okf:citations:end -->

@@ -7,6 +7,7 @@ title: "AgentState is a cross-process shape shared by the frontend and both agen
 summary: "Six fields (model, research_question, report, resources, logs, citations) are defined across the TS frontend type and the Python agent; citations is Python+frontend ONLY (the TS agent's state.ts intentionally lags, verifiable-report plan decision) — a field the backend emits but the frontend doesn't expect (or vice versa) simply doesn't render"
 links: [agent-name-contract, research-chat-flow, copilotkit-runtime-route-convention]
 anchor: none  # cross-process shape — the FIELD SET is the contract, not one greppable token
+failure: silent
 cites:
   - src/lib/types.ts:19 :: AgentState
   - src/lib/types.ts:21 :: research_question
@@ -21,6 +22,9 @@ cites:
   - agents/typescript/src/state.ts:19 :: AgentStateAnnotation
   - agents/typescript/src/state.ts:21 :: research_question
   - agents/typescript/src/state.ts:24 :: logs
+description: "Six fields (model, research_question, report, resources, logs, citations) are defined across the TS frontend type and the Python agent; citations is Python+frontend ONLY (the TS agent's state.ts intentionally lags, verifiable-report plan decision) — a field the backend emits but the frontend doesn't expect (or vice versa) simply doesn't render"
+tags: [state]
+timestamp: 2026-07-30T07:03:57.993Z
 ---
 The coagent's shared state is the wire format between the LangGraph backend and the React
 frontend. CopilotKit streams the graph's state object straight into the `useCoAgent` hook's
@@ -61,3 +65,23 @@ returns it, rather than streaming it progressively as a tool argument (there's n
 tool-argument shape to map; the whole claims list lands at once). Renaming any field is now
 a multi-place change (frontend type + Python agent + emit configs for the streamed fields);
 `anchor: none` because the contract is the field SET, not a single token.
+
+<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+
+# Citations
+
+[1] [src/lib/types.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L19) — `AgentState`
+[2] [src/lib/types.ts:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L21) — `research_question`
+[3] [src/lib/types.ts:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L22) — `report`
+[4] [src/lib/types.ts:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L23) — `resources`
+[5] [src/lib/types.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L24) — `logs`
+[6] [src/lib/types.ts:25](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L25) — `citations`
+[7] [agents/python/src/lib/state.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L41) — `AgentState`
+[8] [agents/python/src/lib/state.py:48](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L48) — `research_question`
+[9] [agents/python/src/lib/state.py:51](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L51) — `logs`
+[10] [agents/python/src/lib/state.py:52](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L52) — `citations`
+[11] [agents/typescript/src/state.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L19) — `AgentStateAnnotation`
+[12] [agents/typescript/src/state.ts:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L21) — `research_question`
+[13] [agents/typescript/src/state.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L24) — `logs`
+
+<!-- okf:citations:end -->
