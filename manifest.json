@@ -4,9 +4,78 @@
   "codeSha": "5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c",
   "branch": "fix/resource-text-normative",
   "provenance": {
-    "agentCommits": 0
+    "agentCommits": 1,
+    "commitsCovered": [
+      "5c5be037738c"
+    ],
+    "lastAgentRun": {
+      "at": "2026-08-01T03:51:49+05:30",
+      "codeSha": "5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c",
+      "actor": {
+        "model": "mechanical",
+        "agent": "cli@0.18.3",
+        "runner": "session"
+      }
+    }
   },
-  "base": null,
-  "notes": [],
+  "base": {
+    "brainSha": "a527a0b33c8822856953540613c9d82d2188301a"
+  },
+  "notes": [
+    {
+      "id": "resource-text-dominates-the-system-prompt",
+      "kind": "rule",
+      "type": "contract",
+      "domain": "agent-bridge",
+      "title": "Every resource's full page text is re-sent in the system prompt on every turn — capped in TypeScript, still uncapped in Python",
+      "summary": "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT. Rule: any new node that injects resource text into a prompt MUST budget it (per-resource and aggregate caps, like MAX_TOTAL_RESOURCE_CHARS in the TypeScript agent) — the missing Python cap is an open P1 improvement, not permission to skip the cap",
+      "links": [
+        "langgraph-agent-convention",
+        "agent-typescript-parity",
+        "research-chat-flow"
+      ],
+      "cites": [
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "114",
+          "token": "JSON.stringify(resources)"
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "21",
+          "token": "MAX_TOTAL_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "73",
+          "token": "MAX_TOTAL_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/typescript/src/download.ts",
+          "line": "17",
+          "token": "MAX_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "109",
+          "token": "{resources}"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "74",
+          "token": "resources.append"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "78",
+          "token": "_RESOURCE_CACHE"
+        }
+      ],
+      "path": "brain/rules/resource-text-dominates-the-system-prompt.md",
+      "provenance": {
+        "baseBrainSha": "a527a0b33c8822856953540613c9d82d2188301a"
+      }
+    }
+  ],
   "improvements": []
 }
