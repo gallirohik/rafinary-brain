@@ -43,10 +43,10 @@ because provider nesting is a composition contract, not a greppable token.
 
 # Citations
 
-[1] [src/app/page.tsx:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L13) — `ModelSelectorProvider`
-[2] [src/app/page.tsx:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L21) — `useModelSelectorContext`
-[3] [src/app/page.tsx:28](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L28) — `CopilotKit`
-[4] [src/app/page.tsx:36](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L36) — `Main`
-[5] [src/lib/model-selector-provider.tsx:66](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/model-selector-provider.tsx#L66) — `throw new Error`
+[1] [src/app/page.tsx:13](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L13) — `ModelSelectorProvider`
+[2] [src/app/page.tsx:21](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L21) — `useModelSelectorContext`
+[3] [src/app/page.tsx:28](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L28) — `CopilotKit`
+[4] [src/app/page.tsx:36](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L36) — `Main`
+[5] [src/lib/model-selector-provider.tsx:66](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/model-selector-provider.tsx#L66) — `throw new Error`
 
 <!-- okf:citations:end -->

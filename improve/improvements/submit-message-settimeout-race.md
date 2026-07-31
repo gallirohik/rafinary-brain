@@ -32,7 +32,7 @@ silent (works most of the time), so nothing flags it. Prefer sequencing off the 
 
 # Citations
 
-[1] [src/app/Main.tsx:49](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L49) — `setState`
-[2] [src/app/Main.tsx:50](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L50) — `setTimeout`
+[1] [src/app/Main.tsx:49](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/Main.tsx#L49) — `setState`
+[2] [src/app/Main.tsx:50](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/Main.tsx#L50) — `setTimeout`
 
 <!-- okf:citations:end -->

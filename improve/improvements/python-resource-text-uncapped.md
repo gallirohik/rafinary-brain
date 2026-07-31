@@ -72,11 +72,11 @@ truncation belongs alongside that filter, not in a second pass.
 
 # Citations
 
-[1] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L109) — `{resources}`
-[2] [agents/python/src/lib/chat.py:74](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L74) — `resources.append`
-[3] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
-[4] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
-[5] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
-[6] [package.json:11](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L11) — `dev:agent:py`
+[1] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L109) — `{resources}`
+[2] [agents/python/src/lib/chat.py:74](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L74) — `resources.append`
+[3] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
+[4] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
+[5] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
+[6] [package.json:11](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L11) — `dev:agent:py`
 
 <!-- okf:citations:end -->

@@ -71,11 +71,11 @@ This row is about *permanent failure caching* — different defect, same dict.
 
 # Citations
 
-[1] [agents/python/src/lib/download.py:97](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L97) — `if not get_resource`
-[2] [agents/python/src/lib/download.py:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L24) — `_RESOURCE_CACHE.get`
-[3] [agents/python/src/lib/download.py:66](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L66) — `"ERROR"`
-[4] [agents/python/src/lib/download.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L81) — `"ERROR"`
-[5] [agents/python/src/lib/chat.py:72](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L72) — `content == "ERROR"`
-[6] [agents/python/src/lib/fact_check.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L81) — `("", "ERROR")`
+[1] [agents/python/src/lib/download.py:97](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L97) — `if not get_resource`
+[2] [agents/python/src/lib/download.py:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L24) — `_RESOURCE_CACHE.get`
+[3] [agents/python/src/lib/download.py:66](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L66) — `"ERROR"`
+[4] [agents/python/src/lib/download.py:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L81) — `"ERROR"`
+[5] [agents/python/src/lib/chat.py:72](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L72) — `content == "ERROR"`
+[6] [agents/python/src/lib/fact_check.py:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L81) — `("", "ERROR")`
 
 <!-- okf:citations:end -->

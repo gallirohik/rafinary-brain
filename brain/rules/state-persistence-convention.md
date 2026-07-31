@@ -101,21 +101,21 @@ adding the persistence layer, not extending one. Budget for it.
 
 # Citations
 
-[1] [agents/python/src/lib/download.py:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L17) — `_RESOURCE_CACHE`
-[2] [agents/python/src/lib/download.py:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L24) — `_RESOURCE_CACHE`
-[3] [agents/python/src/lib/download.py:66](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L66) — `_RESOURCE_CACHE`
-[4] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
-[5] [agents/python/src/lib/download.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L81) — `_RESOURCE_CACHE`
-[6] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
-[7] [agents/python/src/agent.py:45](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L45) — `MemorySaver`
-[8] [agents/python/src/agent.py:47](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L47) — `MemorySaver`
-[9] [agents/python/src/agent.py:48](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L48) — `checkpointer`
-[10] [agents/python/main.py:12](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L12) — `LANGGRAPH_FASTAPI`
-[11] [agents/python/pyproject.toml:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/pyproject.toml#L24) — `langgraph-checkpoint-sqlite`
-[12] [agents/python/pyproject.toml:25](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/pyproject.toml#L25) — `aiosqlite`
-[13] [agents/typescript/src/agent.ts:8](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L8) — `MemorySaver`
-[14] [agents/typescript/src/agent.ts:33](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L33) — `workflow.compile`
-[15] [agents/python/src/lib/fact_check.py:80](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L80) — `get_resource`
-[16] [src/components/ResearchCanvas.tsx:87](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L87) — `setState`
+[1] [agents/python/src/lib/download.py:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L17) — `_RESOURCE_CACHE`
+[2] [agents/python/src/lib/download.py:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L24) — `_RESOURCE_CACHE`
+[3] [agents/python/src/lib/download.py:66](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L66) — `_RESOURCE_CACHE`
+[4] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
+[5] [agents/python/src/lib/download.py:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L81) — `_RESOURCE_CACHE`
+[6] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
+[7] [agents/python/src/agent.py:45](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L45) — `MemorySaver`
+[8] [agents/python/src/agent.py:47](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L47) — `MemorySaver`
+[9] [agents/python/src/agent.py:48](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L48) — `checkpointer`
+[10] [agents/python/main.py:12](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L12) — `LANGGRAPH_FASTAPI`
+[11] [agents/python/pyproject.toml:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/pyproject.toml#L24) — `langgraph-checkpoint-sqlite`
+[12] [agents/python/pyproject.toml:25](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/pyproject.toml#L25) — `aiosqlite`
+[13] [agents/typescript/src/agent.ts:8](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/agent.ts#L8) — `MemorySaver`
+[14] [agents/typescript/src/agent.ts:33](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/agent.ts#L33) — `workflow.compile`
+[15] [agents/python/src/lib/fact_check.py:80](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L80) — `get_resource`
+[16] [src/components/ResearchCanvas.tsx:87](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L87) — `setState`
 
 <!-- okf:citations:end -->

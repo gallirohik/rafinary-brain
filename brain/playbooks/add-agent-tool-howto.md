@@ -68,10 +68,10 @@ prompts.
 
 # Citations
 
-[1] [agents/python/src/lib/chat.py:16](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L16) — `@tool`
-[2] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L82) — `bind_tools`
-[3] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L156) — `DeleteResources`
-[4] [agents/python/src/lib/chat.py:52](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L52) — `state_key`
-[5] [src/components/ResearchCanvas.tsx:37](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L37) — `useCopilotAction`
+[1] [agents/python/src/lib/chat.py:16](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L16) — `@tool`
+[2] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L82) — `bind_tools`
+[3] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L156) — `DeleteResources`
+[4] [agents/python/src/lib/chat.py:52](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L52) — `state_key`
+[5] [src/components/ResearchCanvas.tsx:37](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L37) — `useCopilotAction`
 
 <!-- okf:citations:end -->

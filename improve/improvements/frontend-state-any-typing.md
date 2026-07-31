@@ -51,8 +51,8 @@ widening a field back to `any` would silently switch the seed's compile-time che
 
 # Citations
 
-[1] [src/lib/types.ts:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L23) — `resources: Resource[]`
-[2] [src/lib/types.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L24) — `logs: Log[]`
-[3] [src/lib/types.ts:14](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L14) — `export type Log`
+[1] [src/lib/types.ts:23](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L23) — `resources: Resource[]`
+[2] [src/lib/types.ts:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L24) — `logs: Log[]`
+[3] [src/lib/types.ts:14](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L14) — `export type Log`
 
 <!-- okf:citations:end -->

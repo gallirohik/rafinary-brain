@@ -37,7 +37,7 @@ because it was valid. Canonical fill-while-you're-here fix.
 
 # Citations
 
-[1] [src/app/layout.tsx:18](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/layout.tsx#L18) — `Research Helper`
-[2] [src/app/layout.tsx:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/layout.tsx#L19) — `AI-assisted research canvas`
+[1] [src/app/layout.tsx:18](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/layout.tsx#L18) — `Research Helper`
+[2] [src/app/layout.tsx:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/layout.tsx#L19) — `AI-assisted research canvas`
 
 <!-- okf:citations:end -->

@@ -82,15 +82,15 @@ that `fact_check_node` actually resolved the `FactCheckReport` tool_call_id with
 
 # Citations
 
-[1] [src/app/Main.tsx:45](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L45) — `CopilotChat`
-[2] [src/app/api/copilotkit/route.ts:135](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L135) — `handleRequest`
-[3] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L82) — `bind_tools`
-[4] [agents/python/src/lib/chat.py:48](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L48) — `copilotkit_customize_config`
-[5] [agents/python/src/lib/chat.py:160](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L160) — `FactCheckReport`
-[6] [agents/python/src/lib/fact_check.py:137](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L137) — `citations`
-[7] [agents/python/src/lib/search.py:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L81) — `copilotkit_emit_state`
-[8] [src/components/ResearchCanvas.tsx:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L27) — `useCoAgentStateRender`
-[9] [src/components/ResearchCanvas.tsx:193](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L193) — `report`
-[10] [src/components/ResearchCanvas.tsx:202](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L202) — `citations`
+[1] [src/app/Main.tsx:45](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/Main.tsx#L45) — `CopilotChat`
+[2] [src/app/api/copilotkit/route.ts:135](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L135) — `handleRequest`
+[3] [agents/python/src/lib/chat.py:82](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L82) — `bind_tools`
+[4] [agents/python/src/lib/chat.py:48](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L48) — `copilotkit_customize_config`
+[5] [agents/python/src/lib/chat.py:160](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L160) — `FactCheckReport`
+[6] [agents/python/src/lib/fact_check.py:137](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L137) — `citations`
+[7] [agents/python/src/lib/search.py:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/search.py#L81) — `copilotkit_emit_state`
+[8] [src/components/ResearchCanvas.tsx:27](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L27) — `useCoAgentStateRender`
+[9] [src/components/ResearchCanvas.tsx:193](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L193) — `report`
+[10] [src/components/ResearchCanvas.tsx:202](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L202) — `citations`
 
 <!-- okf:citations:end -->

@@ -69,12 +69,12 @@ That row is about the empty case; this one is about the many case. A single sitt
 
 # Citations
 
-[1] [agents/python/src/lib/chat.py:79](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L79) — `ChatOpenAI`
-[2] [agents/python/src/lib/chat.py:80](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L80) — `parallel_tool_calls`
-[3] [agents/python/src/lib/chat.py:120](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L120) — `tool_calls[0]`
-[4] [agents/python/src/lib/chat.py:129](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L129) — `tool_calls[0]`
-[5] [agents/python/src/lib/chat.py:153](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L153) — `tool_calls[0]`
-[6] [agents/python/src/lib/model.py:30](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L30) — `ChatAnthropic`
-[7] [agents/python/src/lib/model.py:39](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L39) — `ChatGoogleGenerativeAI`
+[1] [agents/python/src/lib/chat.py:79](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L79) — `ChatOpenAI`
+[2] [agents/python/src/lib/chat.py:80](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L80) — `parallel_tool_calls`
+[3] [agents/python/src/lib/chat.py:120](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L120) — `tool_calls[0]`
+[4] [agents/python/src/lib/chat.py:129](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L129) — `tool_calls[0]`
+[5] [agents/python/src/lib/chat.py:153](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L153) — `tool_calls[0]`
+[6] [agents/python/src/lib/model.py:30](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L30) — `ChatAnthropic`
+[7] [agents/python/src/lib/model.py:39](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L39) — `ChatGoogleGenerativeAI`
 
 <!-- okf:citations:end -->

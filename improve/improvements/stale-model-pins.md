@@ -40,10 +40,19 @@ assert a retirement date for it, because that would be a claim without a source.
 The failure mode is precisely the one this repo has no defence against. There are no tests, no
 CI and no mypy ([coverage](/brain/coverage.md)), the model id is a plain string with no
 validation, and nothing calls the provider at startup — so the 404 surfaces only when a user
-picks that option mid-conversation. Worse, the model-selection playbook teaches readers that a
-failing dropdown option is *usually a key/config problem*, which sends debugging at the wrong
-target: the wiring is correct, the key is fine, the id is dead. A one-line fix that recovers a
-quarter of the product's advertised surface is about as high-leverage as this ledger gets.
+picks that option mid-conversation. A one-line fix that recovers a quarter of the product's
+advertised surface is about as high-leverage as this ledger gets.
+
+**Documentation half — closed 2026-08-01; the code half is still open.** This row previously
+recorded a second, compounding harm: the model-selection playbook taught readers that a
+failing dropdown option is *usually a key/config problem*, which sent debugging at the wrong
+target. That was raised as a scan blocker and fixed —
+[model-selection-flow](/brain/playbooks/model-selection-flow.md) now separates **wiring** from
+**model id**, states that the `anthropic` pin is dead, links back to this row, and orders the
+debugging *id first, key second*. So a reader is no longer misdirected. **Nothing about the
+pins themselves changed**: `model.py:32` and `model.ts:26` still carry the retired id and the
+option still 404s, which is why this row stays `open` at P1. Do not read the doc fix as the
+fix.
 
 ## Fix both ports in one edit
 
@@ -67,9 +76,9 @@ Two things to get right while editing:
 
 # Citations
 
-[1] [agents/python/src/lib/model.py:32](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L32) — `claude-3-5-sonnet-20240620`
-[2] [agents/python/src/lib/model.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L41) — `gemini-1.5-pro`
-[3] [agents/typescript/src/model.ts:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/model.ts#L26) — `claude-3-5-sonnet-20240620`
-[4] [agents/typescript/src/model.ts:32](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/model.ts#L32) — `gemini-1.5-pro`
+[1] [agents/python/src/lib/model.py:32](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L32) — `claude-3-5-sonnet-20240620`
+[2] [agents/python/src/lib/model.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L41) — `gemini-1.5-pro`
+[3] [agents/typescript/src/model.ts:26](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/model.ts#L26) — `claude-3-5-sonnet-20240620`
+[4] [agents/typescript/src/model.ts:32](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/model.ts#L32) — `gemini-1.5-pro`
 
 <!-- okf:citations:end -->

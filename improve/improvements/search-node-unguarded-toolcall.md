@@ -63,8 +63,8 @@ next `chat_node` model turn would 400 ("tool_calls must be followed by tool resu
 
 # Citations
 
-[1] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
-[2] [agents/python/src/lib/search.py:139](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L139) — `if not ai_message_response.tool_calls`
+[1] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
+[2] [agents/python/src/lib/search.py:139](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/search.py#L139) — `if not ai_message_response.tool_calls`
 
 <!-- okf:citations:end -->
 

@@ -66,9 +66,9 @@ deferred, take the override now: it retires 4 of the 28 findings for ~15 minutes
 
 # Citations
 
-[1] [pnpm-lock.yaml:3045](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L3045) — `postcss@8.4.31`
-[2] [pnpm-lock.yaml:3349](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L3349) — `sharp@0.34.5`
-[3] [package.json:39](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L39) — `postcss`
-[4] [postcss.config.mjs:4](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/postcss.config.mjs#L4) — `tailwindcss`
+[1] [pnpm-lock.yaml:3045](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/pnpm-lock.yaml#L3045) — `postcss@8.4.31`
+[2] [pnpm-lock.yaml:3349](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/pnpm-lock.yaml#L3349) — `sharp@0.34.5`
+[3] [package.json:39](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L39) — `postcss`
+[4] [postcss.config.mjs:4](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/postcss.config.mjs#L4) — `tailwindcss`
 
 <!-- okf:citations:end -->

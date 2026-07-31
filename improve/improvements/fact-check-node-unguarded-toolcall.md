@@ -65,11 +65,11 @@ means the port inherits the guarded shape rather than the drifted one.
 
 # Citations
 
-[1] [agents/python/src/lib/fact_check.py:65](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L65) — `tool_calls[0]`
-[2] [agents/python/src/lib/fact_check.py:114](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L114) — `tool_calls[0]`
-[3] [agents/python/src/lib/fact_check.py:129](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L129) — `tool_calls[0]`
-[4] [agents/python/src/lib/fact_check.py:141](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L141) — `tool_calls[0]`
-[5] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
-[6] [agents/python/src/lib/delete.py:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/delete.py#L26) — `if ai_message.tool_calls`
+[1] [agents/python/src/lib/fact_check.py:65](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L65) — `tool_calls[0]`
+[2] [agents/python/src/lib/fact_check.py:114](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L114) — `tool_calls[0]`
+[3] [agents/python/src/lib/fact_check.py:129](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L129) — `tool_calls[0]`
+[4] [agents/python/src/lib/fact_check.py:141](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L141) — `tool_calls[0]`
+[5] [agents/python/src/lib/search.py:67](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/search.py#L67) — `if not ai_message.tool_calls`
+[6] [agents/python/src/lib/delete.py:26](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/delete.py#L26) — `if ai_message.tool_calls`
 
 <!-- okf:citations:end -->

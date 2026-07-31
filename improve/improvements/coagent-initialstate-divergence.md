@@ -50,8 +50,8 @@ has to be added here too.
 
 # Citations
 
-[1] [src/lib/types.ts:32](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L32) — `createInitialAgentState`
-[2] [src/app/Main.tsx:12](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/Main.tsx#L12) — `createInitialAgentState`
-[3] [src/components/ResearchCanvas.tsx:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L24) — `createInitialAgentState`
+[1] [src/lib/types.ts:32](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L32) — `createInitialAgentState`
+[2] [src/app/Main.tsx:12](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/Main.tsx#L12) — `createInitialAgentState`
+[3] [src/components/ResearchCanvas.tsx:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L24) — `createInitialAgentState`
 
 <!-- okf:citations:end -->

@@ -36,7 +36,7 @@ wins on specificity/order against the token layer — moving it inside the layer
 
 # Citations
 
-[1] [src/app/globals.css:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/globals.css#L6) — `Arial`
-[2] [src/app/layout.tsx:6](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/layout.tsx#L6) — `localFont`
+[1] [src/app/globals.css:6](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/globals.css#L6) — `Arial`
+[2] [src/app/layout.tsx:6](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/layout.tsx#L6) — `localFont`
 
 <!-- okf:citations:end -->

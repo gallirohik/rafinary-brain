@@ -56,10 +56,10 @@ string check — that is the exact regression this row records.
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
-[2] [src/app/api/copilotkit/route.ts:74](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L74) — `dns.lookup`
-[3] [src/app/api/copilotkit/route.ts:29](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L29) — `isPrivateIPv4`
-[4] [src/app/api/copilotkit/route.ts:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L43) — `isPrivateIPv6`
-[5] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L41) — `getaddrinfo`
+[1] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
+[2] [src/app/api/copilotkit/route.ts:74](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L74) — `dns.lookup`
+[3] [src/app/api/copilotkit/route.ts:29](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L29) — `isPrivateIPv4`
+[4] [src/app/api/copilotkit/route.ts:43](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L43) — `isPrivateIPv6`
+[5] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L41) — `getaddrinfo`
 
 <!-- okf:citations:end -->

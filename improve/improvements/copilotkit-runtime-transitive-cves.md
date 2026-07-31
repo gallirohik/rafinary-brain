@@ -70,9 +70,9 @@ than at install time.
 
 # Citations
 
-[1] [package.json:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L19) — `@copilotkit/runtime`
-[2] [pnpm-lock.yaml:3669](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L3669) — `uuid@10.0.0`
-[3] [pnpm-lock.yaml:438](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L438) — `'@hono/node-server@1.19.15'`
-[4] [src/app/api/copilotkit/route.ts:7](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L7) — `@copilotkit/runtime`
+[1] [package.json:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L19) — `@copilotkit/runtime`
+[2] [pnpm-lock.yaml:3669](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/pnpm-lock.yaml#L3669) — `uuid@10.0.0`
+[3] [pnpm-lock.yaml:438](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/pnpm-lock.yaml#L438) — `'@hono/node-server@1.19.15'`
+[4] [src/app/api/copilotkit/route.ts:7](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L7) — `@copilotkit/runtime`
 
 <!-- okf:citations:end -->

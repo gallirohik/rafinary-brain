@@ -26,10 +26,17 @@ timestamp: 2026-07-30
 ---
 This is the residual the SSRF fix
 ([lgc-deployment-url-ssrf-asymmetry](/improve/improvements/lgc-deployment-url-ssrf-asymmetry.md))
-did not close, and the brain does not currently name it. `security-posture` calls
-`isSafeDeploymentUrl` a "hardened edge" and states the risk as leaking "the LangSmith key to
-an **internal** host". Internal is only half the threat model — the guard is a *deny-private*
-check, not an *allow-known* one, so every public host on the internet still passes.
+did not close: the guard is a *deny-private* check, not an *allow-known* one, so every public
+host on the internet still passes.
+
+**Brain coverage — corrected 2026-08-01.** This row originally recorded that the brain did
+*not* name the residual: `security-posture` called `isSafeDeploymentUrl` a "hardened edge" and
+framed the risk as leaking "the LangSmith key to an **internal** host", which is only half the
+threat model. That gap was raised as a scan major and closed —
+[security-posture](/brain/playbooks/security-posture.md) now heads the section
+"deny-private, not allow-known", states per guard what it covers and does not, and carries a
+"Residual — not closed" subsection naming this row with the full path. **The code is
+unchanged**, so this row stays `open` at P1; only the brain's description of it moved.
 
 ## The path, end to end
 
@@ -78,13 +85,13 @@ Two smaller notes on the same path, worth taking in the same sitting:
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:92](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L92) — `lgcDeploymentUrl`
-[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
-[3] [src/app/api/copilotkit/route.ts:122](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L122) — `deploymentUrl`
-[4] [src/app/api/copilotkit/route.ts:123](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L123) — `langsmithApiKey`
-[5] [src/app/api/copilotkit/route.ts:81](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L81) — `addresses.every`
-[6] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
-[7] [src/lib/model-selector-provider.tsx:40](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/model-selector-provider.tsx#L40) — `lgcDeploymentUrl`
-[8] [src/app/page.tsx:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L24) — `lgcDeploymentUrl`
+[1] [src/app/api/copilotkit/route.ts:92](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L92) — `lgcDeploymentUrl`
+[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
+[3] [src/app/api/copilotkit/route.ts:122](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L122) — `deploymentUrl`
+[4] [src/app/api/copilotkit/route.ts:123](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L123) — `langsmithApiKey`
+[5] [src/app/api/copilotkit/route.ts:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L81) — `addresses.every`
+[6] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
+[7] [src/lib/model-selector-provider.tsx:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/model-selector-provider.tsx#L40) — `lgcDeploymentUrl`
+[8] [src/app/page.tsx:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L24) — `lgcDeploymentUrl`
 
 <!-- okf:citations:end -->

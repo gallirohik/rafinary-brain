@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "codeSha": "cdd463ba519f6da63d04b45d31da5f4f254d0790",
+  "codeSha": "a527a0b33c8822856953540613c9d82d2188301a",
   "branch": "main",
   "health": {
     "verdict": "PASS"
@@ -102,7 +102,7 @@
       "type": "flow",
       "domain": "agent-bridge",
       "title": "How the model dropdown actually selects an LLM (it's state, not the agent name)",
-      "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph",
+      "summary": "The ModelSelector writes ?coAgentsModel to the URL; that string becomes state.model and drives get_model on the backend — the agent NAME only branches google_genai vs not, and both names resolve to the same graph. The wiring is correct for all four options, but the anthropic MODEL ID is dead (claude-3-5-sonnet-20240620, retired 2025-10-28): check the id before the key",
       "links": [
         "agent-name-contract",
         "langgraph-agent-convention",
@@ -133,6 +133,26 @@
           "file": "agents/python/src/lib/model.py",
           "line": "18",
           "token": "state.get"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "32",
+          "token": "claude-3-5-sonnet-20240620"
+        },
+        {
+          "file": "agents/typescript/src/model.ts",
+          "line": "26",
+          "token": "claude-3-5-sonnet-20240620"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "41",
+          "token": "gemini-1.5-pro"
+        },
+        {
+          "file": "agents/python/src/lib/model.py",
+          "line": "49",
+          "token": "raise ValueError"
         }
       ],
       "path": "brain/playbooks/model-selection-flow.md"
@@ -212,7 +232,7 @@
       "type": "flow",
       "domain": "security",
       "title": "Trust boundaries, auth chokepoints, and secret handling — what is actually exposed",
-      "summary": "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere, and the only hardened edges are the two SSRF guards on user-supplied URLs",
+      "summary": "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere; the two SSRF guards on user-supplied URLs are the only guarded edges and both are DENY-PRIVATE, not allow-known — so the ?lgcDeploymentUrl one still forwards LANGSMITH_API_KEY to any public host a caller names (open P1 lgc-deployment-url-key-exfiltration)",
       "links": [
         "copilotkit-runtime-route-convention",
         "env-and-integrations",
@@ -260,6 +280,26 @@
           "file": "src/app/api/copilotkit/route.ts",
           "line": "19",
           "token": "langsmithApiKey"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "81",
+          "token": "addresses.every"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "123",
+          "token": "langsmithApiKey"
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "40",
+          "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "24",
+          "token": "lgcDeploymentUrl"
         },
         {
           "file": "agents/python/main.py",
@@ -540,7 +580,7 @@
       "type": "convention",
       "domain": "build-tooling",
       "title": "Dev/build wiring — concurrently runs UI + Python agent; the root app AND the TS agent are now de-workspaced, but vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)",
-      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you",
+      "summary": "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — the two stale-upstream leftovers that actually bite (of four left behind; dockerize.sh and wfcms-data.json are the harmless pair), and readme.md is the one that will actively mislead you",
       "links": [
         "langgraph-agent-convention",
         "agent-typescript-parity",
@@ -641,6 +681,11 @@
           "file": "readme.md",
           "line": "108",
           "token": "./agent-py"
+        },
+        {
+          "file": "wfcms-data.json",
+          "line": "5",
+          "token": "live_demo"
         }
       ],
       "path": "brain/rules/build-tooling-convention.md"
@@ -1122,9 +1167,10 @@
       "type": "convention",
       "domain": "toolbox",
       "title": "The committed agent toolbox — rafa skills, harness-neutral .agents skills, the rafinery MCP server, and permissions",
-      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), wired to the rafinery knowledge MCP over HTTP with a bearer key from env",
+      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.2 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored",
       "links": [
-        "env-and-integrations"
+        "env-and-integrations",
+        "security-posture"
       ],
       "cites": [
         {
@@ -1136,6 +1182,16 @@
           "file": ".claude/commands/rafa.md",
           "line": "2",
           "token": "version"
+        },
+        {
+          "file": ".claude/commands/rafa.md",
+          "line": "220",
+          "token": "The driver"
+        },
+        {
+          "file": ".claude/commands/rafa.md",
+          "line": "240",
+          "token": ".rafa/runs/"
         },
         {
           "file": ".mcp.json",
@@ -1173,9 +1229,24 @@
           "token": "vercel-composition-patterns"
         },
         {
+          "file": ".claude/rafa/contract.md",
+          "line": "642",
+          "token": "The query plane"
+        },
+        {
+          "file": ".claude/rafa/contract.md",
+          "line": "617",
+          "token": "query_schema"
+        },
+        {
           "file": "rafa.json",
           "line": "11",
           "token": "skills"
+        },
+        {
+          "file": "rafa.json",
+          "line": "8",
+          "token": "0.18.2"
         }
       ],
       "path": "brain/rules/repo-toolbox.md"

@@ -6,6 +6,7 @@ domain: agent-python
 title: "LangGraph research agent — node structure, no-op tool schemas, and model routing"
 summary: "The Python agent is a 6-node StateGraph (download→chat→search/delete/fact-check loop); tools are empty @tool schemas the model CALLS but the node handles; the concrete LLM is chosen at runtime by get_model from state.model. The TS agent still mirrors the older 5-node shape (fact_check_node not yet ported, verifiable-report plan decision)"
 links: [agent-typescript-parity, agent-state-shape-contract, delete-resources-hitl-contract, research-chat-flow, env-and-integrations, state-persistence-convention]
+anchor: FactCheckReport  # exhaustive: all 3 code occurrences are cited below — a 4th anywhere (esp. under agents/typescript/) fails the gate, which is what mechanizes the parity note's "not ported" claim
 cites:
   - agents/python/src/agent.py:18 :: StateGraph
   - agents/python/src/agent.py:27 :: set_entry_point
@@ -68,6 +69,17 @@ takes no args (the whole report is already in state) and routes straight to
 the emit-config pattern). When adding a tool, follow
 [the add-tool how-to](/brain/playbooks/add-agent-tool-howto.md).
 
+`FactCheckReport` is declared `anchor:` on this note, and the reason is not local to it. Its
+three code occurrences (`chat.py:37`, `:88`, `:160`) are **all** cited here, so the
+completeness gate re-derives that site list every run and fails if a fourth appears anywhere
+in code. That does double duty on purpose: the token exists only in the Python agent today,
+so the gate is also the mechanical form of
+[the parity note](/brain/rules/agent-typescript-parity.md)'s "there is no `FactCheckReport`
+tool in the TS port" — the day someone ports fact-check to `agents/typescript/`, that claim
+stops being prose that can quietly go stale and becomes a gate failure pointing at both
+notes. (A path-scoped `absent:` would say it directly; `absent:` is repo-wide, so an
+exhaustively-cited anchor is the available substitute.)
+
 **Model routing** (`model.py`): `get_model(state)` reads `state.model` (overridable by the
 `MODEL` env var) and returns a LangChain chat model — `openai`→gpt-4o-mini,
 `anthropic`→claude-3-5-sonnet, `google_genai`→gemini-1.5-pro, `grok`→grok-4 (`:23-47`),
@@ -88,23 +100,23 @@ before assuming anything is saved.
 
 # Citations
 
-[1] [agents/python/src/agent.py:18](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L18) — `StateGraph`
-[2] [agents/python/src/agent.py:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L27) — `set_entry_point`
-[3] [agents/python/src/agent.py:36](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L36) — `interrupt_after`
-[4] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
-[5] [agents/python/src/agent.py:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L13) — `fact_check_node`
-[6] [agents/python/src/agent.py:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L24) — `fact_check_node`
-[7] [agents/python/src/agent.py:31](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L31) — `fact_check_node`
-[8] [agents/python/src/lib/chat.py:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L43) — `Literal`
-[9] [agents/python/src/agent.py:28](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L28) — `add_edge`
-[10] [agents/typescript/src/agent.ts:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L23) — `addConditionalEdges`
-[11] [agents/python/src/lib/chat.py:37](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L37) — `FactCheckReport`
-[12] [agents/python/src/lib/chat.py:88](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L88) — `FactCheckReport`
-[13] [agents/python/src/lib/chat.py:160](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L160) — `FactCheckReport`
-[14] [agents/python/src/lib/fact_check.py:44](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/fact_check.py#L44) — `ExtractClaimChecks`
-[15] [agents/python/src/lib/model.py:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L23) — `openai`
-[16] [agents/python/src/lib/model.py:49](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/model.py#L49) — `raise ValueError`
-[17] [agents/python/src/lib/search.py:35](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/search.py#L35) — `TavilyClient`
-[18] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L30) — `_is_safe_url`
+[1] [agents/python/src/agent.py:18](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L18) — `StateGraph`
+[2] [agents/python/src/agent.py:27](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L27) — `set_entry_point`
+[3] [agents/python/src/agent.py:36](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L36) — `interrupt_after`
+[4] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
+[5] [agents/python/src/agent.py:13](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L13) — `fact_check_node`
+[6] [agents/python/src/agent.py:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L24) — `fact_check_node`
+[7] [agents/python/src/agent.py:31](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L31) — `fact_check_node`
+[8] [agents/python/src/lib/chat.py:43](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L43) — `Literal`
+[9] [agents/python/src/agent.py:28](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L28) — `add_edge`
+[10] [agents/typescript/src/agent.ts:23](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/agent.ts#L23) — `addConditionalEdges`
+[11] [agents/python/src/lib/chat.py:37](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L37) — `FactCheckReport`
+[12] [agents/python/src/lib/chat.py:88](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L88) — `FactCheckReport`
+[13] [agents/python/src/lib/chat.py:160](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L160) — `FactCheckReport`
+[14] [agents/python/src/lib/fact_check.py:44](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/fact_check.py#L44) — `ExtractClaimChecks`
+[15] [agents/python/src/lib/model.py:23](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L23) — `openai`
+[16] [agents/python/src/lib/model.py:49](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L49) — `raise ValueError`
+[17] [agents/python/src/lib/search.py:35](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/search.py#L35) — `TavilyClient`
+[18] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L30) — `_is_safe_url`
 
 <!-- okf:citations:end -->

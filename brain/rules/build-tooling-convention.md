@@ -4,7 +4,7 @@ id: build-tooling-convention
 type: convention
 domain: build-tooling
 title: "Dev/build wiring — concurrently runs UI + Python agent; the root app AND the TS agent are now de-workspaced, but vercel.json and readme.md still assume the upstream monorepo (readme.md is a non-exemplar — do not follow it)"
-summary: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you"
+summary: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — the two stale-upstream leftovers that actually bite (of four left behind; dockerize.sh and wfcms-data.json are the harmless pair), and readme.md is the one that will actively mislead you"
 links: [langgraph-agent-convention, agent-typescript-parity, env-and-integrations]
 absent: workspace:*
 absent: poetry
@@ -30,7 +30,8 @@ cites:
   - readme.md:60 :: cd ./ui
   - readme.md:77 :: remoteEndpoints
   - readme.md:108 :: ./agent-py
-description: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — two stale-upstream leftovers, and readme.md is the one that will actively mislead you"
+  - wfcms-data.json:5 :: live_demo
+description: "npm run dev launches Next.js (3000) and the Python agent (8000) together; the root CopilotKit deps and — as of 2026-07-28 — agents/typescript were both de-workspaced to real npm ranges, so each installs standalone; vercel.json still cd's three levels up to run nx and readme.md still documents the upstream layout — the two stale-upstream leftovers that actually bite (of four left behind; dockerize.sh and wfcms-data.json are the harmless pair), and readme.md is the one that will actively mislead you"
 tags: [build-tooling]
 timestamp: 2026-07-28T14:39:04Z
 ---
@@ -56,7 +57,10 @@ mode). Know this when the graph behaves differently under `langgraph dev` vs `np
 
 **The de-workspacing is now DONE for both packages — the leftovers are deploy/docs.** This
 checkout is a fork of one leaf of the upstream CopilotKit examples monorepo. Both installable
-packages have been cut loose from that workspace; two non-package artifacts were not.
+packages have been cut loose from that workspace; **four** non-package artifacts were left
+behind — two that actively break or mislead outside the monorepo (`vercel.json`, `readme.md`),
+one that references an upstream-relative path (`dockerize.sh`), and one that is simply inert
+(`wfcms-data.json`).
 
 Migrated (installs standalone):
 - The three CopilotKit deps at the root were **de-workspaced** to real npm ranges — `^1.63.2`
@@ -108,9 +112,17 @@ Still monorepo-bound (fails outside it):
     param ([route convention](/brain/rules/copilotkit-runtime-route-convention.md)).
   - `readme.md:108` points LangGraph Studio at `./agent-py`; load `agents/python` instead.
 
-  Same class as `vercel.json` above and `dockerize.sh` below — a leaf copied out of the
-  upstream monorepo without its docs re-pointed. Rewrite it or delete it; don't let a cold
-  reader (or agent) mistake its salience for authority.
+  Same class as `vercel.json` above, `dockerize.sh` below, and `wfcms-data.json` — a leaf
+  copied out of the upstream monorepo without its docs re-pointed. Rewrite it or delete it;
+  don't let a cold reader (or agent) mistake its salience for authority.
+
+Left behind but inert — **`wfcms-data.json`, the quietest member of that same class.**
+Tracked at the repo root, referenced by **nothing** (`git grep wfcms` → no matches: no
+import, no script, no config), so unlike `vercel.json`/`readme.md` it breaks nothing. Its
+`live_demo` (`wfcms-data.json:5`) points at
+`examples-coagents-research-canvas-ui.vercel.app` — the *upstream* CopilotKit deployment,
+not anything this repo deploys. Upstream CMS metadata: don't wire anything to it, and don't
+read its `live_demo` as this app's URL.
 
 `next.config.mjs` sets `output: "standalone"` (`:3`) for containerized deploys
 (`dockerize.sh`, which itself references `./examples/Dockerfile.ui` — another upstream-relative
@@ -120,25 +132,26 @@ path).
 
 # Citations
 
-[1] [package.json:9](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L9) — `concurrently`
-[2] [package.json:12](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L12) — `"dev:agent:py"`
-[3] [package.json:14](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L14) — `install:agent:ts`
-[4] [package.json:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L17) — `"@copilotkit/react-core"`
-[5] [package.json:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L43) — `"nx"`
-[6] [agents/typescript/package.json:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/package.json#L13) — `"@copilotkit/sdk-js"`
-[7] [agents/typescript/package.json:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/package.json#L23) — `"langchain"`
-[8] [agents/python/langgraph.json:5](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/langgraph.json#L5) — `graphs`
-[9] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
-[10] [vercel.json:2](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/vercel.json#L2) — `nx run`
-[11] [next.config.mjs:3](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/next.config.mjs#L3) — `standalone`
-[12] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L41) — `PORT`
-[13] [agents/python/uv.lock:1](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/uv.lock#L1) — `version`
-[14] [package.json:13](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L13) — `uv sync`
-[15] [readme.md:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L24) — `cd agent-py`
-[16] [readme.md:25](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L25) — `poetry install`
-[17] [readme.md:60](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L60) — `cd ./ui`
-[18] [readme.md:77](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L77) — `remoteEndpoints`
-[19] [readme.md:108](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/readme.md#L108) — `./agent-py`
+[1] [package.json:9](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L9) — `concurrently`
+[2] [package.json:12](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L12) — `"dev:agent:py"`
+[3] [package.json:14](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L14) — `install:agent:ts`
+[4] [package.json:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L17) — `"@copilotkit/react-core"`
+[5] [package.json:43](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L43) — `"nx"`
+[6] [agents/typescript/package.json:13](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/package.json#L13) — `"@copilotkit/sdk-js"`
+[7] [agents/typescript/package.json:23](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/package.json#L23) — `"langchain"`
+[8] [agents/python/langgraph.json:5](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/langgraph.json#L5) — `graphs`
+[9] [agents/python/src/agent.py:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/agent.py#L40) — `LANGGRAPH_FASTAPI`
+[10] [vercel.json:2](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/vercel.json#L2) — `nx run`
+[11] [next.config.mjs:3](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/next.config.mjs#L3) — `standalone`
+[12] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L41) — `PORT`
+[13] [agents/python/uv.lock:1](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/uv.lock#L1) — `version`
+[14] [package.json:13](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L13) — `uv sync`
+[15] [readme.md:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/readme.md#L24) — `cd agent-py`
+[16] [readme.md:25](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/readme.md#L25) — `poetry install`
+[17] [readme.md:60](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/readme.md#L60) — `cd ./ui`
+[18] [readme.md:77](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/readme.md#L77) — `remoteEndpoints`
+[19] [readme.md:108](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/readme.md#L108) — `./agent-py`
+[20] [wfcms-data.json:5](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/wfcms-data.json#L5) — `live_demo`
 
 <!-- okf:citations:end -->
 

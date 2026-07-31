@@ -4,7 +4,7 @@ id: security-posture
 type: flow
 domain: security
 title: "Trust boundaries, auth chokepoints, and secret handling — what is actually exposed"
-summary: "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere, and the only hardened edges are the two SSRF guards on user-supplied URLs"
+summary: "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere; the two SSRF guards on user-supplied URLs are the only guarded edges and both are DENY-PRIVATE, not allow-known — so the ?lgcDeploymentUrl one still forwards LANGSMITH_API_KEY to any public host a caller names (open P1 lgc-deployment-url-key-exfiltration)"
 links: [copilotkit-runtime-route-convention, env-and-integrations, langgraph-agent-convention, build-tooling-convention, research-chat-flow]
 absent: add_middleware
 absent: use server
@@ -24,6 +24,10 @@ cites:
   - src/app/page.tsx:33 :: NEXT_PUBLIC_COPILOTKIT_API_KEY
   - src/app/api/copilotkit/route.ts:59 :: isSafeDeploymentUrl
   - src/app/api/copilotkit/route.ts:19 :: langsmithApiKey
+  - src/app/api/copilotkit/route.ts:81 :: addresses.every
+  - src/app/api/copilotkit/route.ts:123 :: langsmithApiKey
+  - src/lib/model-selector-provider.tsx:40 :: lgcDeploymentUrl
+  - src/app/page.tsx:24 :: lgcDeploymentUrl
   - agents/python/main.py:17 :: add_langgraph_fastapi_endpoint
   - agents/python/main.py:44 :: 0.0.0.0
   - agents/python/main.py:11 :: load_dotenv
@@ -31,7 +35,7 @@ cites:
   - agents/python/src/lib/download.py:41 :: getaddrinfo
   - agents/python/langgraph.json:9 :: .env
   - .gitignore:38 :: .env
-description: "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere, and the only hardened edges are the two SSRF guards on user-supplied URLs"
+description: "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere; the two SSRF guards on user-supplied URLs are the only guarded edges and both are DENY-PRIVATE, not allow-known — so the ?lgcDeploymentUrl one still forwards LANGSMITH_API_KEY to any public host a caller names (open P1 lgc-deployment-url-key-exfiltration)"
 tags: [security]
 timestamp: 2026-07-26T22:44:42.840Z
 ---
@@ -96,19 +100,48 @@ expose the agent, the auth has to be added here — there is no other chokepoint
   partitioned per user. Any feature that needs "this user's data" has to introduce identity
   from scratch; there is nothing to hook into.
 
-## The hardened edges — two SSRF guards on user-supplied URLs
+## The guarded edges — two SSRF checks on user-supplied URLs (deny-private, not allow-known)
 
 Both places where a *user-controlled URL* becomes a *server-side fetch* are guarded, and
-both guards resolve DNS rather than pattern-matching hostnames. Keep it that way:
+both guards resolve DNS rather than pattern-matching hostnames — which is the right
+technique, and strictly better than the hostname-string checks they replaced. Keep that.
+But know exactly what the technique buys, because it is one half of the threat model:
 
 - `isSafeDeploymentUrl` (`route.ts:59-84`) gates `?lgcDeploymentUrl=`. This matters because
-  in that mode the proxy forwards `langsmithApiKey` (`route.ts:19`) to the target — an
-  unguarded redirect would leak the LangSmith key to an internal host.
+  in that mode the proxy forwards `langsmithApiKey` (`route.ts:19`) to the target. **Covers:**
+  a caller pointing the proxy at your internal network (SSRF against private/loopback/
+  link-local space). **Does not cover:** a caller pointing it at their own *public* host —
+  see the residual below.
 - `_is_safe_url` (`download.py:30`) gates every resource URL the agent downloads, resolving
   via `socket.getaddrinfo` (`download.py:41`) and rejecting if *any* resolved address is
   private/loopback/link-local. Resource URLs come from the model's search results **and**
   from whatever the user types into the Add Resource dialog, so this is genuinely
-  attacker-influenced input.
+  attacker-influenced input. Same shape, but here the outbound request carries **no
+  credential**, so a public-host target is the feature (fetching arbitrary web pages is
+  the point), not a leak.
+
+### Residual — not closed: `?lgcDeploymentUrl=` can still exfiltrate `LANGSMITH_API_KEY`
+
+Open **P1** [lgc-deployment-url-key-exfiltration](/improve/improvements/lgc-deployment-url-key-exfiltration.md).
+Do not read the guard above as "that edge is done":
+
+- The guard's terminal test is `addresses.every(addr => !isPrivate…)` (`route.ts:81`) — a
+  **deny-private** check, not an **allow-known** one. `https://attacker.example` resolves to
+  a normal public IP and therefore **passes**.
+- The value that passes then becomes `deploymentUrl` on `LangGraphAgent` alongside
+  `langsmithApiKey` (`route.ts:122-123`), so the LangSmith key rides the outbound request to
+  whatever host was named.
+- The value is fully caller-controlled from the **browser query string**
+  (`model-selector-provider.tsx:40` → `page.tsx:24`), or by calling
+  `POST /api/copilotkit?lgcDeploymentUrl=…` directly. The only thing in front of it is
+  `isAuthorized`, which this note already states is **not access control**.
+
+The precondition, not a mitigation: with `LANGSMITH_API_KEY` unset there is no secret to
+leak and this degrades to open proxying, and this repo has no deployment surface today — so
+it is latent, not exploited. **Treat it as P0 the moment `LANGSMITH_API_KEY` is set in any
+network-reachable environment.** The fix is an allowlist (compare the parsed hostname to
+`LGC_DEPLOYMENT_URL`'s host and 400 otherwise), added *alongside* the DNS resolution rather
+than replacing it; the ledger row carries the detail.
 
 Everything else the servers call is a fixed third-party endpoint (Tavily, the four LLM
 providers) — see [env-and-integrations](/brain/rules/env-and-integrations.md).
@@ -148,20 +181,24 @@ one — but it is the property to re-check whenever a tool is added.
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L86) — `export const POST`
-[2] [src/app/api/copilotkit/route.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L24) — `isAuthorized`
-[3] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
-[4] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
-[5] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
-[6] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[7] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
-[8] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L19) — `langsmithApiKey`
-[9] [agents/python/main.py:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L17) — `add_langgraph_fastapi_endpoint`
-[10] [agents/python/main.py:44](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L44) — `0.0.0.0`
-[11] [agents/python/main.py:11](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/main.py#L11) — `load_dotenv`
-[12] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L30) — `_is_safe_url`
-[13] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L41) — `getaddrinfo`
-[14] [agents/python/langgraph.json:9](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/langgraph.json#L9) — `.env`
-[15] [.gitignore:38](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/.gitignore#L38) — `.env`
+[1] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L86) — `export const POST`
+[2] [src/app/api/copilotkit/route.ts:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L24) — `isAuthorized`
+[3] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
+[4] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
+[5] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
+[6] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
+[7] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
+[8] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L19) — `langsmithApiKey`
+[9] [src/app/api/copilotkit/route.ts:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L81) — `addresses.every`
+[10] [src/app/api/copilotkit/route.ts:123](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L123) — `langsmithApiKey`
+[11] [src/lib/model-selector-provider.tsx:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/model-selector-provider.tsx#L40) — `lgcDeploymentUrl`
+[12] [src/app/page.tsx:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L24) — `lgcDeploymentUrl`
+[13] [agents/python/main.py:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L17) — `add_langgraph_fastapi_endpoint`
+[14] [agents/python/main.py:44](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L44) — `0.0.0.0`
+[15] [agents/python/main.py:11](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L11) — `load_dotenv`
+[16] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L30) — `_is_safe_url`
+[17] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L41) — `getaddrinfo`
+[18] [agents/python/langgraph.json:9](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/langgraph.json#L9) — `.env`
+[19] [.gitignore:38](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.gitignore#L38) — `.env`
 
 <!-- okf:citations:end -->

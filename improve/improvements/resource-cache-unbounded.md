@@ -35,6 +35,6 @@ claim".
 
 # Citations
 
-[1] [agents/python/src/lib/download.py:17](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/download.py#L17) — `_RESOURCE_CACHE`
+[1] [agents/python/src/lib/download.py:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L17) — `_RESOURCE_CACHE`
 
 <!-- okf:citations:end -->

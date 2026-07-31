@@ -76,8 +76,8 @@ levers available in the meantime.
 
 # Citations
 
-[1] [package.json:27](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/package.json#L27) — `next`
-[2] [pnpm-lock.yaml:2816](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/pnpm-lock.yaml#L2816) — `next@15.5.15`
-[3] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/app/api/copilotkit/route.ts#L86) — `export const POST`
+[1] [package.json:27](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L27) — `next`
+[2] [pnpm-lock.yaml:2816](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/pnpm-lock.yaml#L2816) — `next@15.5.15`
+[3] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L86) — `export const POST`
 
 <!-- okf:citations:end -->

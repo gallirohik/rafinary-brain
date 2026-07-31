@@ -50,14 +50,14 @@ dialog ever appears — the run hangs with no error. This is the canonical examp
 
 # Citations
 
-[1] [src/components/ResearchCanvas.tsx:38](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/components/ResearchCanvas.tsx#L38) — `DeleteResources`
-[2] [agents/python/src/lib/chat.py:32](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L32) — `DeleteResources`
-[3] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L87) — `DeleteResources`
-[4] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/chat.py#L156) — `DeleteResources`
-[5] [agents/typescript/src/agent.ts:55](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/agent.ts#L55) — `DeleteResources`
-[6] [agents/typescript/src/chat.ts:42](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L42) — `DeleteResources`
-[7] [agents/typescript/src/chat.ts:43](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L43) — `DeleteResources`
-[8] [agents/typescript/src/chat.ts:62](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L62) — `DeleteResources`
-[9] [agents/typescript/src/chat.ts:95](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/chat.ts#L95) — `DeleteResources`
+[1] [src/components/ResearchCanvas.tsx:38](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/components/ResearchCanvas.tsx#L38) — `DeleteResources`
+[2] [agents/python/src/lib/chat.py:32](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L32) — `DeleteResources`
+[3] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L87) — `DeleteResources`
+[4] [agents/python/src/lib/chat.py:156](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L156) — `DeleteResources`
+[5] [agents/typescript/src/agent.ts:55](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/agent.ts#L55) — `DeleteResources`
+[6] [agents/typescript/src/chat.ts:42](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/chat.ts#L42) — `DeleteResources`
+[7] [agents/typescript/src/chat.ts:43](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/chat.ts#L43) — `DeleteResources`
+[8] [agents/typescript/src/chat.ts:62](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/chat.ts#L62) — `DeleteResources`
+[9] [agents/typescript/src/chat.ts:95](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/chat.ts#L95) — `DeleteResources`
 
 <!-- okf:citations:end -->

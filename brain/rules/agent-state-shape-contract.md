@@ -70,18 +70,18 @@ a multi-place change (frontend type + Python agent + emit configs for the stream
 
 # Citations
 
-[1] [src/lib/types.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L19) — `AgentState`
-[2] [src/lib/types.ts:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L21) — `research_question`
-[3] [src/lib/types.ts:22](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L22) — `report`
-[4] [src/lib/types.ts:23](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L23) — `resources`
-[5] [src/lib/types.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L24) — `logs`
-[6] [src/lib/types.ts:25](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/src/lib/types.ts#L25) — `citations`
-[7] [agents/python/src/lib/state.py:41](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L41) — `AgentState`
-[8] [agents/python/src/lib/state.py:48](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L48) — `research_question`
-[9] [agents/python/src/lib/state.py:51](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L51) — `logs`
-[10] [agents/python/src/lib/state.py:52](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/python/src/lib/state.py#L52) — `citations`
-[11] [agents/typescript/src/state.ts:19](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L19) — `AgentStateAnnotation`
-[12] [agents/typescript/src/state.ts:21](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L21) — `research_question`
-[13] [agents/typescript/src/state.ts:24](https://github.com/gallirohik/research-canvas/blob/0c96b3c1289772846eae57f8768be579cc7d8fe4/agents/typescript/src/state.ts#L24) — `logs`
+[1] [src/lib/types.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L19) — `AgentState`
+[2] [src/lib/types.ts:21](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L21) — `research_question`
+[3] [src/lib/types.ts:22](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L22) — `report`
+[4] [src/lib/types.ts:23](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L23) — `resources`
+[5] [src/lib/types.ts:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L24) — `logs`
+[6] [src/lib/types.ts:25](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/types.ts#L25) — `citations`
+[7] [agents/python/src/lib/state.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/state.py#L41) — `AgentState`
+[8] [agents/python/src/lib/state.py:48](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/state.py#L48) — `research_question`
+[9] [agents/python/src/lib/state.py:51](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/state.py#L51) — `logs`
+[10] [agents/python/src/lib/state.py:52](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/state.py#L52) — `citations`
+[11] [agents/typescript/src/state.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/state.ts#L19) — `AgentStateAnnotation`
+[12] [agents/typescript/src/state.ts:21](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/state.ts#L21) — `research_question`
+[13] [agents/typescript/src/state.ts:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/state.ts#L24) — `logs`
 
 <!-- okf:citations:end -->
