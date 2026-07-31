@@ -1,5 +1,6 @@
 {
   "schemaVersion": 1,
+  "emitter": 2,
   "codeSha": "a527a0b33c8822856953540613c9d82d2188301a",
   "branch": "main",
   "health": {
@@ -337,7 +338,8 @@
           "token": ".env"
         }
       ],
-      "path": "brain/playbooks/security-posture.md"
+      "path": "brain/playbooks/security-posture.md",
+      "absent": "Depends"
     },
     {
       "id": "agent-name-contract",
@@ -444,7 +446,8 @@
           "token": "research_agent"
         }
       ],
-      "path": "brain/rules/agent-name-contract.md"
+      "path": "brain/rules/agent-name-contract.md",
+      "anchor": "research_agent"
     },
     {
       "id": "agent-state-shape-contract",
@@ -525,7 +528,8 @@
           "token": "logs"
         }
       ],
-      "path": "brain/rules/agent-state-shape-contract.md"
+      "path": "brain/rules/agent-state-shape-contract.md",
+      "anchor": "none"
     },
     {
       "id": "agent-typescript-parity",
@@ -688,7 +692,8 @@
           "token": "live_demo"
         }
       ],
-      "path": "brain/rules/build-tooling-convention.md"
+      "path": "brain/rules/build-tooling-convention.md",
+      "absent": "langGraphPlatformEndpoint"
     },
     {
       "id": "copilotkit-runtime-route-convention",
@@ -822,7 +827,8 @@
           "token": "DeleteResources"
         }
       ],
-      "path": "brain/rules/delete-resources-hitl-contract.md"
+      "path": "brain/rules/delete-resources-hitl-contract.md",
+      "anchor": "DeleteResources"
     },
     {
       "id": "design-system-convention",
@@ -968,7 +974,8 @@
           "token": "Unauthorized"
         }
       ],
-      "path": "brain/rules/env-and-integrations.md"
+      "path": "brain/rules/env-and-integrations.md",
+      "absent": "ANTHROPIC_API_KEY"
     },
     {
       "id": "langgraph-agent-convention",
@@ -1077,7 +1084,8 @@
           "token": "_is_safe_url"
         }
       ],
-      "path": "brain/rules/langgraph-agent-convention.md"
+      "path": "brain/rules/langgraph-agent-convention.md",
+      "anchor": "FactCheckReport"
     },
     {
       "id": "nextjs-app-shell-convention",
@@ -1159,7 +1167,8 @@
           "token": "throw new Error"
         }
       ],
-      "path": "brain/rules/provider-nesting-contract.md"
+      "path": "brain/rules/provider-nesting-contract.md",
+      "anchor": "none"
     },
     {
       "id": "repo-toolbox",
@@ -1300,7 +1309,8 @@
           "token": "_RESOURCE_CACHE"
         }
       ],
-      "path": "brain/rules/resource-text-dominates-the-system-prompt.md"
+      "path": "brain/rules/resource-text-dominates-the-system-prompt.md",
+      "anchor": "MAX_TOTAL_RESOURCE_CHARS"
     },
     {
       "id": "state-persistence-convention",
@@ -1398,7 +1408,9 @@
           "token": "setState"
         }
       ],
-      "path": "brain/rules/state-persistence-convention.md"
+      "path": "brain/rules/state-persistence-convention.md",
+      "anchor": "_RESOURCE_CACHE",
+      "absent": "drizzle"
     }
   ],
   "improvements": [
@@ -1415,7 +1427,10 @@
         "impact": "low",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "routing-app-shell",
+        "components"
+      ],
       "cites": [
         {
           "file": "src/app/globals.css",
@@ -1443,7 +1458,10 @@
         "impact": "medium",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "state",
+        "agent-bridge"
+      ],
       "cites": [
         {
           "file": "src/lib/types.ts",
@@ -1476,7 +1494,11 @@
         "impact": "low",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-bridge",
+        "external-integrations",
+        "security"
+      ],
       "cites": [
         {
           "file": "package.json",
@@ -1514,7 +1536,9 @@
         "impact": "high",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "routing-app-shell"
+      ],
       "cites": [
         {
           "file": "src/app/layout.tsx",
@@ -1542,7 +1566,10 @@
         "impact": "high",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python",
+        "data-persistence"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/download.py",
@@ -1590,7 +1617,9 @@
         "impact": "medium",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/fact_check.py",
@@ -1638,7 +1667,10 @@
         "impact": "medium",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "state",
+        "components"
+      ],
       "cites": [
         {
           "file": "src/lib/types.ts",
@@ -1671,7 +1703,11 @@
         "impact": "high",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-bridge",
+        "external-integrations",
+        "security"
+      ],
       "cites": [
         {
           "file": "src/app/api/copilotkit/route.ts",
@@ -1729,7 +1765,11 @@
         "impact": "medium",
         "effort": "medium"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-bridge",
+        "external-integrations",
+        "security"
+      ],
       "cites": [
         {
           "file": "src/app/api/copilotkit/route.ts",
@@ -1772,7 +1812,12 @@
         "impact": "high",
         "effort": "high"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "routing-app-shell",
+        "agent-bridge",
+        "security",
+        "build-tooling"
+      ],
       "cites": [
         {
           "file": "package.json",
@@ -1805,7 +1850,10 @@
         "impact": "medium",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "build-tooling",
+        "security"
+      ],
       "cites": [
         {
           "file": "pnpm-lock.yaml",
@@ -1843,7 +1891,10 @@
         "impact": "medium",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python",
+        "agent-bridge"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/chat.py",
@@ -1896,7 +1947,11 @@
         "impact": "high",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python",
+        "agent-bridge",
+        "data-persistence"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/chat.py",
@@ -1944,7 +1999,10 @@
         "impact": "low",
         "effort": "medium"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python",
+        "data-persistence"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/download.py",
@@ -1967,7 +2025,10 @@
         "impact": "medium",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python",
+        "agent-bridge"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/search.py",
@@ -1995,7 +2056,11 @@
         "impact": "high",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-python",
+        "agent-typescript",
+        "external-integrations"
+      ],
       "cites": [
         {
           "file": "agents/python/src/lib/model.py",
@@ -2033,7 +2098,10 @@
         "impact": "low",
         "effort": "low"
       },
-      "blastRadius": [],
+      "blastRadius": [
+        "agent-bridge",
+        "components"
+      ],
       "cites": [
         {
           "file": "src/app/Main.tsx",
