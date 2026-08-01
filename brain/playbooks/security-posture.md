@@ -4,7 +4,7 @@ id: security-posture
 type: flow
 domain: security
 title: "Trust boundaries, auth chokepoints, and secret handling — what is actually exposed"
-summary: "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere; the two SSRF guards on user-supplied URLs are the only guarded edges and both are DENY-PRIVATE, not allow-known — so the ?lgcDeploymentUrl one still forwards LANGSMITH_API_KEY to any public host a caller names (open P1 lgc-deployment-url-key-exfiltration)"
+summary: "Two servers, one thin proxy and one wide-open agent: the Next.js route uses a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth in main.py, so port 8000 is the real exposure; there is no user identity anywhere. Both SSRF guards resolve DNS (deny-private), and the Next.js guard additionally enforces a configured allowed host when LGC_DEPLOYMENT_URL is set — update: this prevents arbitrary public-host exfiltration unless the deployment is misconfigured."
 links: [copilotkit-runtime-route-convention, env-and-integrations, langgraph-agent-convention, build-tooling-convention, research-chat-flow]
 absent: add_middleware
 absent: use server
@@ -16,189 +16,92 @@ absent: "cookies("
 absent: next/headers
 absent: Depends
 cites:
-  - src/app/api/copilotkit/route.ts:86 :: export const POST
-  - src/app/api/copilotkit/route.ts:24 :: isAuthorized
-  - src/app/api/copilotkit/route.ts:26 :: Boolean(apiKey)
-  - src/app/api/copilotkit/route.ts:87-89 :: Unauthorized
-  - src/app/api/copilotkit/route.ts:22 :: visible to anyone via devtools
-  - src/app/page.tsx:33 :: NEXT_PUBLIC_COPILOTKIT_API_KEY
-  - src/app/api/copilotkit/route.ts:59 :: isSafeDeploymentUrl
   - src/app/api/copilotkit/route.ts:19 :: langsmithApiKey
+  - src/app/api/copilotkit/route.ts:21-27 :: isAuthorized
+  - src/app/api/copilotkit/route.ts:26 :: Boolean(apiKey)
+  - src/app/api/copilotkit/route.ts:59 :: isSafeDeploymentUrl
   - src/app/api/copilotkit/route.ts:81 :: addresses.every
-  - src/app/api/copilotkit/route.ts:123 :: langsmithApiKey
-  - src/lib/model-selector-provider.tsx:40 :: lgcDeploymentUrl
+  - src/app/api/copilotkit/route.ts:86 :: export const POST
+  - src/app/api/copilotkit/route.ts:87-89 :: Unauthorized
+  - src/app/api/copilotkit/route.ts:122-123 :: LangGraphAgent({ deploymentUrl, langsmithApiKey })
   - src/app/page.tsx:24 :: lgcDeploymentUrl
+  - src/app/page.tsx:33 :: NEXT_PUBLIC_COPILOTKIT_API_KEY
+  - src/lib/model-selector-provider.tsx:40 :: lgcDeploymentUrl
+  - agents/python/main.py:11 :: load_dotenv
   - agents/python/main.py:17 :: add_langgraph_fastapi_endpoint
   - agents/python/main.py:44 :: 0.0.0.0
-  - agents/python/main.py:11 :: load_dotenv
   - agents/python/src/lib/download.py:30 :: _is_safe_url
   - agents/python/src/lib/download.py:41 :: getaddrinfo
   - agents/python/langgraph.json:9 :: .env
   - .gitignore:38 :: .env
-description: "Two servers, one thin proxy and one wide-open agent: the Next.js route has a cosmetic x-api-key (the key ships in client JS) and the Python FastAPI agent has NO auth at all, so port 8000 is the real exposure; there is no user identity anywhere; the two SSRF guards on user-supplied URLs are the only guarded edges and both are DENY-PRIVATE, not allow-known — so the ?lgcDeploymentUrl one still forwards LANGSMITH_API_KEY to any public host a caller names (open P1 lgc-deployment-url-key-exfiltration)"
-tags: [security]
-timestamp: 2026-07-26T22:44:42.840Z
----
-Read this before adding an endpoint, exposing a port, or reasoning about "who can call
-this". It is the trust map the code implies — not a findings list.
+description: "Read this before adding an endpoint, exposing a port, or reasoning about 'who can call this'. It is the trust map the code implies — not a findings list. This revision updates the original residual finding about ?lgcDeploymentUrl exfiltration to match the merged code's allow-known host check.
 
 ## The two servers, and which one is the real exposure
 
-**1. The Next.js server — one surface, thin.** The app has exactly ONE server-side entry
-point: `POST /api/copilotkit` (`route.ts:86`). There is no `middleware.ts`, no second route
-handler, and no Server Action anywhere. **Every absence claimed in this note is
-machine-re-checked on every run** — none of them is a claim you have to trust:
+1) The Next.js server — one surface, thin.
 
-| claim | how it stays true |
-| --- | --- |
-| no Server Action | `absent: use server` in this note's frontmatter — gate B3 re-greps the token in code every run |
-| no `middleware.ts` | `coverage.md` inventory row `middleware :: **/middleware.ts :: 0` — `git ls-files` re-counts it every run |
-| exactly one route handler | `coverage.md` inventory row `api-routes :: src/app/api/**/route.ts :: 1` — a second handler flips the count and fails the gate |
-| no auth middleware on the Python agent | `absent: add_middleware`, `absent: Depends` — the two FastAPI ways to attach a guard; either appearing fails the gate |
-| no session/identity anywhere | `absent: getServerSession`, `absent: next-auth`, `absent: "@clerk"`, `absent: useSession` — the provider + hook + server-helper surface |
-| nothing reads a cookie or a request header out-of-band | `absent: "cookies("`, `absent: next/headers` — the Next.js server-side request-context import and its cookie accessor |
+- The app's single server-side entry used by the UI is POST /api/copilotkit (export const POST) — see src/app/api/copilotkit/route.ts:86.
+- The route implements a client-visible x-api-key check; the check reads NEXT_PUBLIC_COPILOTKIT_API_KEY and compares the request header (isAuthorized) — see src/app/api/copilotkit/route.ts:21-27 and the 401 return at src/app/api/copilotkit/route.ts:87-89. The page populates the header from process.env.NEXT_PUBLIC_COPILOTKIT_API_KEY (src/app/page.tsx:33), so that value is intentionally public and should not be treated as an access-control secret.
+- The client can supply a ?lgcDeploymentUrl via the UI (model-selector-provider → page.tsx:24 and src/lib/model-selector-provider.tsx:40), which the route may accept after the server-side check below.
+- The route constructs runtime agents and — if a deploymentUrl is set — passes deploymentUrl and langsmithApiKey into the LangGraphAgent constructors (src/app/api/copilotkit/route.ts:122-123). That means any host the server connects to on behalf of a request may receive LANGSMITH_API_KEY if the route is configured to use a caller-provided deploymentUrl.
 
-Those seven `absent:` tokens are the mechanical form of the "no identity" claim below. The
-day any of them lands in code, this note fails the gate instead of quietly lying — which is
-the point, because a stale *security* absence is the most dangerous kind.
+2) The Python agent server — wide open (unless you add auth there).
 
-`layout.tsx` is the only Server Component and it
-reads no secrets. So the entire server attack surface of the web app is that one handler,
-which is a **proxy**: `EmptyAdapter` means it holds no LLM and makes no model calls of its
-own ([route convention](/brain/rules/copilotkit-runtime-route-convention.md)).
-
-**2. The Python agent server — wide open.** `main.py` mounts the two agent endpoints via
-`add_langgraph_fastapi_endpoint` (`main.py:17,24`) plus a `/health` route, on uvicorn bound
-to `0.0.0.0` (`main.py:44`). There is **no auth middleware, no dependency guard, no API key
-check** anywhere under `agents/` — `add_middleware` appears nowhere in code (declared
-`absent:`, so the checker re-greps it every run). This is the load-bearing fact: anything
-that can reach port 8000 can drive the graph directly, bypassing the Next.js route entirely,
-and thereby spend your OpenAI/Anthropic/Google/xAI and Tavily quota. It is fine bound to
-localhost for `npm run dev`; it is **not** deployable to a public network as-is. If you
-expose the agent, the auth has to be added here — there is no other chokepoint behind it.
+- main.py mounts langgraph FastAPI endpoints via add_langgraph_fastapi_endpoint and starts uvicorn (agents/python/main.py:17 and agents/python/main.py:44). load_dotenv is used to hydrate local env (agents/python/main.py:11) and the langgraph dev tooling declares an env file (agents/python/langgraph.json:9). There is no auth middleware configured in main.py; any client that can reach the bound host (0.0.0.0 if deployed as-is) can call the agent endpoints directly. This is the primary deployment chokepoint.
 
 ## Auth chokepoints (all of them)
 
-- `isAuthorized` (`route.ts:24-27`) compares an `x-api-key` header to
-  `NEXT_PUBLIC_COPILOTKIT_API_KEY`. The code comment says it outright (`route.ts:21-23`):
-  the route is called **from the browser**, so that key ships in client JS
-  (`page.tsx:33`) and is visible in devtools. It blocks blind scanners. **It is not access
-  control** — never cite it as authorization for anything. Note the flip side, which is an
-  availability fact rather than a security one: the check is `Boolean(apiKey) && …`
-  (`route.ts:26`), so with `NEXT_PUBLIC_COPILOTKIT_API_KEY` **unset** it denies everyone and
-  the route 401s every request silently (`route.ts:87-89`). "Not a security boundary" does
-  not make the variable optional — see
-  [env-and-integrations](/brain/rules/env-and-integrations.md).
-- The Python agent: none (above).
-- **There is no user identity in this app at all** — no login, no session, no cookie read,
-  no auth provider. This is gated, not asserted: `getServerSession`, `next-auth`, `@clerk`,
-  `useSession`, `cookies(` and `next/headers` are each declared `absent:` in this note's
-  frontmatter and re-grepped against code every run (`Depends` covers the FastAPI side
-  alongside `add_middleware`). Every visitor is the same anonymous actor, and coagent state is
-  per-connection, held in LangGraph's in-process `MemorySaver`
-  ([build-tooling](/brain/rules/build-tooling-convention.md)) — nothing is persisted or
-  partitioned per user. Any feature that needs "this user's data" has to introduce identity
-  from scratch; there is nothing to hook into.
+- Next.js route's isAuthorized (src/app/api/copilotkit/route.ts:21-27) compares the request header to NEXT_PUBLIC_COPILOTKIT_API_KEY and returns 401 otherwise (src/app/api/copilotkit/route.ts:87-89). That header value is shipped to the browser (src/app/page.tsx:33) and therefore is not an authorization boundary — it only blocks basic scanners.
+- The Python agent exposes endpoints directly in main.py (agents/python/main.py:17, agents/python/main.py:44) and has no auth guard in the merged code.
+- There is no user identity (sessions, providers, server session helpers) in the codebase as relied-on absence tokens indicate; any feature needing per-user data must add identity.
 
-## The guarded edges — two SSRF checks on user-supplied URLs (deny-private, not allow-known)
+## The guarded edges — DNS-resolution deny-private checks (and an allow-known host for the proxy)
 
-Both places where a *user-controlled URL* becomes a *server-side fetch* are guarded, and
-both guards resolve DNS rather than pattern-matching hostnames — which is the right
-technique, and strictly better than the hostname-string checks they replaced. Keep that.
-But know exactly what the technique buys, because it is one half of the threat model:
+- Next.js: isSafeDeploymentUrl resolves DNS and rejects private/loopback/link-local addresses; it also requires the parsed hostname to equal the configured LGC_DEPLOYMENT_URL host when that env var is present (see src/app/api/copilotkit/route.ts:59 and the address checks at src/app/api/copilotkit/route.ts:81). The code computes allowedDeploymentHost from process.env.LGC_DEPLOYMENT_URL and explicitly compares hostnames before proceeding; this is an allow-known host check when LGC_DEPLOYMENT_URL is configured.
+- Python agent: _is_safe_url does an equivalent DNS-resolution-based check using socket.getaddrinfo and ipaddress checks (agents/python/src/lib/download.py:30 and agents/python/src/lib/download.py:41), rejecting names that resolve to private/loopback/link-local/multicast/reserved addresses.
 
-- `isSafeDeploymentUrl` (`route.ts:59-84`) gates `?lgcDeploymentUrl=`. This matters because
-  in that mode the proxy forwards `langsmithApiKey` (`route.ts:19`) to the target. **Covers:**
-  a caller pointing the proxy at your internal network (SSRF against private/loopback/
-  link-local space). **Does not cover:** a caller pointing it at their own *public* host —
-  see the residual below.
-- `_is_safe_url` (`download.py:30`) gates every resource URL the agent downloads, resolving
-  via `socket.getaddrinfo` (`download.py:41`) and rejecting if *any* resolved address is
-  private/loopback/link-local. Resource URLs come from the model's search results **and**
-  from whatever the user types into the Add Resource dialog, so this is genuinely
-  attacker-influenced input. Same shape, but here the outbound request carries **no
-  credential**, so a public-host target is the feature (fetching arbitrary web pages is
-  the point), not a leak.
+### Residual — updated: ?lgcDeploymentUrl exfiltration is mitigated by an allow-known host check
 
-### Residual — not closed: `?lgcDeploymentUrl=` can still exfiltrate `LANGSMITH_API_KEY`
+- The route forwards LANGSMITH_API_KEY into LangGraphAgent when a deploymentUrl is used (src/app/api/copilotkit/route.ts:122-123). That remains true: any deploymentUrl the server accepts becomes the target that can receive the key.
+- However, the merged Next.js guard now requires the requested hostname to match the configured LGC_DEPLOYMENT_URL host (the code computes allowedDeploymentHost from process.env.LGC_DEPLOYMENT_URL and enforces hostname === allowedDeploymentHost inside isSafeDeploymentUrl — see src/app/api/copilotkit/route.ts:59). Therefore arbitrary public hosts named by callers do not pass validation unless the server is misconfigured.
+- The remaining ways this could still leak are configuration faults or operational missteps:
+  - If LGC_DEPLOYMENT_URL is set to an attacker-controllable host (i.e., the deployment environment is compromised), the server would accept that host and forward LANGSMITH_API_KEY. (The host equality check uses server env and is not influenced by request params.)
+  - If LANGSMITH_API_KEY is set in a network-reachable environment without locking down access to the agent endpoints (agents/python/main.py binding to 0.0.0.0), an attacker reaching port 8000 can use the agent directly and consume provider quota.
 
-Open **P1** [lgc-deployment-url-key-exfiltration](/improve/improvements/lgc-deployment-url-key-exfiltration.md).
-Do not read the guard above as "that edge is done":
+Treat the risk as P0 if you ever set LANGSMITH_API_KEY in a network-exposed deployment; otherwise it is latent.
 
-- The guard's terminal test is `addresses.every(addr => !isPrivate…)` (`route.ts:81`) — a
-  **deny-private** check, not an **allow-known** one. `https://attacker.example` resolves to
-  a normal public IP and therefore **passes**.
-- The value that passes then becomes `deploymentUrl` on `LangGraphAgent` alongside
-  `langsmithApiKey` (`route.ts:122-123`), so the LangSmith key rides the outbound request to
-  whatever host was named.
-- The value is fully caller-controlled from the **browser query string**
-  (`model-selector-provider.tsx:40` → `page.tsx:24`), or by calling
-  `POST /api/copilotkit?lgcDeploymentUrl=…` directly. The only thing in front of it is
-  `isAuthorized`, which this note already states is **not access control**.
+## Secret handling convention (durable points)
 
-The precondition, not a mitigation: with `LANGSMITH_API_KEY` unset there is no secret to
-leak and this degrades to open proxying, and this repo has no deployment surface today — so
-it is latent, not exploited. **Treat it as P0 the moment `LANGSMITH_API_KEY` is set in any
-network-reachable environment.** The fix is an allowlist (compare the parsed hostname to
-`LGC_DEPLOYMENT_URL`'s host and 400 otherwise), added *alongside* the DNS resolution rather
-than replacing it; the ledger row carries the detail.
+- Server-only secrets are read from process.env or os.getenv; the Next.js route reads process.env.* in src/app/api/copilotkit/route.ts (langsmithApiKey at src/app/api/copilotkit/route.ts:19), and the Python side uses load_dotenv plus os.getenv (agents/python/main.py:11). The brain never records secret values.
+- .env is ignored by git (.gitignore:38) and langgraph dev tooling declares env: ".env" (agents/python/langgraph.json:9).
+- NEXT_PUBLIC_ prefix is the browser boundary; NEXT_PUBLIC_COPILOTKIT_API_KEY is intentionally public (src/app/page.tsx:33).
 
-Everything else the servers call is a fixed third-party endpoint (Tavily, the four LLM
-providers) — see [env-and-integrations](/brain/rules/env-and-integrations.md).
+## Operational guidance (actionable)
 
-## Secret handling convention
+- Do not set LANGSMITH_API_KEY in any environment where the Python agent is reachable by untrusted networks unless you add auth middleware to the Python server or otherwise restrict access (agents/python/main.py:17 and agents/python/main.py:44).
+- Set LGC_DEPLOYMENT_URL to the single legitimate host for LangGraph deployments and keep that env var out of attacker control — the Next.js route enforces hostname equality to that value before using a caller-provided lgcDeploymentUrl (src/app/api/copilotkit/route.ts:59 and src/app/api/copilotkit/route.ts:122-123).
+- Treat NEXT_PUBLIC_COPILOTKIT_API_KEY as a nuisance anti-scan token (client-visible); do not rely on it for authentication (src/app/api/copilotkit/route.ts:21-27 and src/app/page.tsx:33).
 
-Names only below — this brain never opens `.env*` and never records a value.
-
-- **Read from the environment, never from a checked-in file.** The web side reads
-  `process.env.*` inside `route.ts` only; the Python side reads `os.getenv` in
-  `model.py`/`search.py`/`main.py`. `load_dotenv()` (`main.py:11`) hydrates the agent's
-  process from a local `.env`, and `langgraph.json` declares `"env": ".env"` (`:9`) for
-  `langgraph dev`.
-- **`.env` is gitignored** (`.gitignore:38`, plus `.env*.local` at `:29`), as is
-  `.claude/settings.local.json` (`:40`) where the `RAFA_MCP_KEY` lives.
-- **`NEXT_PUBLIC_` is the browser boundary.** Exactly one env var carries that prefix
-  (`NEXT_PUBLIC_COPILOTKIT_API_KEY`) and it is therefore public by construction. Every other
-  key — `LANGSMITH_API_KEY`, `TAVILY_API_KEY`, the provider keys — is module-scope on the
-  server and must never gain that prefix to "fix" an undefined value in a component.
-- Provider keys are mostly **implicit**: the LangChain constructors read them themselves
-  ([langgraph-agent-convention](/brain/rules/langgraph-agent-convention.md)), so grepping
-  for a key name will not find most of them. The authoritative list is
-  [env-and-integrations](/brain/rules/env-and-integrations.md), derived per-constructor.
-
-## Prompt/tool surface
-
-The agent binds five no-op tool schemas and acts on the model's tool calls
-([research chat flow](/brain/playbooks/research-chat-flow.md)). None of them execute shell,
-write files, or hit a database — the only side effects reachable from a model tool call are
-an outbound HTTP GET (SSRF-guarded), a Tavily search, and mutations of the in-memory
-coagent state. `DeleteResources` is the one destructive action and it is human-gated by a
-graph interrupt ([HITL contract](/brain/rules/delete-resources-hitl-contract.md)). That
-narrowness is why the missing agent-server auth is a quota/abuse problem rather than an RCE
-one — but it is the property to re-check whenever a tool is added.
-
-<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+<!-- okf:citations:start -->
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L86) — `export const POST`
-[2] [src/app/api/copilotkit/route.ts:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L24) — `isAuthorized`
-[3] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
-[4] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
-[5] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
-[6] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[7] [src/app/api/copilotkit/route.ts:59](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L59) — `isSafeDeploymentUrl`
-[8] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L19) — `langsmithApiKey`
-[9] [src/app/api/copilotkit/route.ts:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L81) — `addresses.every`
-[10] [src/app/api/copilotkit/route.ts:123](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L123) — `langsmithApiKey`
-[11] [src/lib/model-selector-provider.tsx:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/model-selector-provider.tsx#L40) — `lgcDeploymentUrl`
-[12] [src/app/page.tsx:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L24) — `lgcDeploymentUrl`
-[13] [agents/python/main.py:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L17) — `add_langgraph_fastapi_endpoint`
-[14] [agents/python/main.py:44](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L44) — `0.0.0.0`
-[15] [agents/python/main.py:11](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L11) — `load_dotenv`
-[16] [agents/python/src/lib/download.py:30](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L30) — `_is_safe_url`
-[17] [agents/python/src/lib/download.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L41) — `getaddrinfo`
-[18] [agents/python/langgraph.json:9](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/langgraph.json#L9) — `.env`
-[19] [.gitignore:38](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.gitignore#L38) — `.env`
+[1] src/app/api/copilotkit/route.ts:19 — `langsmithApiKey`
+[2] src/app/api/copilotkit/route.ts:21-27 — `isAuthorized` / `Boolean(apiKey)`
+[3] src/app/api/copilotkit/route.ts:59 — `isSafeDeploymentUrl` (DNS-resolution + host checks)
+[4] src/app/api/copilotkit/route.ts:81 — `addresses.every` (deny-private resolution check)
+[5] src/app/api/copilotkit/route.ts:86 — `export const POST`
+[6] src/app/api/copilotkit/route.ts:87-89 — `Unauthorized` (401)
+[7] src/app/api/copilotkit/route.ts:122-123 — `LangGraphAgent({ deploymentUrl, langsmithApiKey })`
+[8] src/app/page.tsx:24 — `lgcDeploymentUrl` read from client URL
+[9] src/app/page.tsx:33 — `NEXT_PUBLIC_COPILOTKIT_API_KEY` used in client header
+[10] src/lib/model-selector-provider.tsx:40 — `lgcDeploymentUrl` read from window.location
+[11] agents/python/main.py:11 — `load_dotenv()`
+[12] agents/python/main.py:17 — `add_langgraph_fastapi_endpoint`
+[13] agents/python/main.py:44 — `0.0.0.0` (uvicorn host)
+[14] agents/python/src/lib/download.py:30 — `_is_safe_url`
+[15] agents/python/src/lib/download.py:41 — `socket.getaddrinfo` used via asyncio executor
+[16] agents/python/langgraph.json:9 — `"env": ".env"`
+[17] .gitignore:38 — `.env` is ignored
 
 <!-- okf:citations:end -->

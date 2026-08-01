@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1
 id: python-resource-text-uncapped
-priority: P1
+priority: P0
 category: performance
 status: fixed
 title: "The TypeScript agent caps resource text in the system prompt; the Python agent — the one that actually runs — does not"
@@ -18,8 +18,8 @@ cites:
   - package.json:11 :: dev:agent:py
 type: Improvement
 description: "chat_node serialises every downloaded resource's full page text into the system prompt on every turn with no truncation and no aggregate budget, so one long article can exceed an entire per-minute token allowance in a single request and 429 unrecoverably; the TS port fixed exactly this with MAX_RESOURCE_CHARS/MAX_TOTAL_RESOURCE_CHARS, but npm run dev starts the Python backend"
-tags: [performance, P1]
-timestamp: 2026-08-01T05:31:21.794Z
+tags: [performance, P0]
+timestamp: 2026-08-01T07:43:05.616Z
 ---
 The brain already documents this as a live asymmetry
 ([resource-text-dominates-the-system-prompt](/brain/rules/resource-text-dominates-the-system-prompt.md)):
@@ -71,12 +71,13 @@ truncation belongs alongside that filter, not in a second pass.
 
 # Citations
 
-[1] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/python/src/lib/chat.py#L109) — `{resources}`
-[2] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/python/src/lib/chat.py#L87) — `resources.append`
-[3] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
-[4] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
-[5] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
-[6] [package.json:11](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/package.json#L11) — `dev:agent:py`
+[1] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/agents/python/src/lib/chat.py#L109) — `{resources}`
+[2] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/agents/python/src/lib/chat.py#L87) — `resources.append`
+[3] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
+[4] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
+[5] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
+[6] [package.json:11](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/package.json#L11) — `dev:agent:py`
 
 <!-- okf:citations:end -->
+
 

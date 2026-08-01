@@ -1949,7 +1949,7 @@
       "priority": "P0",
       "category": "performance",
       "lens": "performance",
-      "status": "open",
+      "status": "fixed",
       "title": "The TypeScript agent caps resource text in the system prompt; the Python agent — the one that actually runs — does not",
       "summary": "chat_node serialises every downloaded resource's full page text into the system prompt on every turn with no truncation and no aggregate budget, so one long article can exceed an entire per-minute token allowance in a single request and 429 unrecoverably; the TS port fixed exactly this with MAX_RESOURCE_CHARS/MAX_TOTAL_RESOURCE_CHARS, but npm run dev starts the Python backend",
       "fix": "Port the TS caps to Python — truncate each cached page to ~8000 chars with a [truncated] marker in download.py, and budget the aggregate to ~24000 chars in chat_node's resource loop (~20 min)",
