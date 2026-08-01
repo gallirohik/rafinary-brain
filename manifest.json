@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "mode": "branch",
+  "codeSha": "d04d09e583c3b54758b6d854684d08aab092d73c",
+  "branch": "fix/lgc-deployment-url-key-exfiltration",
+  "provenance": {
+    "agentCommits": 0
+  },
+  "base": {
+    "brainSha": "d04d09e583c3b54758b6d854684d08aab092d73c"
+  },
+  "notes": [],
+  "improvements": [
+    {
+      "id": "lgc-deployment-url-key-exfiltration",
+      "priority": "P1",
+      "category": "security",
+      "lens": "security",
+      "status": "fixed",
+      "title": "The SSRF guard blocks private targets but not public ones — any caller can redirect the proxy at their own host and receive LANGSMITH_API_KEY",
+      "summary": "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control. Fixed: isSafeDeploymentUrl now also requires the hostname to match LGC_DEPLOYMENT_URL's host, and page.tsx encodes the param.",
+      "fix": "Allowlist the deployment host instead of only denying private ones — compare the parsed hostname against LGC_DEPLOYMENT_URL's host (or an explicit env allowlist) and 400 on anything else; while in page.tsx, wrap the value in encodeURIComponent (~15 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "109",
+          "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "19",
+          "token": "LANGSMITH_API_KEY"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "139",
+          "token": "deploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "140",
+          "token": "langsmithApiKey"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "98",
+          "token": "addresses.every"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "22",
+          "token": "visible to anyone via devtools"
+        },
+        {
+          "file": "src/lib/model-selector-provider.tsx",
+          "line": "40",
+          "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/page.tsx",
+          "line": "24",
+          "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "60",
+          "token": "allowedDeploymentHost"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "86",
+          "token": "hostname !== allowedDeploymentHost"
+        }
+      ],
+      "path": "improve/improvements/lgc-deployment-url-key-exfiltration.md",
+      "provenance": {
+        "baseBrainSha": "d04d09e583c3b54758b6d854684d08aab092d73c"
+      }
+    },
+    {
+      "id": "python-resource-text-uncapped",
+      "priority": "P0",
+      "category": "performance",
+      "lens": "performance",
+      "status": "fixed",
+      "title": "The TypeScript agent caps resource text in the system prompt; the Python agent — the one that actually runs — does not",
+      "summary": "chat_node serialises every downloaded resource's full page text into the system prompt on every turn with no truncation and no aggregate budget, so one long article can exceed an entire per-minute token allowance in a single request and 429 unrecoverably; the TS port fixed exactly this with MAX_RESOURCE_CHARS/MAX_TOTAL_RESOURCE_CHARS, but npm run dev starts the Python backend",
+      "fix": "Port the TS caps to Python — truncate each cached page to ~8000 chars with a [truncated] marker in download.py, and budget the aggregate to ~24000 chars in chat_node's resource loop (~20 min)",
+      "leverage": {
+        "impact": "high",
+        "effort": "low"
+      },
+      "blastRadius": [],
+      "cites": [
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "109",
+          "token": "{resources}"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
+          "line": "87",
+          "token": "resources.append"
+        },
+        {
+          "file": "agents/python/src/lib/download.py",
+          "line": "78",
+          "token": "_RESOURCE_CACHE"
+        },
+        {
+          "file": "agents/typescript/src/chat.ts",
+          "line": "21",
+          "token": "MAX_TOTAL_RESOURCE_CHARS"
+        },
+        {
+          "file": "agents/typescript/src/download.ts",
+          "line": "17",
+          "token": "MAX_RESOURCE_CHARS"
+        },
+        {
+          "file": "package.json",
+          "line": "11",
+          "token": "dev:agent:py"
+        }
+      ],
+      "path": "improve/improvements/python-resource-text-uncapped.md",
+      "provenance": {
+        "baseBrainSha": "d04d09e583c3b54758b6d854684d08aab092d73c"
+      }
+    }
+  ],
+  "drafts": [
+    {
+      "path": "improve/improvements/index.md",
+      "error": "no frontmatter block"
+    }
+  ]
+}
