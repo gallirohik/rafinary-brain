@@ -1,26 +1,25 @@
 ---
-id: python-resource-text-uncapped
-type: Improvement
 schemaVersion: 1
+id: python-resource-text-uncapped
 priority: P1
 category: performance
-status: open
-title: The TypeScript agent caps resource text in the system prompt; the Python agent — the one that actually runs — does not
+status: fixed
+title: "The TypeScript agent caps resource text in the system prompt; the Python agent — the one that actually runs — does not"
 summary: "chat_node serialises every downloaded resource's full page text into the system prompt on every turn with no truncation and no aggregate budget, so one long article can exceed an entire per-minute token allowance in a single request and 429 unrecoverably; the TS port fixed exactly this with MAX_RESOURCE_CHARS/MAX_TOTAL_RESOURCE_CHARS, but npm run dev starts the Python backend"
 fix: "Port the TS caps to Python — truncate each cached page to ~8000 chars with a [truncated] marker in download.py, and budget the aggregate to ~24000 chars in chat_node's resource loop (~20 min)"
 leverage: { impact: high, effort: low }
 blast_radius: [agent-python, agent-bridge, data-persistence]
 cites:
   - agents/python/src/lib/chat.py:109 :: {resources}
-  - agents/python/src/lib/chat.py:74 :: resources.append
+  - agents/python/src/lib/chat.py:87 :: resources.append
   - agents/python/src/lib/download.py:78 :: _RESOURCE_CACHE
   - agents/typescript/src/chat.ts:21 :: MAX_TOTAL_RESOURCE_CHARS
   - agents/typescript/src/download.ts:17 :: MAX_RESOURCE_CHARS
   - package.json:11 :: dev:agent:py
-found: 2026-07-30
+type: Improvement
 description: "chat_node serialises every downloaded resource's full page text into the system prompt on every turn with no truncation and no aggregate budget, so one long article can exceed an entire per-minute token allowance in a single request and 429 unrecoverably; the TS port fixed exactly this with MAX_RESOURCE_CHARS/MAX_TOTAL_RESOURCE_CHARS, but npm run dev starts the Python backend"
 tags: [performance, P1]
-timestamp: 2026-07-30
+timestamp: 2026-08-01T05:31:21.794Z
 ---
 The brain already documents this as a live asymmetry
 ([resource-text-dominates-the-system-prompt](/brain/rules/resource-text-dominates-the-system-prompt.md)):
@@ -72,11 +71,12 @@ truncation belongs alongside that filter, not in a second pass.
 
 # Citations
 
-[1] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L109) — `{resources}`
-[2] [agents/python/src/lib/chat.py:74](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/chat.py#L74) — `resources.append`
-[3] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
-[4] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
-[5] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
-[6] [package.json:11](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/package.json#L11) — `dev:agent:py`
+[1] [agents/python/src/lib/chat.py:109](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/python/src/lib/chat.py#L109) — `{resources}`
+[2] [agents/python/src/lib/chat.py:87](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/python/src/lib/chat.py#L87) — `resources.append`
+[3] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
+[4] [agents/typescript/src/chat.ts:21](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/typescript/src/chat.ts#L21) — `MAX_TOTAL_RESOURCE_CHARS`
+[5] [agents/typescript/src/download.ts:17](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/agents/typescript/src/download.ts#L17) — `MAX_RESOURCE_CHARS`
+[6] [package.json:11](https://github.com/gallirohik/research-canvas/blob/5c5be037738cf6014f6d4ab49f7bd8c71ff2ca7c/package.json#L11) — `dev:agent:py`
 
 <!-- okf:citations:end -->
+

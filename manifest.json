@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "emitter": 2,
-  "codeSha": "fa27c081576699e1589fccf1b21d731806624afd",
+  "codeSha": "d04d09e583c3b54758b6d854684d08aab092d73c",
   "branch": "main",
   "health": {
     "verdict": "PASS"
@@ -1936,7 +1936,7 @@
     },
     {
       "id": "python-resource-text-uncapped",
-      "priority": "P1",
+      "priority": "P0",
       "category": "performance",
       "lens": "performance",
       "status": "open",
@@ -1960,7 +1960,7 @@
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "74",
+          "line": "87",
           "token": "resources.append"
         },
         {
