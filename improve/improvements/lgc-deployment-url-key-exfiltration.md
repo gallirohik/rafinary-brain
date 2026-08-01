@@ -1,28 +1,29 @@
 ---
-id: lgc-deployment-url-key-exfiltration
-type: Improvement
 schemaVersion: 1
+id: lgc-deployment-url-key-exfiltration
 priority: P1
 category: security
-status: open
-title: The SSRF guard blocks private targets but not public ones — any caller can redirect the proxy at their own host and receive LANGSMITH_API_KEY
-summary: "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control"
+status: fixed
+title: "The SSRF guard blocks private targets but not public ones — any caller can redirect the proxy at their own host and receive LANGSMITH_API_KEY"
+summary: "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control. Fixed: isSafeDeploymentUrl now also requires the hostname to match LGC_DEPLOYMENT_URL's host, and page.tsx encodes the param."
 fix: "Allowlist the deployment host instead of only denying private ones — compare the parsed hostname against LGC_DEPLOYMENT_URL's host (or an explicit env allowlist) and 400 on anything else; while in page.tsx, wrap the value in encodeURIComponent (~15 min)"
 leverage: { impact: high, effort: low }
 blast_radius: [agent-bridge, external-integrations, security]
 cites:
-  - src/app/api/copilotkit/route.ts:92 :: lgcDeploymentUrl
+  - src/app/api/copilotkit/route.ts:109 :: lgcDeploymentUrl
   - src/app/api/copilotkit/route.ts:19 :: LANGSMITH_API_KEY
-  - src/app/api/copilotkit/route.ts:122 :: deploymentUrl
-  - src/app/api/copilotkit/route.ts:123 :: langsmithApiKey
-  - src/app/api/copilotkit/route.ts:81 :: addresses.every
+  - src/app/api/copilotkit/route.ts:139 :: deploymentUrl
+  - src/app/api/copilotkit/route.ts:140 :: langsmithApiKey
+  - src/app/api/copilotkit/route.ts:98 :: addresses.every
   - src/app/api/copilotkit/route.ts:22 :: visible to anyone via devtools
   - src/lib/model-selector-provider.tsx:40 :: lgcDeploymentUrl
   - src/app/page.tsx:24 :: lgcDeploymentUrl
-found: 2026-07-30
-description: "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control"
+  - src/app/api/copilotkit/route.ts:60 :: allowedDeploymentHost
+  - src/app/api/copilotkit/route.ts:86 :: hostname !== allowedDeploymentHost
+type: Improvement
+description: "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control. Fixed: isSafeDeploymentUrl now also requires the hostname to match LGC_DEPLOYMENT_URL's host, and page.tsx encodes the param."
 tags: [security, P1]
-timestamp: 2026-07-30
+timestamp: 2026-08-01T07:43:05.616Z
 ---
 This is the residual the SSRF fix
 ([lgc-deployment-url-ssrf-asymmetry](/improve/improvements/lgc-deployment-url-ssrf-asymmetry.md))
@@ -35,10 +36,35 @@ framed the risk as leaking "the LangSmith key to an **internal** host", which is
 threat model. That gap was raised as a scan major and closed —
 [security-posture](/brain/playbooks/security-posture.md) now heads the section
 "deny-private, not allow-known", states per guard what it covers and does not, and carries a
-"Residual — not closed" subsection naming this row with the full path. **The code is
-unchanged**, so this row stays `open` at P1; only the brain's description of it moved.
+"Residual — not closed" subsection naming this row with the full path.
 
-## The path, end to end
+## Resolution (2026-08-01)
+
+`isSafeDeploymentUrl` (`route.ts:75-101`) now allowlists the deployment host, added
+alongside — never replacing — the existing protocol / `localhost`/`.local` /
+DNS-resolution / private-IP checks:
+
+1. A module-scope `allowedDeploymentHost` (`route.ts:60-68`) derives the hostname from
+   `process.env.LGC_DEPLOYMENT_URL` — the same variable the no-param fallback already
+   used (`route.ts:119`) — or `null` if unset/unparseable.
+2. `isSafeDeploymentUrl` rejects any `lgcDeploymentUrl` whose hostname doesn't
+   case-insensitively match it (`route.ts:86`). Unset/unparseable rejects every
+   caller-supplied value (no known host to allow); requests that supply **no** param
+   are unaffected — the fallback and runtime selection at `route.ts:119-135` are
+   untouched.
+3. `page.tsx:24` now wraps `lgcDeploymentUrl` in `encodeURIComponent(...)` before
+   interpolating it into the query string, closing the adjacent
+   [unencoded-lgc-deployment-url](/improve/improvements/unencoded-lgc-deployment-url.md)
+   row in the same sitting.
+
+Verified live (not just read): a public host that resolves to a normal public IP and
+clears every pre-existing check (`example.com`) was accepted pre-fix and is rejected
+post-fix solely on hostname mismatch; the configured host still passes;
+`tsc --noEmit` exits 0. Residual, non-blocking: the comparison is hostname-only, not
+host:port — a different service on another port of the allowed host still passes.
+Don't "simplify" this back to a bare deny-list; the allowlist is the fix.
+
+## The path, end to end (pre-fix state — historical)
 
 1. `lgcDeploymentUrl` originates in the **browser's own query string**
    (`model-selector-provider.tsx:40`) and is appended to the runtime URL by `page.tsx:24`, so
@@ -85,13 +111,16 @@ Two smaller notes on the same path, worth taking in the same sitting:
 
 # Citations
 
-[1] [src/app/api/copilotkit/route.ts:92](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L92) — `lgcDeploymentUrl`
-[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
-[3] [src/app/api/copilotkit/route.ts:122](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L122) — `deploymentUrl`
-[4] [src/app/api/copilotkit/route.ts:123](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L123) — `langsmithApiKey`
-[5] [src/app/api/copilotkit/route.ts:81](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L81) — `addresses.every`
-[6] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
-[7] [src/lib/model-selector-provider.tsx:40](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/lib/model-selector-provider.tsx#L40) — `lgcDeploymentUrl`
-[8] [src/app/page.tsx:24](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L24) — `lgcDeploymentUrl`
+[1] [src/app/api/copilotkit/route.ts:109](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L109) — `lgcDeploymentUrl`
+[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
+[3] [src/app/api/copilotkit/route.ts:139](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L139) — `deploymentUrl`
+[4] [src/app/api/copilotkit/route.ts:140](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L140) — `langsmithApiKey`
+[5] [src/app/api/copilotkit/route.ts:98](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L98) — `addresses.every`
+[6] [src/app/api/copilotkit/route.ts:22](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L22) — `visible to anyone via devtools`
+[7] [src/lib/model-selector-provider.tsx:40](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/lib/model-selector-provider.tsx#L40) — `lgcDeploymentUrl`
+[8] [src/app/page.tsx:24](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/page.tsx#L24) — `lgcDeploymentUrl`
+[9] [src/app/api/copilotkit/route.ts:60](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L60) — `allowedDeploymentHost`
+[10] [src/app/api/copilotkit/route.ts:86](https://github.com/gallirohik/research-canvas/blob/d04d09e583c3b54758b6d854684d08aab092d73c/src/app/api/copilotkit/route.ts#L86) — `hostname !== allowedDeploymentHost`
 
 <!-- okf:citations:end -->
+

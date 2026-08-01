@@ -4,7 +4,7 @@ id: repo-toolbox
 type: convention
 domain: toolbox
 title: The committed agent toolbox — rafa skills, harness-neutral .agents skills, the rafinery MCP server, and permissions
-summary: "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.2 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored"
+summary: "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.5 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored"
 links: [env-and-integrations, security-posture]
 cites:
   - .claude/skills/rafa-scan/SKILL.md:2 :: rafa-scan
@@ -21,11 +21,12 @@ cites:
   - .claude/rafa/contract.md:642 :: The query plane
   - .claude/rafa/contract.md:617 :: query_schema
   - rafa.json:11 :: skills
-  - rafa.json:8 :: 0.18.2
-description: "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.2 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored"
+  - rafa.json:8 :: 0.18.5
+description: "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.5 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored"
 tags: [toolbox]
 timestamp: 2026-07-26T22:44:42.840Z
 ---
+
 There is no app-specific tooling in this repo — the committed toolbox is **rafa** (the
 engineering SOP layer) plus a set of harness-neutral skill dependencies it installed. This
 note is the index to both. Check here before hand-rolling a procedure.
@@ -41,8 +42,7 @@ rides the reconciler, not a card.)
 **Harness-neutral skills** (`.agents/skills/*/SKILL.md`, **8**): `dev-loop`, `tdd`,
 `frontend-design`, `vercel-composition-patterns`, `requesting-code-review`,
 `improve-codebase-architecture`, `grill-me`, `grilling`. Same `name:`/`description:`
-frontmatter shape
-(`.agents/skills/tdd/SKILL.md:2`,
+frontmatter shape (`.agents/skills/tdd/SKILL.md:2`,
 `.agents/skills/vercel-composition-patterns/SKILL.md:2`). These live outside `.claude/`
 **on purpose** — `.agents/` is the one convention Claude Code, Codex and Cursor all read,
 so the same skill works whichever harness a teammate uses. They are consent-installed by
@@ -58,17 +58,17 @@ registry, so it has no version to record. Don't "fix" the count by inventing a `
 entry for it; the counts are pinned as `claude-skills` / `agent-skills` in
 [coverage.md](/brain/coverage.md)'s `inventory:`, which re-derives both from `git ls-files`
 on every check — so if a NINTH directory appears, the gate fails and you'll know it's real
-drift rather than this exception.
+drift rather than this exception. (Proof: dev-loop is authored in the repo: .agents/skills/dev-loop/SKILL.md:2 `name: dev-loop`; rafa.json's installed map lists seven keys — see rafa.json:11.)
 
-**Command**: `.claude/commands/rafa.md` — the `/rafa <verb>` slash command, `version: 2.2.0`
-(`:2`).
+**Command**: `.claude/commands/rafa.md` — the `/rafa <verb>` slash command, `version: 2.3.0`
+(`:2`). The conductor card at .claude/commands/rafa.md shows the current card version as `version: 2.3.0` (see .claude/commands/rafa.md:2).
 
-**The CLI pin** (`rafa.json`): `rafa.cli` is **`0.18.2`** (`:8`). This is the version of
+**The CLI pin** (`rafa.json`): `rafa.cli` is **`0.18.5`** (`:8`). This is the version of
 `@rafinery/cli` the whole SOP assumes, and it decides which `rafa` subcommands actually
 exist — the skills reference verbs (`rafa run`, `rafa okf`, `rafa hydrate`, `rafa facts`)
 that a lower pin does not ship, and one of them (`rafa push`) is *retired* and refuses.
 Run `npx @rafinery/cli --help` against the pin rather than trusting a remembered verb list.
-The cite above is **deliberately brittle**: the token is the version string itself, so the
+(Proof: the committed rafa.json lists the cli pin at rafa.json:8: `"cli": "0.18.5"`.) The cite above is **deliberately brittle**: the token is the version string itself, so the
 next bump fails `verify-citations` and forces this note back through a refresh, instead of
 letting the number rot silently in prose — which is exactly how this note previously came
 to list a `rafa-distill` skill that never existed.
@@ -108,7 +108,7 @@ one** — and the older "just search it" habit is now the wrong default:
   generated from the OKF registry. Call it once per session and compose against what it
   returned; a hardcoded enum goes stale the day a type is minted.
 - **Results carry a GRADE, and the grade decides what you may do** — `verified` (a `cites`
-  edge the build re-greps: act on it, navigate to `file:line`) > `derived` (a mechanical
+  edge the build re-greps it: act on it, navigate to `file:line`) > `derived` (a mechanical
   join: trust it as navigation, it makes no claim about the code) > `authored` (an
   asserted `links:`/`supersedes` edge nothing re-checks: follow as a lead, confirm against
   code first — the only grade that can be quietly wrong). No result at all is a **gap**:
@@ -139,20 +139,20 @@ Provider/service keys are covered in
 
 # Citations
 
-[1] [.claude/skills/rafa-scan/SKILL.md:2](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/skills/rafa-scan/SKILL.md#L2) — `rafa-scan`
-[2] [.claude/commands/rafa.md:2](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/commands/rafa.md#L2) — `version`
-[3] [.claude/commands/rafa.md:220](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/commands/rafa.md#L220) — `The driver`
-[4] [.claude/commands/rafa.md:240](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/commands/rafa.md#L240) — `.rafa/runs/`
-[5] [.mcp.json:3](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.mcp.json#L3) — `rafinery`
-[6] [.mcp.json:7](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.mcp.json#L7) — `RAFA_MCP_KEY`
-[7] [.claude/settings.json:5](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/settings.json#L5) — `@rafinery/cli`
-[8] [.claude/settings.json:4](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/settings.json#L4) — `Read(.rafa`
-[9] [.claude/settings.json:10](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/settings.json#L10) — `SessionStart`
-[10] [.agents/skills/tdd/SKILL.md:2](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.agents/skills/tdd/SKILL.md#L2) — `tdd`
-[11] [.agents/skills/vercel-composition-patterns/SKILL.md:2](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.agents/skills/vercel-composition-patterns/SKILL.md#L2) — `vercel-composition-patterns`
-[12] [.claude/rafa/contract.md:642](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/rafa/contract.md#L642) — `The query plane`
-[13] [.claude/rafa/contract.md:617](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/.claude/rafa/contract.md#L617) — `query_schema`
-[14] [rafa.json:11](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/rafa.json#L11) — `skills`
-[15] [rafa.json:8](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/rafa.json#L8) — `0.18.2`
+[1] [.claude/skills/rafa-scan/SKILL.md:2](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/skills/rafa-scan/SKILL.md#L2) — `rafa-scan`
+[2] [.claude/commands/rafa.md:2](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/commands/rafa.md#L2) — `version`
+[3] [.claude/commands/rafa.md:220](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/commands/rafa.md#L220) — `The driver`
+[4] [.claude/commands/rafa.md:240](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/commands/rafa.md#L240) — `.rafa/runs/`
+[5] [.mcp.json:3](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.mcp.json#L3) — `rafinery`
+[6] [.mcp.json:7](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.mcp.json#L7) — `RAFA_MCP_KEY`
+[7] [.claude/settings.json:5](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/settings.json#L5) — `@rafinery/cli`
+[8] [.claude/settings.json:4](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/settings.json#L4) — `Read(.rafa`
+[9] [.claude/settings.json:10](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/settings.json#L10) — `SessionStart`
+[10] [.agents/skills/tdd/SKILL.md:2](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.agents/skills/tdd/SKILL.md#L2) — `tdd`
+[11] [.agents/skills/vercel-composition-patterns/SKILL.md:2](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.agents/skills/vercel-composition-patterns/SKILL.md#L2) — `vercel-composition-patterns`
+[12] [.claude/rafa/contract.md:642](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/rafa/contract.md#L642) — `The query plane`
+[13] [.claude/rafa/contract.md:617](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/.claude/rafa/contract.md#L617) — `query_schema`
+[14] [rafa.json:11](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/rafa.json#L11) — `skills`
+[15] [rafa.json:8](https://github.com/gallirohik/research-canvas/blob/1ebb712b4a31969dd2ade1b59f92b18d1f456033/rafa.json#L8) — `0.18.5`
 
 <!-- okf:citations:end -->

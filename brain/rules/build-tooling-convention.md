@@ -15,7 +15,7 @@ cites:
   - package.json:12 :: "dev:agent:py"
   - package.json:14 :: install:agent:ts
   - package.json:17 :: "@copilotkit/react-core"
-  - package.json:43 :: "nx"
+  - package.json:44 :: "nx"
   - agents/typescript/package.json:13 :: "@copilotkit/sdk-js"
   - agents/typescript/package.json:23 :: "langchain"
   - agents/python/langgraph.json:5 :: graphs

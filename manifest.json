@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "emitter": 2,
-  "codeSha": "d04d09e583c3b54758b6d854684d08aab092d73c",
+  "codeSha": "1ebb712b4a31969dd2ade1b59f92b18d1f456033",
   "branch": "main",
   "health": {
-    "verdict": "PASS"
+    "verdict": "ITERATE"
   },
   "coverage": {
     "domains": [
@@ -164,7 +164,7 @@
       "type": "flow",
       "domain": "agent-bridge",
       "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
-      "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete/fact-check), and how tool-call intermediate state (or a direct node return, for fact-check) streams back to render the canvas, progress list, and fact-check panel",
+      "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete/fact-check), and how intermediate state streams back to render the canvas, progress list, and fact-check panel",
       "links": [
         "agent-name-contract",
         "agent-state-shape-contract",
@@ -186,18 +186,18 @@
         },
         {
           "file": "agents/python/src/lib/chat.py",
-          "line": "82",
-          "token": "bind_tools"
-        },
-        {
-          "file": "agents/python/src/lib/chat.py",
           "line": "48",
           "token": "copilotkit_customize_config"
         },
         {
           "file": "agents/python/src/lib/chat.py",
+          "line": "82",
+          "token": "resource aggregation"
+        },
+        {
+          "file": "agents/python/src/lib/chat.py",
           "line": "160",
-          "token": "FactCheckReport"
+          "token": "tool-call routing / ToolMessage"
         },
         {
           "file": "agents/python/src/lib/fact_check.py",
@@ -217,12 +217,12 @@
         {
           "file": "src/components/ResearchCanvas.tsx",
           "line": "193",
-          "token": "report"
+          "token": "report binding"
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
           "line": "202",
-          "token": "citations"
+          "token": "citations guard"
         }
       ],
       "path": "brain/playbooks/research-chat-flow.md"
@@ -613,7 +613,7 @@
         },
         {
           "file": "package.json",
-          "line": "43",
+          "line": "44",
           "token": "\"nx\""
         },
         {
@@ -738,7 +738,7 @@
         {
           "file": "src/app/api/copilotkit/route.ts",
           "line": "59",
-          "token": "isSafeDeploymentUrl"
+          "token": "allowedDeploymentHost (LGC_DEPLOYMENT_URL)"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
@@ -763,7 +763,7 @@
         {
           "file": "src/app/api/copilotkit/route.ts",
           "line": "87-89",
-          "token": "Unauthorized"
+          "token": "Unauthorized / isSafeDeploymentUrl host-check"
         }
       ],
       "path": "brain/rules/copilotkit-runtime-route-convention.md"
@@ -1176,7 +1176,7 @@
       "type": "convention",
       "domain": "toolbox",
       "title": "The committed agent toolbox — rafa skills, harness-neutral .agents skills, the rafinery MCP server, and permissions",
-      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.2 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored",
+      "summary": "The repo ships the rafa engineering SOP as 13 .claude skills + 5 agent cards + the /rafa command, PLUS 8 harness-neutral skills under .agents/skills (Claude Code · Codex · Cursor all read these; rafa.json records 7 installed versions — dev-loop is authored here, not installed), pinned to @rafinery/cli 0.18.5 and wired to the rafinery knowledge MCP over HTTP with a bearer key from env; scan/plan/build are DRIVEN by the rafa run ladder and brain recall is query-first, graded verified > derived > authored",
       "links": [
         "env-and-integrations",
         "security-posture"
@@ -1255,7 +1255,7 @@
         {
           "file": "rafa.json",
           "line": "8",
-          "token": "0.18.2"
+          "token": "0.18.5"
         }
       ],
       "path": "brain/rules/repo-toolbox.md"
@@ -1695,9 +1695,9 @@
       "priority": "P1",
       "category": "security",
       "lens": "security",
-      "status": "open",
+      "status": "fixed",
       "title": "The SSRF guard blocks private targets but not public ones — any caller can redirect the proxy at their own host and receive LANGSMITH_API_KEY",
-      "summary": "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control",
+      "summary": "?lgcDeploymentUrl= is read straight from the request URL and, when set, becomes the LangGraph SDK client's apiUrl with langsmithApiKey as its apiKey; isSafeDeploymentUrl only rejects hosts resolving to private addresses, so https://attacker.example passes and the server sends the LangSmith key to it — and the x-api-key gate in front of it is documented as not being access control. Fixed: isSafeDeploymentUrl now also requires the hostname to match LGC_DEPLOYMENT_URL's host, and page.tsx encodes the param.",
       "fix": "Allowlist the deployment host instead of only denying private ones — compare the parsed hostname against LGC_DEPLOYMENT_URL's host (or an explicit env allowlist) and 400 on anything else; while in page.tsx, wrap the value in encodeURIComponent (~15 min)",
       "leverage": {
         "impact": "high",
@@ -1711,7 +1711,7 @@
       "cites": [
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "92",
+          "line": "109",
           "token": "lgcDeploymentUrl"
         },
         {
@@ -1721,17 +1721,17 @@
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "122",
+          "line": "139",
           "token": "deploymentUrl"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "123",
+          "line": "140",
           "token": "langsmithApiKey"
         },
         {
           "file": "src/app/api/copilotkit/route.ts",
-          "line": "81",
+          "line": "98",
           "token": "addresses.every"
         },
         {
@@ -1748,6 +1748,16 @@
           "file": "src/app/page.tsx",
           "line": "24",
           "token": "lgcDeploymentUrl"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "60",
+          "token": "allowedDeploymentHost"
+        },
+        {
+          "file": "src/app/api/copilotkit/route.ts",
+          "line": "86",
+          "token": "hostname !== allowedDeploymentHost"
         }
       ],
       "path": "improve/improvements/lgc-deployment-url-key-exfiltration.md"
@@ -1757,7 +1767,7 @@
       "priority": "P2",
       "category": "security",
       "lens": "security",
-      "status": "open",
+      "status": "fixed",
       "title": "The lgcDeploymentUrl SSRF guard checks host strings only — no DNS resolution, unlike the Python side",
       "summary": "isSafeDeploymentUrl blocked private hostnames by literal/regex pattern but never resolved DNS, so a public hostname pointing at a private/metadata IP passed and the proxy forwarded langsmithApiKey to it — now fixed; the guard resolves DNS and checks every resolved address, mirroring download.py",
       "fix": "Resolve the hostname and reject when any resolved address is private/loopback/link-local, mirroring download.py's _is_safe_url (~15 min)",
