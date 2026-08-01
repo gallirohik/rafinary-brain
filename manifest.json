@@ -1,16 +1,17 @@
 {
   "schemaVersion": 1,
   "mode": "branch",
-  "codeSha": "8bac05b2007d8a1eaae486511f6a7fae640a7c7a",
+  "codeSha": "37833fd863c86b628f0c4450a3a84e2705f032bb",
   "branch": "fix/python-resource-cap",
   "provenance": {
-    "agentCommits": 1,
+    "agentCommits": 2,
     "commitsCovered": [
-      "5c5be037738c"
+      "5c5be037738c",
+      "8bac05b2007d"
     ],
     "lastAgentRun": {
-      "at": "2026-08-01T03:51:49+05:30",
-      "codeSha": "8bac05b2007d8a1eaae486511f6a7fae640a7c7a",
+      "at": "2026-08-01T11:03:52+05:30",
+      "codeSha": "37833fd863c86b628f0c4450a3a84e2705f032bb",
       "actor": {
         "model": "mechanical",
         "agent": "cli@0.18.4",
