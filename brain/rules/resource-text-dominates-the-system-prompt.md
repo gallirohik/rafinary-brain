@@ -3,10 +3,9 @@ schemaVersion: 1
 id: resource-text-dominates-the-system-prompt
 type: contract
 domain: agent-bridge
-title: Every resource's full page text is re-sent in the system prompt on every turn — capped in TypeScript, still uncapped in Python
-summary: Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT
+title: "Every resource's full page text is re-sent in the system prompt on every turn — capped in TypeScript, still uncapped in Python"
+summary: "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT. Rule: any new node that injects resource text into a prompt MUST budget it (per-resource and aggregate caps, like MAX_TOTAL_RESOURCE_CHARS in the TypeScript agent) — the missing Python cap is an open P1 improvement, not permission to skip the cap"
 links: [langgraph-agent-convention, agent-typescript-parity, research-chat-flow]
-failure: loud
 anchor: MAX_TOTAL_RESOURCE_CHARS
 cites:
   - agents/typescript/src/chat.ts:114 :: JSON.stringify(resources)
@@ -16,9 +15,6 @@ cites:
   - agents/python/src/lib/chat.py:109 :: {resources}
   - agents/python/src/lib/chat.py:74 :: resources.append
   - agents/python/src/lib/download.py:78 :: _RESOURCE_CACHE
-description: "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT"
-tags: [agent-bridge]
-timestamp: 2026-07-28T14:39:04Z
 ---
 
 The research agents do not summarise their sources. Each `chat_node` walks
@@ -29,6 +25,19 @@ not just the turn the resource was added.
 That makes prompt size a function of *how much has been read*, not of how long
 the conversation is. It is the dominant term in this app's token cost by a wide
 margin.
+
+## The rule
+
+**Any new node that injects resource text into a prompt MUST budget it** —
+both a per-resource cap and an aggregate cap, the same shape as
+`MAX_RESOURCE_CHARS` / `MAX_TOTAL_RESOURCE_CHARS` in the TypeScript agent (see
+below). This applies regardless of language or framework: LangGraph node,
+route handler, or otherwise — if it puts resource text in a prompt, it caps
+it, both per-resource and in aggregate.
+
+The Python agent not having this cap today is an **open P1 improvement**, not
+precedent. Do not point at `agents/python` to justify skipping the cap in new
+code — the absence there is the bug this note tracks, not the standard.
 
 ## Why it fails loudly and unrecoverably
 
@@ -92,3 +101,4 @@ grows after capping resources, look there next.
 [7] [agents/python/src/lib/download.py:78](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/download.py#L78) — `_RESOURCE_CACHE`
 
 <!-- okf:citations:end -->
+

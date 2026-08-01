@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "emitter": 2,
-  "codeSha": "a527a0b33c8822856953540613c9d82d2188301a",
+  "codeSha": "fa27c081576699e1589fccf1b21d731806624afd",
   "branch": "main",
   "health": {
     "verdict": "PASS"
@@ -1266,7 +1266,7 @@
       "type": "contract",
       "domain": "agent-bridge",
       "title": "Every resource's full page text is re-sent in the system prompt on every turn — capped in TypeScript, still uncapped in Python",
-      "summary": "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT",
+      "summary": "Both chat nodes re-serialise all downloaded resources into the system prompt each turn, so one long article can exceed an entire per-minute token budget in a single request; the TS agent caps this (8k/resource, 24k total) as of 2026-07-28, the Python agent does NOT. Rule: any new node that injects resource text into a prompt MUST budget it (per-resource and aggregate caps, like MAX_TOTAL_RESOURCE_CHARS in the TypeScript agent) — the missing Python cap is an open P1 improvement, not permission to skip the cap",
       "links": [
         "langgraph-agent-convention",
         "agent-typescript-parity",
