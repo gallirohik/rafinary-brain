@@ -885,7 +885,7 @@
       "type": "convention",
       "domain": "external-integrations",
       "title": "Environment variables and external services this app reads",
-      "summary": "NEXT_PUBLIC_COPILOTKIT_API_KEY is REQUIRED for the app to function — unset means every POST /api/copilotkit 401s silently; beyond it the route reads LangSmith/deployment keys, each agent reads MODEL + provider keys + TAVILY_API_KEY, OPENAI_API_KEY appears only commented-out in the runtime route while ANTHROPIC_API_KEY has no occurrence in CODE — all provider LLM keys are otherwise read implicitly by the LangChain constructors",
+      "summary": "NEXT_PUBLIC_COPILOTKIT_API_KEY is REQUIRED for the app to function — unset means every POST /api/copilotkit 401s silently; beyond that the runtime route reads LangSmith/deployment keys, each agent reads MODEL + provider keys + TAVILY_API_KEY; OPENAI_API_KEY appears only commented-out in the runtime route while provider-specific keys (Anthropic/xAI/etc.) are read implicitly by the LangChain constructors in this repo's agent code. ANTHROPIC_API_KEY is not present in the cited files; a repo-wide grep is required to prove global absence.",
       "links": [
         "copilotkit-runtime-route-convention",
         "langgraph-agent-convention",

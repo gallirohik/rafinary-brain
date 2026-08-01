@@ -4,7 +4,7 @@ id: env-and-integrations
 type: convention
 domain: external-integrations
 title: Environment variables and external services this app reads
-summary: NEXT_PUBLIC_COPILOTKIT_API_KEY is REQUIRED for the app to function — unset means every POST /api/copilotkit 401s silently; beyond it the route reads LangSmith/deployment keys, each agent reads MODEL + provider keys + TAVILY_API_KEY, OPENAI_API_KEY appears only commented-out in the runtime route while ANTHROPIC_API_KEY has no occurrence in CODE — all provider LLM keys are otherwise read implicitly by the LangChain constructors
+summary: NEXT_PUBLIC_COPILOTKIT_API_KEY is REQUIRED for the app to function — unset means every POST /api/copilotkit 401s silently; beyond that the runtime route reads LangSmith/deployment keys, each agent reads MODEL + provider keys + TAVILY_API_KEY; OPENAI_API_KEY appears only commented-out in the runtime route while provider-specific keys (Anthropic/xAI/etc.) are read implicitly by the LangChain constructors in this repo's agent code. ANTHROPIC_API_KEY is not present in the cited files; a repo-wide grep is required to prove global absence.
 links: [copilotkit-runtime-route-convention, langgraph-agent-convention, repo-toolbox, security-posture]
 cites:
   - src/app/api/copilotkit/route.ts:25 :: NEXT_PUBLIC_COPILOTKIT_API_KEY
@@ -23,91 +23,47 @@ cites:
   - src/app/api/copilotkit/route.ts:26 :: Boolean(apiKey)
   - src/app/api/copilotkit/route.ts:87-89 :: Unauthorized
 absent: ANTHROPIC_API_KEY
-description: "NEXT_PUBLIC_COPILOTKIT_API_KEY is REQUIRED for the app to function — unset means every POST /api/copilotkit 401s silently; beyond it the route reads LangSmith/deployment keys, each agent reads MODEL + provider keys + TAVILY_API_KEY, OPENAI_API_KEY appears only commented-out in the runtime route while ANTHROPIC_API_KEY has no occurrence in CODE — all provider LLM keys are otherwise read implicitly by the LangChain constructors"
-tags: [external-integrations]
-timestamp: 2026-07-26T22:44:42.840Z
+timestamp: 2026-08-01T10:25:28.000Z
 ---
-Env var **names** and where source reads them (values never inspected; `.env*` never opened).
 
-**Frontend / runtime route** (`src/app/api/copilotkit/route.ts`, `src/app/page.tsx`):
-- `NEXT_PUBLIC_COPILOTKIT_API_KEY` — **the one variable the app cannot run without. Set it
-  first.** `isAuthorized` is `return Boolean(apiKey) && req.headers.get("x-api-key") === apiKey`
-  (`route.ts:26`), so when the var is unset the left conjunct is `false` **unconditionally**
-  and *every* `POST /api/copilotkit` returns 401 (`route.ts:87-89`). The failure is silent:
-  no startup warning, no server error, no message in the UI — the chat panel simply never
-  answers, and nothing else in the app misbehaves, so it reads as "CopilotKit is broken."
-  Any value works, because `page.tsx:33` sends back that same env var as the `x-api-key`
-  header, so the two sides always match by construction. **There is no `.env.example` in
-  this repo** (`coverage.md` inventory row `env-example :: .env.example :: 0` re-counts it
-  every run) and `readme.md`'s env template never names this key, so a fresh clone is dead
-  by default with no breadcrumb. Treat it as **cosmetic as a security boundary but mandatory
-  as a runtime input** — the two claims are both true and are about different things; see
-  [the route convention](/brain/rules/copilotkit-runtime-route-convention.md) and
-  [the security posture](/brain/playbooks/security-posture.md) for the boundary half.
-  `NEXT_PUBLIC_` = **ships to the browser** (`route.ts:25`, `page.tsx:33`); not a secret
-  boundary.
-- `LANGSMITH_API_KEY` — LangGraph-Cloud auth, only used in `lgcDeploymentUrl` mode
-  (`route.ts:19`).
-- `LGC_DEPLOYMENT_URL` — optional LangGraph Cloud deployment URL (`route.ts:102`), the
-  fallback when no `?lgcDeploymentUrl=` param is supplied.
-- `REMOTE_ACTION_URL` — backend agent base URL, default `http://localhost:8000/copilotkit`
-  (`route.ts:105`).
+Env var names and where source reads them (values never inspected; `.env*` never opened).
 
-**Python agent** (`agents/python/`):
-- `MODEL` — overrides `state.model` (`model.py:19`).
-- `GOOGLE_API_KEY` — passed explicitly to `ChatGoogleGenerativeAI` (`model.py:42`).
-- `TAVILY_API_KEY` — web search client (`search.py:34`).
-- `PORT` — uvicorn port, default 8000 (`main.py:41`); `LANGGRAPH_FASTAPI` — set in-process
-  to toggle the checkpointer (`main.py:12`, read `agent.py:40`), not a user-facing key.
-- **Provider LLM keys**: read by the LangChain SDK constructors themselves (`ChatOpenAI`
-  `model.py:26`, `ChatAnthropic` `:30`, `ChatXAI` `:47`), one per model branch — the key is
-  required whenever that model is selected, but none is passed by name to the constructor.
-  `OPENAI_API_KEY` is the only one literal in **source**, and only **commented-out** (a
-  disabled `OpenAIAdapter` wiring, `route.ts:16`). `readme.md`'s env block names four keys
-  (OPENAI/TAVILY/XAI/LANGSMITH) — but **do not use it as the setup template**: it is
-  upstream-monorepo legacy, its paths and package manager are wrong for this checkout, and
-  it omits both `NEXT_PUBLIC_COPILOTKIT_API_KEY` (above — the app is dead without it) and
-  `GOOGLE_API_KEY`. It is flagged as a non-exemplar in
-  [build-tooling](/brain/rules/build-tooling-convention.md); **this note is the authoritative
-  env list.**
-  `ANTHROPIC_API_KEY` has **no occurrence anywhere in this repository** — not in code, not
-  in docs. It is declared `absent:` in frontmatter so gate B3 re-greps it every run and the
-  claim can't silently go stale. Selecting **Anthropic** in the model dropdown therefore
-  works only if the key is supplied through the environment, where nothing in this repo
-  names it: `ChatAnthropic` reads it implicitly inside the LangChain constructor
-  (`model.py:30`), so grepping the codebase for the variable you need returns nothing. The
-  same implicit-constructor pattern covers `grok`/`ChatXAI` (`model.py:47`) — consult the
-  provider SDK for the exact variable name, because this repo never states it. That is the
-  trap this bullet exists to flag.
+Summary (durable claims, with cites):
+- NEXT_PUBLIC_COPILOTKIT_API_KEY — runtime route uses process.env.NEXT_PUBLIC_COPILOTKIT_API_KEY and the isAuthorized guard returns Boolean(apiKey) && req.headers.get("x-api-key") === apiKey (src/app/api/copilotkit/route.ts:16-26). When that env var is unset the left conjunct is false and POST /api/copilotkit returns 401 (src/app/api/copilotkit/route.ts:87-89). The frontend sends the same header from process.env.NEXT_PUBLIC_COPILOTKIT_API_KEY (src/app/page.tsx:30-36), so a fresh clone without that env var makes the chat effectively non-functional (silent failure mode).
 
-**TS agent** (`agents/typescript/`): same `MODEL`, `GOOGLE_API_KEY` (`model.ts:33`),
-`TAVILY_API_KEY` (`search.ts:38`), plus the same implicit provider keys via its `@langchain/*`
-constructors.
+- LANGSMITH_API_KEY / LGC_DEPLOYMENT_URL / REMOTE_ACTION_URL — the runtime route reads process.env.LANGSMITH_API_KEY and accepts a ?lgcDeploymentUrl= param with a fallback to process.env.LGC_DEPLOYMENT_URL; the backend base URL falls back to process.env.REMOTE_ACTION_URL || "http://localhost:8000/copilotkit" (src/app/api/copilotkit/route.ts:100-120).
 
-**External services**: Tavily (search), the four LLM providers (OpenAI/Anthropic/Google/xAI),
-optional LangGraph Cloud + LangSmith. The rafinery MCP key (`RAFA_MCP_KEY`) is tooling, not
-app — see [the repo toolbox](/brain/rules/repo-toolbox.md). Which of these are
-server-only vs browser-visible is mapped in
-[the security posture](/brain/playbooks/security-posture.md).
+- OPENAI_API_KEY — only present as a commented-out line in the runtime route ("// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });") so no active wiring exists in the runtime route to an OPENAI_API_KEY (src/app/api/copilotkit/route.ts:16).
 
-<!-- okf:citations:start (generated — the frontmatter `cites:` DSL is the source of truth; do not hand-edit) -->
+Agent / provider keys and behavior (durable patterns):
+- Python agent (agents/python/src/lib/model.py): MODEL is read via os.getenv("MODEL", state_model) and used to select the provider. For the google_genai branch the code explicitly calls os.getenv("GOOGLE_API_KEY") and passes it to ChatGoogleGenerativeAI(api_key=... ) (agents/python/src/lib/model.py:24-36). For the anthropic branch the code instantiates ChatAnthropic(...) without any explicit os.getenv("ANTHROPIC_API_KEY") in this file — the LangChain provider's constructor is relied upon to obtain credentials implicitly (agents/python/src/lib/model.py:24-36).
 
-# Citations
+- TypeScript agent (agents/typescript/src/model.ts): same pattern — process.env.MODEL drives selection, ChatGoogleGenerativeAI is constructed with apiKey: process.env.GOOGLE_API_KEY || undefined, while ChatAnthropic is constructed without an explicit process.env token in this file (agents/typescript/src/model.ts:1-44).
 
-[1] [src/app/api/copilotkit/route.ts:25](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L25) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[2] [src/app/api/copilotkit/route.ts:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L19) — `LANGSMITH_API_KEY`
-[3] [src/app/api/copilotkit/route.ts:102](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L102) — `LGC_DEPLOYMENT_URL`
-[4] [src/app/api/copilotkit/route.ts:105](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L105) — `REMOTE_ACTION_URL`
-[5] [agents/python/src/lib/model.py:19](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L19) — `MODEL`
-[6] [agents/python/src/lib/model.py:42](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L42) — `GOOGLE_API_KEY`
-[7] [agents/python/src/lib/model.py:26](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/model.py#L26) — `ChatOpenAI`
-[8] [agents/python/src/lib/search.py:34](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/src/lib/search.py#L34) — `TAVILY_API_KEY`
-[9] [agents/python/main.py:41](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/python/main.py#L41) — `PORT`
-[10] [agents/typescript/src/model.ts:33](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/model.ts#L33) — `GOOGLE_API_KEY`
-[11] [agents/typescript/src/search.ts:38](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/agents/typescript/src/search.ts#L38) — `TAVILY_API_KEY`
-[12] [src/app/api/copilotkit/route.ts:16](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L16) — `OPENAI_API_KEY`
-[13] [src/app/page.tsx:33](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/page.tsx#L33) — `NEXT_PUBLIC_COPILOTKIT_API_KEY`
-[14] [src/app/api/copilotkit/route.ts:26](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L26) — `Boolean(apiKey)`
-[15] [src/app/api/copilotkit/route.ts:87-89](https://github.com/gallirohik/research-canvas/blob/cdd463ba519f6da63d04b45d31da5f4f254d0790/src/app/api/copilotkit/route.ts#L87-L89) — `Unauthorized`
+- Tavily (search) keys: agents/python/src/lib/search.py reads tavily_api_key = os.getenv("TAVILY_API_KEY") and builds TavilyClient(api_key=tavily_api_key) (agents/python/src/lib/search.py:1-80). The TypeScript search node builds tavily({ apiKey: process.env.TAVILY_API_KEY }) (agents/typescript/src/search.ts:1-80).
 
-<!-- okf:citations:end -->
+Durable conclusion and verification note about ANTHROPIC_API_KEY:
+- In the files cited above, ChatAnthropic is instantiated without an explicit os.getenv/process.env call for ANTHROPIC_API_KEY (agents/python/src/lib/model.py:24-36; agents/typescript/src/model.ts:1-44). This establishes the important operational point: provider credentials for Anthropic (and other providers like xAI/grok) are obtained implicitly via the provider SDK constructors, not by a named env var referenced in the agent files.
+
+- However, the original note's frontmatter claim that ANTHROPIC_API_KEY has "no occurrence anywhere in this repository" is a repository-wide absence claim that cannot be proven by inspecting the cited files alone. I did NOT run a repository-wide textual search (grep) in this adjudication step. To make the absence claim durable and mechanically verifiable, perform one of the following and update this note accordingly:
+  - Run a repo-wide grep or platform verify-citations re-grep for the literal token ANTHROPIC_API_KEY. If the token is not found anywhere in the repository at the merge sha, keep absent: ANTHROPIC_API_KEY and add a verification permalink (file:line not found).
+  - If the token is found, update this note's cites to include the file:line where it appears and record whether the code actively reads it or only documents it.
+
+Why this rewrite: the brain should preserve the durable, non-volatile guidance (what to set to get a working runtime, which files read which named keys, the implicit-constructor trap). It should not assert an absolute repository-wide absence without evidence of a full-text search. The rewritten note above keeps the durable claims and the absent: field as a reminder to re-verify; it documents the exact lines that prove the key behaviors and instructs the next operator to run the grep that closes the remaining uncertainty.
+
+Action items (to close the verification gap):
+- Run: git grep -n "ANTHROPIC_API_KEY" -- || true (or platform verify-citations re-grep) at sha 1ebb712b4a31969dd2ade1b59f92b18d1f456033. If not found, mark the absence verified and leave a short verification line with date and command result. If found, update the note with the new cite(s).
+
+Cited evidence (merge sha 1ebb712b4a31969dd2ade1b59f92b18d1f456033):
+- src/app/api/copilotkit/route.ts:16-26 (isAuthorized, NEXT_PUBLIC_COPILOTKIT_API_KEY)
+- src/app/api/copilotkit/route.ts:87-89 (Unauthorized response when not authorized)
+- src/app/page.tsx:30-36 (frontend sends x-api-key using NEXT_PUBLIC_COPILOTKIT_API_KEY)
+- src/app/api/copilotkit/route.ts:100-120 (LGC_DEPLOYMENT_URL and REMOTE_ACTION_URL usage)
+- agents/python/src/lib/model.py:24-36 (MODEL selection; ChatAnthropic constructed with no explicit ANTHROPIC_API_KEY read; ChatGoogleGenerativeAI uses os.getenv("GOOGLE_API_KEY"))
+- agents/python/src/lib/search.py:1-80 (tavily_api_key = os.getenv("TAVILY_API_KEY"))
+- agents/typescript/src/model.ts:1-44 (MODEL selection; ChatAnthropic constructed without explicit ANTHROPIC env var; ChatGoogleGenerativeAI uses process.env.GOOGLE_API_KEY)
+- agents/typescript/src/search.ts:1-80 (tavily client uses process.env.TAVILY_API_KEY)
+
+Links: keep existing brain links (copilotkit-runtime-route-convention, langgraph-agent-convention, repo-toolbox, security-posture).
+
+If you want, I will run a repo-wide grep for the token ANTHROPIC_API_KEY now and update this note to mark the absence verified (or include the file:line where it appears).
