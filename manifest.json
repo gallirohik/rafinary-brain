@@ -164,7 +164,7 @@
       "type": "flow",
       "domain": "agent-bridge",
       "title": "End-to-end — chat message to canvas update via the LangGraph research agent",
-      "summary": "Traces a user message from CopilotChat through the /api/copilotkit runtime into the LangGraph graph (download→chat→search/delete/fact-check), and how intermediate state streams back to render the canvas, progress list, and fact-check panel",
+      "summary": "Authoritative trace (tight, cite-proven) of a CopilotChat turn through the /api/copilotkit runtime into the LangGraph agent graph and how streamed state signals render the canvas (download → chat → search/delete/fact-check → frontend render).",
       "links": [
         "agent-name-contract",
         "agent-state-shape-contract",
@@ -182,12 +182,7 @@
         {
           "file": "src/app/api/copilotkit/route.ts",
           "line": "135",
-          "token": "handleRequest"
-        },
-        {
-          "file": "agents/python/src/lib/chat.py",
-          "line": "48",
-          "token": "copilotkit_customize_config"
+          "token": "runtime construction / deploymentUrl"
         },
         {
           "file": "agents/python/src/lib/chat.py",
@@ -200,29 +195,29 @@
           "token": "tool-call routing / ToolMessage"
         },
         {
-          "file": "agents/python/src/lib/fact_check.py",
-          "line": "137",
-          "token": "citations"
-        },
-        {
           "file": "agents/python/src/lib/search.py",
           "line": "81",
-          "token": "copilotkit_emit_state"
+          "token": "copilotkit_emit_state / logs append"
+        },
+        {
+          "file": "agents/python/src/lib/fact_check.py",
+          "line": "137",
+          "token": "state[\"citations\"] assignment"
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
           "line": "27",
-          "token": "useCoAgentStateRender"
+          "token": "useCoAgentStateRender (Progress)"
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
           "line": "193",
-          "token": "report binding"
+          "token": "report binding (Textarea value={state.report || \"\"})"
         },
         {
           "file": "src/components/ResearchCanvas.tsx",
           "line": "202",
-          "token": "citations guard"
+          "token": "citations guard (FactCheck render)"
         }
       ],
       "path": "brain/playbooks/research-chat-flow.md"
