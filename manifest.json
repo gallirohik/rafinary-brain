@@ -1,10 +1,22 @@
 {
   "schemaVersion": 1,
   "mode": "branch",
-  "codeSha": "d04d09e583c3b54758b6d854684d08aab092d73c",
+  "codeSha": "c1cec0b51184a0bef898680cab326cfbf98443de",
   "branch": "fix/lgc-deployment-url-key-exfiltration",
   "provenance": {
-    "agentCommits": 0
+    "agentCommits": 1,
+    "commitsCovered": [
+      "d04d09e583c3"
+    ],
+    "lastAgentRun": {
+      "at": "2026-08-01T11:06:08+05:30",
+      "codeSha": "c1cec0b51184a0bef898680cab326cfbf98443de",
+      "actor": {
+        "model": "mechanical",
+        "agent": "cli@0.18.5",
+        "runner": "session"
+      }
+    }
   },
   "base": {
     "brainSha": "d04d09e583c3b54758b6d854684d08aab092d73c"
